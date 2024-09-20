@@ -69,3 +69,8 @@ jobs:
         chmod +x ./gradlew
         ./gradlew clean build
         
+  notify:
+    needs: test
+    uses: ./.github/workflows/notify-slack.yml
+    with:
+      status: ${{ job.status }}
