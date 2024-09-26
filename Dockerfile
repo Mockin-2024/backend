@@ -3,6 +3,7 @@ FROM azul/zulu-openjdk-alpine:17-latest AS build
 WORKDIR /app
 COPY . .
 RUN ./gradlew clean build -x test
+RUN ls -l /app/build/libs
 
 # 2단계: 런타임 단계
 FROM azul/zulu-openjdk-alpine:17-latest
