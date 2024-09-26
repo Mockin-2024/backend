@@ -73,7 +73,7 @@ jobs:
         ./gradlew clean build -x test
 
   # build, push and run docker image
-  deploy:
+  docker:
     runs-on: ubuntu-latest
     needs: test-build
 
@@ -93,7 +93,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: user/app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
