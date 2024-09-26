@@ -101,7 +101,7 @@ jobs:
 
     steps:
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3  
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         id: buildx
@@ -118,7 +118,6 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:latest
           cache-from: type=gha
