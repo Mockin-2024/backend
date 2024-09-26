@@ -41,7 +41,9 @@ jobs:
         mkdir -p ./src/main/resources
         cd ./src/main/resources
         echo "${{ secrets.APPLICATION }}" >> ./application.properties
-
+        echo "${{ secrets.APPLICATION_LOGGING }}" >> ./application.properties
+        echo "${{ secrets.APPLICATION_KI_API }}" >> ./application.properties
+        
       # set up mysql
 #    - name: Setup MySQL
 #      uses: mirromutth/mysql-action@v1.1
