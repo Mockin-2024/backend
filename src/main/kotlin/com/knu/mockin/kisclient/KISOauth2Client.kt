@@ -12,12 +12,12 @@ import reactor.core.publisher.Mono
 class KISOauth2Client(
     private val webClient: WebClient
 ) {
-    fun postApproval(KSIApprovalRequestDto: KISApprovalRequestDto): Mono<ApprovalKeyResponseDto>{
+    fun postApproval(kisApprovalRequestDto: KISApprovalRequestDto): Mono<ApprovalKeyResponseDto>{
         return webClient
             .post()
             .uri("/oauth2/Approval")
             .header("Content-Type", "application/json;charset=UTF-8")
-            .bodyValue(KSIApprovalRequestDto)
+            .bodyValue(kisApprovalRequestDto)
             .retrieve()
             .bodyToMono(ApprovalKeyResponseDto::class.java)
     }
