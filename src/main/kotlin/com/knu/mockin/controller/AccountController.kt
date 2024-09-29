@@ -58,5 +58,6 @@ class AccountController(
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 종료")))
 
         return result
+            .map { dto -> ResponseEntity.ok(dto) }
     }
 }

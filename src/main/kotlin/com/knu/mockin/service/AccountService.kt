@@ -27,8 +27,7 @@ class AccountService(
         return result
     }
 
-    fun getAccessToken(requestDto: KISTokenRequestDto): Mono<ResponseEntity<AccessTokenAPIResponseDto>>{
+    fun getAccessToken(requestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto>{
         return kisOauth2Client.postTokenP(requestDto)
-            .map { dto -> ResponseEntity.ok(dto) }
     }
 }
