@@ -71,10 +71,10 @@ tasks {
         // test 가 성공해야만, 아래 Task 실행
         dependsOn(test)
 
-        // 기존에 존재하는 Docs 삭제(문서 최신화를 위해)
-        doFirst {
-            delete(file("src/main/resources/static/docs"))
-        }
+//        // 기존에 존재하는 Docs 삭제(문서 최신화를 위해)
+//        doFirst {
+//            delete(file("src/main/resources/static/docs"))
+//        }
 
         // snippet Directory 설정
         inputs.dir(snippetsDir)
