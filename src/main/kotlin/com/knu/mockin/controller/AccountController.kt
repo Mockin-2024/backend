@@ -5,7 +5,10 @@ import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.service.AccountService
 import com.knu.mockin.logging.utils.LogUtil
+import com.knu.mockin.model.dto.request.KISApprovalRequestDto
+import com.knu.mockin.model.dto.request.KISTokenRequestDto
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,6 +20,10 @@ import reactor.core.publisher.Mono
 class AccountController(
     private val accountService: AccountService
 ) {
+    @Value("\${ki.app-key}")
+    lateinit var appKey: String
+    @Value("\${ki.app-secret}")
+    lateinit var appSecret: String
 
     private val log = LoggerFactory.getLogger(AccountController::class.java)
     @PostMapping("")
@@ -24,9 +31,18 @@ class AccountController(
         val traceId = LogUtil.generateTraceId()
         val userId = 1L
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", "요청 처리 시작")))
-        val result = accountService.getApprovalKey()
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", "요청 처리 종료")))
-        return result
+        val requestDto = KISApprovalRequestDto(
+            grantType = "client_credentials",
+            appKey = appKey,
+            secretKey = appSecret)
+        val result = accountService.getApprovalKey(requestDto)
+            .doOnNext {
+                result ->
+                log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", LogUtil.toJson(result))))
+            }
+        return result.map {
+            dto-> ResponseEntity.ok(dto)
+        }
     }
 
     @PostMapping("/token")
@@ -34,9 +50,14 @@ class AccountController(
         val traceId = LogUtil.generateTraceId()
         val userId = 1L
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 시작")))
-        val result = accountService.getAccessToken()
+        val requestDto = KISTokenRequestDto(
+            grantType = "client_credentials",
+            appKey = appKey,
+            appSecret = appSecret)
+        val result = accountService.getAccessToken(requestDto)
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 종료")))
 
         return result
+            .map { dto -> ResponseEntity.ok(dto) }
     }
 }
