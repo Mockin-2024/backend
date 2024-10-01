@@ -1,7 +1,7 @@
 package com.knu.mockin.kisclient
 
-import com.knu.mockin.model.dto.request.KISApprovalRequestDto
-import com.knu.mockin.model.dto.request.KISTokenRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import org.springframework.stereotype.Component

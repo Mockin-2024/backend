@@ -1,8 +1,8 @@
 package com.knu.mockin.service.accountservice
 
 import com.knu.mockin.kisclient.KISOauth2Client
-import com.knu.mockin.model.dto.request.KISApprovalRequestDto
-import com.knu.mockin.model.dto.request.KISTokenRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.service.AccountService

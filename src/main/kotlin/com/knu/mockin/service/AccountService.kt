@@ -3,12 +3,11 @@ package com.knu.mockin.service
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.logging.model.LogAPIEntry
 import com.knu.mockin.logging.utils.LogUtil
-import com.knu.mockin.model.dto.request.KISApprovalRequestDto
-import com.knu.mockin.model.dto.request.KISTokenRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import org.slf4j.LoggerFactory
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
