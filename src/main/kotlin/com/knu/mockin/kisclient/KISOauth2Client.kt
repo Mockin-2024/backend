@@ -10,10 +10,10 @@ import reactor.core.publisher.Mono
 
 @Component
 class KISOauth2Client(
-    private val webClient: WebClient
+    private val webClientMock: WebClient
 ) {
     fun postApproval(kisApprovalRequestDto: KISApprovalRequestDto): Mono<ApprovalKeyResponseDto>{
-        return webClient
+        return webClientMock
             .post()
             .uri("/oauth2/Approval")
             .header("Content-Type", "application/json;charset=UTF-8")
@@ -23,7 +23,7 @@ class KISOauth2Client(
     }
 
     fun postTokenP(kisTokenRequestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto> {
-        return webClient
+        return webClientMock
             .post()
             .uri("/oauth2/tokenP")
             .header("Content-Type", "application/json;charset=UTF-8")

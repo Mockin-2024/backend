@@ -8,12 +8,12 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
 class KISOverSeaClient(
-    private val webClient: WebClient
+    private val webClientMock: WebClient
 ) {
     fun postOrder(
         kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
         kisOrderRequestDto: KISOrderRequestDto): Mono<KISOverSeaResponseDto> {
-        return webClient.post()
+        return webClientMock.post()
             .uri("/uapi/overseas-stock/v1/trading/order")
             .headers { addHeaders(it, kisOverSeaRequestHeaderDto)}
             .bodyValue(kisOrderRequestDto)
