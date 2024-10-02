@@ -20,8 +20,10 @@ repositories {
 }
 
 dependencies {
+    // Kotlin Basic
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     // Junit test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -33,10 +35,11 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:5.9.1")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
 
+    // MockK
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
-    // Spring Web
+    // Spring Web with FLux
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
@@ -45,6 +48,12 @@ dependencies {
 
     // Spring Rest Docs
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+
+    // Spring R2DBC with MySQL
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    implementation("io.asyncer:r2dbc-mysql:1.2.0")
+    runtimeOnly("mysql:mysql-connector-java:8.0.33")
+    runtimeOnly("com.h2database:h2")
 }
 
 kotlin {

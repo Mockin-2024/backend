@@ -3,18 +3,19 @@ package com.knu.mockin.service
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.logging.model.LogAPIEntry
 import com.knu.mockin.logging.utils.LogUtil
-import com.knu.mockin.model.dto.request.KISApprovalRequestDto
-import com.knu.mockin.model.dto.request.KISTokenRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
+import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
+import com.knu.mockin.repository.UserRepository
 import org.slf4j.LoggerFactory
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
 class AccountService(
-    private val kisOauth2Client: KISOauth2Client
+    private val kisOauth2Client: KISOauth2Client,
+    private val userRepository: UserRepository
 ) {
 
     private val log = LoggerFactory.getLogger(AccountService::class.java)
@@ -27,7 +28,16 @@ class AccountService(
         return result
     }
 
-    fun getAccessToken(requestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto>{
-        return kisOauth2Client.postTokenP(requestDto)
+    fun getAccessToken(requestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto> {
+        return userRepository.findById(1)
+            .flatMap { user ->
+                kisOauth2Client.postTokenP(requestDto)
+                    .flatMap { dto ->
+                        user.token = dto.accessToken
+                        userRepository.save(user)
+                            .then(Mono.just(dto))
+                    }
+            }
     }
+
 }
