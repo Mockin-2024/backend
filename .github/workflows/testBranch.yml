@@ -43,6 +43,7 @@ jobs:
         echo "${{ secrets.APPLICATION }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_LOGGING }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_KI_API }}" >> ./application.properties
+        echo "${{ secrets.APPLICATION_SQL }}" >> ./application.properties
         
       # set up mysql
     - name: Setup MySQL
