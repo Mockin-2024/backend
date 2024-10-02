@@ -45,14 +45,14 @@ jobs:
         echo "${{ secrets.APPLICATION_KI_API }}" >> ./application.properties
 
       # set up mysql
-#    - name: Setup MySQL
-#      uses: mirromutth/mysql-action@v1.1
-#      with:
-#        host port: 3306
-#        container port: 3306
-#        mysql database: 'testdb'
-#        mysql user: 'test'
-#        mysql password: 'test'
+    - name: Setup MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        host port: 3306
+        container port: 3306
+        mysql database: 'testdb'
+        mysql user: 'test'
+        mysql password: 'test'
 
       # apply caching
     - name: Gradle Caching
