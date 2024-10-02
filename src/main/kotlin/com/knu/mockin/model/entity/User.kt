@@ -6,5 +6,6 @@ data class User(
     @Id val id: Long,
     val appKey: String,
     val appSecret: String,
-    var token: String?
+    var token: String?,
+    val accountNumber: String
 )
