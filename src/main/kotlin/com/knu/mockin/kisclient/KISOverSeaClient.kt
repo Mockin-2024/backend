@@ -4,15 +4,18 @@ import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.order.KISOrderRequestDto
 import com.knu.mockin.model.dto.kisresponse.order.KISOverSeaResponseDto
 import org.springframework.http.HttpHeaders
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
+@Component
 class KISOverSeaClient(
     private val webClientMock: WebClient
 ) {
     fun postOrder(
         kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisOrderRequestDto: KISOrderRequestDto): Mono<KISOverSeaResponseDto> {
+        kisOrderRequestDto: KISOrderRequestDto
+    ): Mono<KISOverSeaResponseDto> {
         return webClientMock.post()
             .uri("/uapi/overseas-stock/v1/trading/order")
             .headers { addHeaders(it, kisOverSeaRequestHeaderDto)}
@@ -21,7 +24,7 @@ class KISOverSeaClient(
             .bodyToMono(KISOverSeaResponseDto::class.java)
     }
 
-    fun addHeaders(headers: HttpHeaders, headerDto: KISOverSeaRequestHeaderDto) {
+    private fun addHeaders(headers: HttpHeaders, headerDto: KISOverSeaRequestHeaderDto) {
         headers["Content-Type"] = headerDto.contentType ?: "application/json"
         headers["Authorization"] = headerDto.authorization
         headers["AppKey"] = headerDto.appKey
