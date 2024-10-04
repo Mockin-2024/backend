@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/account")
@@ -27,7 +26,7 @@ class AccountController(
 
     private val log = LoggerFactory.getLogger(AccountController::class.java)
     @PostMapping("")
-    fun getApprovalKey(): Mono<ResponseEntity<ApprovalKeyResponseDto>> {
+    suspend fun getApprovalKey(): ResponseEntity<ApprovalKeyResponseDto> {
         val traceId = LogUtil.generateTraceId()
         val userId = 1L
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", "요청 처리 시작")))
@@ -36,17 +35,12 @@ class AccountController(
             appKey = appKey,
             secretKey = appSecret)
         val result = accountService.getApprovalKey(requestDto)
-            .doOnNext {
-                result ->
-                log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", LogUtil.toJson(result))))
-            }
-        return result.map {
-            dto-> ResponseEntity.ok(dto)
-        }
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", LogUtil.toJson(result))))
+        return ResponseEntity.ok(result)
     }
 
     @PostMapping("/token")
-    fun getAccessToken(): Mono<ResponseEntity<AccessTokenAPIResponseDto>> {
+    suspend fun getAccessToken(): ResponseEntity<AccessTokenAPIResponseDto> {
         val traceId = LogUtil.generateTraceId()
         val userId = 1L
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 시작")))
@@ -57,7 +51,6 @@ class AccountController(
         val result = accountService.getAccessToken(requestDto)
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 종료")))
 
-        return result
-            .map { dto -> ResponseEntity.ok(dto) }
+        return ResponseEntity.ok(result)
     }
 }

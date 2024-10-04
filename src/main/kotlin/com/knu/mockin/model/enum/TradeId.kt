@@ -1,6 +1,6 @@
 package com.knu.mockin.model.enum
 
-enum class TradeId(tradeId:String) {
+enum class TradeId(val tradeId:String) {
     USA_BUY("VTTT1002U"),         // 미국 매수 주문
     USA_SELL("VTTT1001U"),        // 미국 매도 주문
     USA_CANCEL("VTTT1004U"),      // 미국 정정 취소 주문
@@ -19,8 +19,12 @@ enum class TradeId(tradeId:String) {
     VIETNAM_BUY("VTTS0311U"),     // 베트남 매수 주문
     VIETNAM_SELL("VTTS0310U"),    // 베트남 매도 주문
     VIETNAM_CANCEL("VTTS0312U"),  // 베트남 정정 취소 주문
+    CURRENT_PRICE("HHDFS00000300");
 
-    CURRENT_PRICE("HHDFS00000300")
-
+    companion object {
+        fun getTradeIdByEnum(enum: TradeId): String {
+            return enum.tradeId
+        }
+    }
 
 }
