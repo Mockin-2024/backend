@@ -2,10 +2,11 @@ package com.knu.mockin.controller
 
 import com.knu.mockin.logging.model.LogEntry
 import com.knu.mockin.logging.utils.LogUtil
-import com.knu.mockin.model.dto.kisresponse.order.KISOverSeaResponseDto
+import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.service.TradingService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -17,7 +18,7 @@ class TradingController(
 ) {
     private val log = LoggerFactory.getLogger(TradingController::class.java)
     @PostMapping("/order")
-    suspend fun order(): ResponseEntity<KISOverSeaResponseDto>{
+    suspend fun order(): ResponseEntity<KISOrderResponseDto>{
         val traceId = LogUtil.generateTraceId()
         val userId = 1L
 
@@ -26,5 +27,10 @@ class TradingController(
         log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/order", "요청 처리 종료")))
 
         return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/inquire-balance")
+    suspend fun inquireBalance() {
+
     }
 }
