@@ -1,4 +1,4 @@
-package com.knu.mockin.model.dto.kisrequest.currentprice
+package com.knu.mockin.model.dto.kisrequest.basicprice.currentprice
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

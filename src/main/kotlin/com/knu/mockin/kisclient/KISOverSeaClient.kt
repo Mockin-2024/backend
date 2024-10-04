@@ -1,7 +1,9 @@
 package com.knu.mockin.kisclient
 
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
+import com.knu.mockin.model.dto.kisrequest.basicprice.currentprice.KISCurrentPriceRequestParameter
 import com.knu.mockin.model.dto.kisrequest.order.KISOrderRequestDto
+import com.knu.mockin.model.dto.kisresponse.KISBasicPrice.currentPrice.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.order.KISOverSeaResponseDto
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
@@ -22,6 +24,18 @@ class KISOverSeaClient(
             .bodyValue(kisOrderRequestDto)
             .retrieve()
             .bodyToMono(KISOverSeaResponseDto::class.java)
+    }
+
+    fun getCurrentPrice(
+            header: KISOverSeaRequestHeaderDto,
+            requestParameter: KISCurrentPriceRequestParameter
+    ) : Mono<KISCurrentPriceResponseDto> {
+        return webClientMock.post()
+                .uri("/uapi/overseas-price/v1/quotations/price")
+                .headers { addHeaders(it, header)}
+                .bodyValue(requestParameter)
+                .retrieve()
+                .bodyToMono(KISCurrentPriceResponseDto::class.java)
     }
 
     private fun addHeaders(headers: HttpHeaders, headerDto: KISOverSeaRequestHeaderDto) {

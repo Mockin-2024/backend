@@ -20,6 +20,7 @@ enum class TradeId(tradeId:String) {
     VIETNAM_SELL("VTTS0310U"),    // 베트남 매도 주문
     VIETNAM_CANCEL("VTTS0312U"),  // 베트남 정정 취소 주문
 
+    CURRENT_PRICE("HHDFS00000300")
 
 
 }
