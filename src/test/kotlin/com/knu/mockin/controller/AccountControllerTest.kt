@@ -7,7 +7,7 @@ import com.knu.mockin.service.AccountService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.extensions.spring.SpringExtension
-import io.mockk.every
+import io.mockk.coEvery
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
@@ -22,7 +22,6 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.servlet.MockMvcResultHandlersDsl
 import org.springframework.test.web.servlet.client.MockMvcWebTestClient
 import org.springframework.web.context.WebApplicationContext
-import reactor.core.publisher.Mono
 
 //@WebMvcTest(AccountController::class)
 @SpringBootTest
@@ -57,7 +56,7 @@ class AccountControllerTest(
             appKey = appKey,
             secretKey = appSecret)
         val expectedDto = ApprovalKeyResponseDto("test")
-        every { accountService.getApprovalKey(requestDto) } returns Mono.just(expectedDto)
+        coEvery { accountService.getApprovalKey(requestDto) } returns expectedDto
 
         val result = webTestClient.post().uri("/account").accept(APPLICATION_JSON)
             .exchange()

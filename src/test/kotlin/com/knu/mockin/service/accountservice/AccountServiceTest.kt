@@ -28,7 +28,7 @@ class AccountServiceTest: BehaviorSpec({
         every { kisOauth2Client.postApproval(requestDto) } returns Mono.just(expectedDto)
 
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getApprovalKey(requestDto).block()
+            val result = accountService.getApprovalKey(requestDto)
 
             Then("키가 반환된다"){
                 result shouldBe expectedDto
@@ -52,7 +52,7 @@ class AccountServiceTest: BehaviorSpec({
         every { userRepository.save(user)} returns Mono.just(user)
 
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getAccessToken(requestDto).block()
+            val result = accountService.getAccessToken(requestDto)
 
             Then("토큰이 반환된다"){
                 result shouldBe expectedDto
