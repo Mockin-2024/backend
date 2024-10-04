@@ -1,6 +1,5 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.controller.AccountController
 import com.knu.mockin.kisclient.KISOverSeaClient
 import com.knu.mockin.logging.model.LogAPIEntry
 import com.knu.mockin.logging.utils.LogUtil
@@ -16,11 +15,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class OrderService(
+class TradingService(
     private val kisOverSeaClient: KISOverSeaClient,
     private val userRepository: UserRepository
 ) {
-    private val log = LoggerFactory.getLogger(AccountController::class.java)
+    private val log = LoggerFactory.getLogger(TradingService::class.java)
     suspend fun order(): KISOverSeaResponseDto {
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
