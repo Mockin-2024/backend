@@ -1,7 +1,6 @@
 package com.knu.mockin.model.dto.kisresponse.KISCurrentPrice
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.knu.mockin.model.dto.kisresponse.order.OutputDto
 
 data class KISCurrentPriceResponseBodyDto(
 
