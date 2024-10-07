@@ -29,12 +29,9 @@ class KISTradingClient(
             .headers { addHeaders(it, kisOverSeaRequestHeaderDto)}
             .bodyValue(kisOrderRequestDto)
             .exchangeToMono { response ->
-
                 val headerResponse = response.headers().asHttpHeaders()
                 val bodyResponse = response.bodyToMono(KISOrderResponseDto::class.java)
 
-                log.info("{headerResponse: {}}", headerResponse)
-                log.info("{bodyResponse: {}}", bodyResponse)
                 // 헤더에서 필요한 정보를 추출하여 KISOverSeaResponseHeaderDto로 변환
                 val kisOverSeaResponseHeaderDto = extractHeaderDto(headerResponse)
 
@@ -62,8 +59,6 @@ class KISTradingClient(
                 val headerResponse = response.headers().asHttpHeaders()
                 val bodyResponse = response.bodyToMono(KISBalanceResponseDto::class.java)
 
-                log.info("{headerResponse: {}}", headerResponse)
-                log.info("{bodyResponse: {}}", bodyResponse)
                 // 헤더에서 필요한 정보를 추출하여 KISOverSeaResponseHeaderDto로 변환
                 val kisOverSeaResponseHeaderDto = extractHeaderDto(headerResponse)
 
@@ -75,7 +70,7 @@ class KISTradingClient(
     }
 
     private fun addHeaders(headers: HttpHeaders, headerDto: KISOverSeaRequestHeaderDto) {
-        headers["Content-Type"] = headerDto.contentType ?: "application/json"
+        headers["Content-Type"] = headerDto.contentType
         headers["Authorization"] = headerDto.authorization
         headers["AppKey"] = headerDto.appKey
         headers["AppSecret"] = headerDto.appSecret

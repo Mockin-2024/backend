@@ -17,27 +17,16 @@ import org.springframework.web.bind.annotation.RestController
 class TradingController(
     private val tradingService: TradingService,
 ) {
-    private val log = LoggerFactory.getLogger(TradingController::class.java)
     @PostMapping("/order")
     suspend fun order(): ResponseEntity<KISOrderResponseDto>{
-        val traceId = LogUtil.generateTraceId()
-        val userId = 1L
-
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/order", "요청 처리 시작")))
         val result = tradingService.postOrder()
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/order", "요청 처리 종료")))
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/balance")
     suspend fun inquireBalance(): ResponseEntity<KISBalanceResponseDto> {
-        val traceId = LogUtil.generateTraceId()
-        val userId = 1L
-
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/balance", "요청 처리 시작")))
         val result = tradingService.getBalance()
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/balance", "요청 처리 종료")))
 
         return ResponseEntity.ok(result)
     }
