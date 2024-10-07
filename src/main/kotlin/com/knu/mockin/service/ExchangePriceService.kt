@@ -2,19 +2,20 @@ package com.knu.mockin.service
 
 import com.knu.mockin.kisclient.KISOverSeaClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basicprice.currentprice.KISCurrentPriceRequestParameter
-import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisrequest.basicprice.exchangeprice.KISExchangePriceRequestParameter
+import com.knu.mockin.model.dto.kisrequest.basicprice.termprice.KISTermPriceRequestParameter
+import com.knu.mockin.model.dto.kisresponse.basicprice.exchangeprice.KISExchangePriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class CurrentPriceService(
+class ExchangePriceService (
         private val kisOverSeaClient: KISOverSeaClient,
         private val userRepository: UserRepository
 ) {
-    fun getCurrentPrice(): Mono<KISCurrentPriceResponseDto> {
+    fun getExchangePrice(): Mono<KISExchangePriceResponseDto> {
         return userRepository.findById(1).flatMap { user ->
             // Request header 생성
             val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
@@ -25,14 +26,14 @@ class CurrentPriceService(
             )
 
             // 요청 파라미터 생성
-            val requestParameter = KISCurrentPriceRequestParameter(
-                    AUTH = "",  // 필요한 경우 AUTH 값을 설정
-                    EXCD = "NAS",
-                    SYMB = "TSLA"
+            val requestParameter = KISExchangePriceRequestParameter(
+                    fidCondMrktDivCode = "N",
+                    fidInputDate1 = "20220401",
+                    fidInputDate2 = "20220613",
+                    fidInputIscd = ".DJI",
+                    fidPeriodDivCode = "D"
             )
-
-            // KIS API 호출
-            kisOverSeaClient.getCurrentPrice(kisOverSeaRequestHeaderDto, requestParameter)
+            kisOverSeaClient.getExchangePrice(kisOverSeaRequestHeaderDto, requestParameter)
         }
     }
 }

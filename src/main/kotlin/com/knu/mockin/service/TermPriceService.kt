@@ -3,18 +3,20 @@ package com.knu.mockin.service
 import com.knu.mockin.kisclient.KISOverSeaClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basicprice.currentprice.KISCurrentPriceRequestParameter
+import com.knu.mockin.model.dto.kisrequest.basicprice.termprice.KISTermPriceRequestParameter
 import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basicprice.termprice.KISTermPriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class CurrentPriceService(
+class TermPriceService (
         private val kisOverSeaClient: KISOverSeaClient,
         private val userRepository: UserRepository
 ) {
-    fun getCurrentPrice(): Mono<KISCurrentPriceResponseDto> {
+    fun getTermPrice(): Mono<KISTermPriceResponseDto> {
         return userRepository.findById(1).flatMap { user ->
             // Request header 생성
             val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
@@ -25,14 +27,18 @@ class CurrentPriceService(
             )
 
             // 요청 파라미터 생성
-            val requestParameter = KISCurrentPriceRequestParameter(
+            val requestParameter = KISTermPriceRequestParameter(
                     AUTH = "",  // 필요한 경우 AUTH 값을 설정
                     EXCD = "NAS",
-                    SYMB = "TSLA"
+                    SYMB = "TSLA",
+                    GUBN = "0",    // 0:일, 1:주, 2:월
+                    BYMD = "",     // 공란:현재날짜
+                    MODP = "0",    // 0:수정주가미반영, 1:반영
+                    KEYB = ""
             )
 
             // KIS API 호출
-            kisOverSeaClient.getCurrentPrice(kisOverSeaRequestHeaderDto, requestParameter)
+            kisOverSeaClient.getTermPrice(kisOverSeaRequestHeaderDto, requestParameter)
         }
     }
 }
