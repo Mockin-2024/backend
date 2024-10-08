@@ -6,15 +6,16 @@ import com.knu.mockin.model.dto.kisrequest.basicprice.currentprice.KISCurrentPri
 import com.knu.mockin.model.dto.kisrequest.basicprice.exchangeprice.KISExchangePriceRequestParameter
 import com.knu.mockin.model.dto.kisrequest.basicprice.termprice.KISTermPriceRequestParameter
 import com.knu.mockin.model.dto.kisrequest.order.KISOrderRequestDto
+import com.knu.mockin.model.dto.kisrequest.TestRequestParameter
 import com.knu.mockin.model.dto.kisresponse.basicprice.conditionsearch.KISConditionSearchResponseDto
 import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basicprice.exchangeprice.KISExchangePriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basicprice.termprice.KISTermPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.order.KISOverSeaResponseDto
+import com.knu.mockin.model.dto.kisresponse.TestResponseDto
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.util.UriBuilder
 import reactor.core.publisher.Mono
 
 @Component
@@ -130,20 +131,37 @@ class KISOverSeaClient(
                 .bodyToMono(KISConditionSearchResponseDto::class.java)
     }
 
+    fun getTest(
+            header: KISOverSeaRequestHeaderDto,
+            requestParameter: TestRequestParameter
+    ) : Mono<TestResponseDto> {
+        return webClientMock.get()
+                .uri{UriBuilder ->
+                    UriBuilder.path("uapi/domestic-stock/v1/quotations/inquire-price")
+                            .queryParam("FID_COND_MRKT_DIV_CODE", requestParameter.fidCondMrktDivCode)
+                            .queryParam("FID_INPUT_ISCD", requestParameter.fidInputIscd)
+                            .build()
+                }
+                .headers { addHeaders(it, header)}
+                .retrieve()
+                .bodyToMono(TestResponseDto::class.java)
+    }
+
     private fun addHeaders(headers: HttpHeaders, headerDto: KISOverSeaRequestHeaderDto) {
         headers["Content-Type"] = headerDto.contentType ?: "application/json"
         headers["Authorization"] = headerDto.authorization
         headers["AppKey"] = headerDto.appKey
         headers["AppSecret"] = headerDto.appSecret
         headerDto.personalSecKey?.let { headers["PersonalSecKey"] = it }
-        headers["TrId"] = headerDto.transactionId
-        headerDto.transactionContinuation?.let { headers["TrCont"] = it }
-        headerDto.customerType?.let { headers["CustType"] = it }
-        headerDto.sequenceNumber?.let { headers["SeqNo"] = it }
-        headerDto.macAddress?.let { headers["MacAddress"] = it }
-        headerDto.phoneNumber?.let { headers["PhoneNumber"] = it }
-        headerDto.ipAddress?.let { headers["IpAddr"] = it }
-        headerDto.hashKey?.let { headers["HashKey"] = it }
-        headerDto.globalUid?.let { headers["GtUid"] = it }
+        headers["tr_id"] = headerDto.transactionId
+        headerDto.transactionContinuation?.let { headers["tr_cont"] = it }
+        headerDto.customerType?.let { headers["custtype"] = it }
+        headerDto.sequenceNumber?.let { headers["seq_no"] = it }
+        headerDto.macAddress?.let { headers["mac_address"] = it }
+        headerDto.phoneNumber?.let { headers["phone_number"] = it }
+        headerDto.ipAddress?.let { headers["ip_addr"] = it }
+        headerDto.hashKey?.let { headers["hashkey"] = it }
+        headerDto.globalUid?.let { headers["gt_uid"] = it }
+
     }
 }
