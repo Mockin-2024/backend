@@ -1,14 +1,8 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.logging.model.LogEntry
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.service.AccountService
-import com.knu.mockin.logging.utils.LogUtil
-import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
-import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
