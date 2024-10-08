@@ -20,8 +20,14 @@ enum class TradeId(val tradeId:String) {
     VIETNAM_SELL("VTTS0310U"),    // 베트남 매도 주문
     VIETNAM_CANCEL("VTTS0312U"),  // 베트남 정정 취소 주문
     INQUIRE_BALANCE("VTTS3012R"), // 잔고 조회
+
     CURRENT_PRICE("HHDFS00000300"),
-    TEST("FHKST01010100");
+    TERM_PRICE("HHDFS76240000"),
+    EXCHANGE_PRICE("FHKST03030100"),
+    CONDITION_PRICE("HHDFS76410000"),
+
+    COUNTRIES_HOLIDAY("CTOS5011R");
+
     companion object {
         fun getTradeIdByEnum(enum: TradeId): String {
             return enum.tradeId

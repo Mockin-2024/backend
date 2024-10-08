@@ -1,13 +1,11 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.model.dto.kisresponse.basicprice.conditionsearch.KISConditionSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseBodyDto
-import com.knu.mockin.model.dto.kisresponse.basicprice.exchangeprice.KISExchangePriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basicprice.termprice.KISTermPriceResponseDto
-import com.knu.mockin.service.ConditionSearchService
-import com.knu.mockin.service.CurrentPriceService
-import com.knu.mockin.service.ExchangePriceService
-import com.knu.mockin.service.TermPriceService
+import com.knu.mockin.model.dto.kisresponse.basicprice.mock.conditionsearch.KISConditionSearchResponseDto
+import com.knu.mockin.model.dto.kisresponse.basicprice.mock.currentprice.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basicprice.mock.exchangeprice.KISExchangePriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basicprice.mock.termprice.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basicprice.real.countriesholiday.KISCountriesHolidayResponseDto
+import com.knu.mockin.service.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,33 +19,42 @@ class BasicPriceController (
         private val termPriceService: TermPriceService,
         private val exchangePriceService: ExchangePriceService,
         private val conditionSearchService: ConditionSearchService,
+        private val countriesHolidayService: CountriesHolidayService,
 ){
 
     @GetMapping("/current")
-    suspend fun getCurrentPrice(): ResponseEntity<KISCurrentPriceResponseBodyDto> {
+    suspend fun getCurrentPrice(): ResponseEntity<KISCurrentPriceResponseDto> {
         val result = currentPriceService.getCurrentPrice()
 
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/term")
-    fun getTermPrice(): Mono<ResponseEntity<KISTermPriceResponseDto>> {
-        return termPriceService.getTermPrice().map {
-            dto -> ResponseEntity.ok(dto)
-        }
+    suspend fun getTermPrice(): ResponseEntity<KISTermPriceResponseDto> {
+        val result = termPriceService.getTermPrice()
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/exchange")
-    fun getExchangePrice(): Mono<ResponseEntity<KISExchangePriceResponseDto>> {
-        return exchangePriceService.getExchangePrice().map {
-            dto -> ResponseEntity.ok(dto)
-        }
+    suspend fun getExchangePrice(): ResponseEntity<KISExchangePriceResponseDto> {
+        val result = exchangePriceService.getExchangePrice()
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/condition")
-    fun getConditionSearch(): Mono<ResponseEntity<KISConditionSearchResponseDto>> {
-        return conditionSearchService.getConditionSearch().map {
-            dto -> ResponseEntity.ok(dto)
-        }
+    suspend fun getConditionSearch(): ResponseEntity<KISConditionSearchResponseDto> {
+        val result = conditionSearchService.getConditionSearch()
+
+        return ResponseEntity.ok(result)
     }
+
+    @GetMapping("/countries-holiday")
+    suspend fun getCountriesHoliday() : ResponseEntity<KISCountriesHolidayResponseDto> {
+        val result = countriesHolidayService.getCountriesHoliday()
+
+        return ResponseEntity.ok(result)
+    }
+
 }

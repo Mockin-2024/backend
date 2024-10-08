@@ -1,31 +1,32 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.kisclient.KISTradingClient
+import com.knu.mockin.kisclient.KISBasicMockClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basicprice.termprice.KISTermPriceRequestParameter
-import com.knu.mockin.model.dto.kisresponse.basicprice.termprice.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.kisrequest.basicprice.mock.termprice.KISTermPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisresponse.basicprice.mock.termprice.KISTermPriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
+import kotlinx.coroutines.reactive.awaitFirst
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Mono
 
 @Service
 class TermPriceService (
-        private val kisTradingClient: KISTradingClient,
+        private val kisBasicMockClient: KISBasicMockClient,
         private val userRepository: UserRepository
 ) {
-    fun getTermPrice(): Mono<KISTermPriceResponseDto> {
-        return userRepository.findById(1).flatMap { user ->
+    suspend fun getTermPrice(): KISTermPriceResponseDto {
+        val user = userRepository.findById(1).awaitFirst()
             // Request header 생성
             val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
                     authorization = "Bearer ${user.token}",
                     appKey = user.appKey,
                     appSecret = user.appSecret,
-                    transactionId = TradeId.CURRENT_PRICE.name // 적절한 거래 ID로 수정
+                    transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE) // 적절한 거래 ID로 수정
             )
 
             // 요청 파라미터 생성
-            val requestParameter = KISTermPriceRequestParameter(
+            val requestParameter = KISTermPriceRequestParameterDto(
                     AUTH = "",  // 필요한 경우 AUTH 값을 설정
                     EXCD = "NAS",
                     SYMB = "TSLA",
@@ -36,7 +37,7 @@ class TermPriceService (
             )
 
             // KIS API 호출
-            kisTradingClient.getTermPrice(kisOverSeaRequestHeaderDto, requestParameter)
-        }
+            return kisBasicMockClient.getTermPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+
     }
 }

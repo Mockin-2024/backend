@@ -19,37 +19,71 @@ import org.springframework.web.bind.annotation.RestController
 class AccountController(
     private val accountService: AccountService
 ) {
-    @Value("\${ki.app-key}")
-    lateinit var appKey: String
-    @Value("\${ki.app-secret}")
-    lateinit var appSecret: String
+    @Value("\${ki.mock.app-key}")
+    lateinit var mockAppKey: String
+    @Value("\${ki.mock.app-secret}")
+    lateinit var mockAppSecret: String
+
+    @Value("\${ki.real.app-key}")
+    lateinit var realAppKey : String
+    @Value("\${ki.real.app-secret}")
+    lateinit var realAppSecret : String
 
     private val log = LoggerFactory.getLogger(AccountController::class.java)
-    @PostMapping("")
-    suspend fun getApprovalKey(): ResponseEntity<ApprovalKeyResponseDto> {
+    @PostMapping("mock-approval")
+    suspend fun getMockApprovalKey(): ResponseEntity<ApprovalKeyResponseDto> {
         val traceId = LogUtil.generateTraceId()
         val userId = 1L
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", "요청 처리 시작")))
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/mock-approval", "요청 처리 시작")))
         val requestDto = KISApprovalRequestDto(
             grantType = "client_credentials",
-            appKey = appKey,
-            secretKey = appSecret)
+            appKey = mockAppKey,
+            secretKey = mockAppSecret)
         val result = accountService.getApprovalKey(requestDto)
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", LogUtil.toJson(result))))
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/mock-approval", LogUtil.toJson(result))))
         return ResponseEntity.ok(result)
     }
 
-    @PostMapping("/token")
-    suspend fun getAccessToken(): ResponseEntity<AccessTokenAPIResponseDto> {
+    @PostMapping("real-approval")
+    suspend fun getRealApprovalKey(): ResponseEntity<ApprovalKeyResponseDto> {
         val traceId = LogUtil.generateTraceId()
         val userId = 1L
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 시작")))
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/real-approval", "요청 처리 시작")))
+        val requestDto = KISApprovalRequestDto(
+                grantType = "client_credentials",
+                appKey = realAppKey,
+                secretKey = realAppSecret)
+        val result = accountService.getApprovalKey(requestDto)
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/real-approval", LogUtil.toJson(result))))
+        return ResponseEntity.ok(result)
+    }
+
+    @PostMapping("/mock-token")
+    suspend fun getMockAccessToken(): ResponseEntity<AccessTokenAPIResponseDto> {
+        val traceId = LogUtil.generateTraceId()
+        val userId = 1L
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/mock-token", "요청 처리 시작")))
         val requestDto = KISTokenRequestDto(
             grantType = "client_credentials",
-            appKey = appKey,
-            appSecret = appSecret)
-        val result = accountService.getAccessToken(requestDto)
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 종료")))
+            appKey = mockAppKey,
+            appSecret = mockAppSecret)
+        val result = accountService.getMockAccessToken(requestDto)
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/mock-token", "요청 처리 종료")))
+
+        return ResponseEntity.ok(result)
+    }
+
+    @PostMapping("/real-token")
+    suspend fun getRealAccessToken(): ResponseEntity<AccessTokenAPIResponseDto> {
+        val traceId = LogUtil.generateTraceId()
+        val userId = 1L
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/real-token", "요청 처리 시작")))
+        val requestDto = KISTokenRequestDto(
+                grantType = "client_credentials",
+                appKey = realAppKey,
+                appSecret = realAppSecret)
+        val result = accountService.getRealAccessToken(requestDto)
+        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/real-token", "요청 처리 종료")))
 
         return ResponseEntity.ok(result)
     }

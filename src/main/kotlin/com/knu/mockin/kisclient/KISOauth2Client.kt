@@ -10,7 +10,8 @@ import reactor.core.publisher.Mono
 
 @Component
 class KISOauth2Client(
-    private val webClientMock: WebClient
+    private val webClientMock: WebClient,
+    private val webClientReal: WebClient
 ) {
     fun postApproval(kisApprovalRequestDto: KISApprovalRequestDto): Mono<ApprovalKeyResponseDto>{
         return webClientMock
@@ -22,7 +23,7 @@ class KISOauth2Client(
             .bodyToMono(ApprovalKeyResponseDto::class.java)
     }
 
-    fun postTokenP(kisTokenRequestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto> {
+    fun postMockTokenP(kisTokenRequestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto> {
         return webClientMock
             .post()
             .uri("/oauth2/tokenP")
@@ -30,5 +31,15 @@ class KISOauth2Client(
             .bodyValue(kisTokenRequestDto)
             .retrieve()
             .bodyToMono(AccessTokenAPIResponseDto::class.java)
+    }
+
+    fun postRealTokenP(kisTokenRequestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto> {
+        return webClientReal
+                .post()
+                .uri("/oauth2/tokenP")
+                .header("Content-Type", "application/json;charset=UTF-8")
+                .bodyValue(kisTokenRequestDto)
+                .retrieve()
+                .bodyToMono(AccessTokenAPIResponseDto::class.java)
     }
 }
