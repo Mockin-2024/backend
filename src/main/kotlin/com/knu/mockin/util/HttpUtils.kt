@@ -1,10 +1,13 @@
 package com.knu.mockin.util
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisheader.response.KISOverSeaResponseHeaderDto
 import org.springframework.http.HttpHeaders
+import org.springframework.web.util.UriComponentsBuilder
+import kotlin.reflect.full.memberProperties
 
-object httpUtils {
+object HttpUtils {
     fun addHeaders(headers: HttpHeaders, headerDto: KISOverSeaRequestHeaderDto) {
         headers["content-type"] = headerDto.contentType
         headers["authorization"] = headerDto.authorization
@@ -29,5 +32,20 @@ object httpUtils {
             transactionContinuation = headers.getFirst("tr_cont") ?: "",
             globalUid = headers.getFirst("gt_uid") ?: ""
         )
+    }
+
+    fun <T : Any> buildUri(targetUrl: String, requestDto: T): String {
+        val uriBuilder = UriComponentsBuilder.fromUriString(targetUrl)
+        requestDto::class.memberProperties.forEach { prop ->
+            val jsonPropertyAnnotation = prop.annotations.filterIsInstance<JsonProperty>().firstOrNull()
+            println(prop)
+            println(jsonPropertyAnnotation)
+            jsonPropertyAnnotation?.let {
+                val value = prop.getter.call(requestDto)
+                uriBuilder.queryParam(it.value, value)
+            }
+        }
+
+        return uriBuilder.toUriString()
     }
 }
