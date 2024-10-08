@@ -1,4 +1,4 @@
-package com.knu.mockin.model.dto.kisrequest.order
+package com.knu.mockin.model.dto.kisrequest.trading
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
