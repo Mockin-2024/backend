@@ -20,15 +20,17 @@ class AccountServiceTest: BehaviorSpec({
     val accountService = AccountService(kisOauth2Client, userRepository)
 
     Given("get approval key test"){
+        val user = User(1, "test appKey", "test appSecret", "100", "")
         val requestDto = KISApprovalRequestDto(
             grantType = "client_credentials",
-            appKey = "test appKey",
-            secretKey = "test appSecret")
+            appKey = user.appKey,
+            secretKey = user.appSecret)
         val expectedDto = ApprovalKeyResponseDto("test")
         every { kisOauth2Client.postApproval(requestDto) } returns Mono.just(expectedDto)
+        every { userRepository.findById(1)} returns Mono.just(user)
 
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getApprovalKey(requestDto)
+            val result = accountService.getApprovalKey()
 
             Then("키가 반환된다"){
                 result shouldBe expectedDto
@@ -37,22 +39,23 @@ class AccountServiceTest: BehaviorSpec({
     }
 
     Given("get access token test"){
+        val user = User(1, "test appKey", "test appSecret", "100", "")
         val requestDto = KISTokenRequestDto(
             grantType = "client_credentials",
-            appKey = "test appKey",
-            appSecret = "test appSecret")
+            appKey = user.appKey,
+            appSecret = user.appSecret)
         val expectedDto = AccessTokenAPIResponseDto(
             "test",
             "Bearer",
             7776000,
             "2024-10-31")
-        val user = User(1, "test appKey", "test appSecret", "100", "")
+
         every { kisOauth2Client.postTokenP(requestDto) } returns Mono.just(expectedDto)
         every { userRepository.findById(1)} returns Mono.just(user)
         every { userRepository.save(user)} returns Mono.just(user)
 
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getAccessToken(requestDto)
+            val result = accountService.getAccessToken()
 
             Then("토큰이 반환된다"){
                 result shouldBe expectedDto

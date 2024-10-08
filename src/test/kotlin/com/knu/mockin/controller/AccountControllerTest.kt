@@ -8,7 +8,6 @@ import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.mockk.coEvery
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.ManualRestDocumentation
@@ -32,8 +31,6 @@ class AccountControllerTest(
     @MockkBean
     private val accountService:AccountService,
     private val webApplicationContext:WebApplicationContext,
-    @Value("\${ki.app-key}") var appKey: String,
-    @Value("\${ki.app-secret}") var appSecret: String
 ): StringSpec({
 
     lateinit var webTestClient: WebTestClient
@@ -53,12 +50,12 @@ class AccountControllerTest(
     "POST /account returns approvalKey" {
         val requestDto = KISApprovalRequestDto(
             grantType = "client_credentials",
-            appKey = appKey,
-            secretKey = appSecret)
+            appKey = "appKey",
+            secretKey = "appSecret")
         val expectedDto = ApprovalKeyResponseDto("test")
-        coEvery { accountService.getApprovalKey(requestDto) } returns expectedDto
+        coEvery { accountService.getApprovalKey() } returns expectedDto
 
-        val result = webTestClient.post().uri("/account").accept(APPLICATION_JSON)
+        val result = webTestClient.post().uri("/account/approval-key").accept(APPLICATION_JSON)
             .exchange()
             .expectStatus()
             .isOk()
