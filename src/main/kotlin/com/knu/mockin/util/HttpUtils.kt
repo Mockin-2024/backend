@@ -36,16 +36,21 @@ object HttpUtils {
 
     fun <T : Any> buildUri(targetUrl: String, requestDto: T): String {
         val uriBuilder = UriComponentsBuilder.fromUriString(targetUrl)
-        requestDto::class.memberProperties.forEach { prop ->
-            val jsonPropertyAnnotation = prop.annotations.filterIsInstance<JsonProperty>().firstOrNull()
-            println(prop)
-            println(jsonPropertyAnnotation)
-            jsonPropertyAnnotation?.let {
-                val value = prop.getter.call(requestDto)
-                uriBuilder.queryParam(it.value, value)
-            }
+        val properties = requestDto::class.memberProperties
+
+        requestDto::class.java.constructors[0].parameters.forEach { prop ->
+            val key = parseJsonProperty(prop.annotations[0].toString())
+            val value = properties.find { it.name == prop.name }
+            uriBuilder.queryParam(key, value?.call(requestDto))
         }
 
         return uriBuilder.toUriString()
+    }
+
+    private fun parseJsonProperty(input: String): String{
+        val startIndex = input.indexOf("value=\"") + "value=\"".length
+        val endIndex = input.indexOf("\"", startIndex)
+
+        return input.substring(startIndex, endIndex)
     }
 }
