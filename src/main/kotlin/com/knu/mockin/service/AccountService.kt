@@ -15,12 +15,21 @@ class AccountService(
     private val kisOauth2Client: KISOauth2Client,
     private val userRepository: UserRepository
 ) {
-    suspend fun getApprovalKey(requestDto: KISApprovalRequestDto): ApprovalKeyResponseDto {
+    suspend fun getApprovalKey(): ApprovalKeyResponseDto {
+        val user = userRepository.findById(1).awaitFirst()
+        val requestDto = KISApprovalRequestDto(
+            grantType = "client_credentials",
+            appKey = user.appKey,
+            secretKey = user.appSecret)
         return kisOauth2Client.postApproval(requestDto).awaitSingle()
     }
 
-    suspend fun getAccessToken(requestDto: KISTokenRequestDto): AccessTokenAPIResponseDto {
+    suspend fun getAccessToken(): AccessTokenAPIResponseDto {
         val user = userRepository.findById(1).awaitFirst() // Mono<User>를 awaitFirst()로 변환
+        val requestDto = KISTokenRequestDto(
+            grantType = "client_credentials",
+            appKey = user.appKey,
+            appSecret = user.appSecret)
         val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle() // Mono<AccessTokenAPIResponseDto>를 awaitSingle()로 변환
 
         user.token = dto.accessToken
