@@ -9,7 +9,7 @@ name: Deploy master branch
 
 on:
   push:
-    branches: [ "master", "cd/issue-#18" ]
+    branches: [ "master" ]
 
 
 jobs:
