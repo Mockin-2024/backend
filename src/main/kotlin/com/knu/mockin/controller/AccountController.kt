@@ -24,32 +24,23 @@ class AccountController(
     @Value("\${ki.app-secret}")
     lateinit var appSecret: String
 
-    private val log = LoggerFactory.getLogger(AccountController::class.java)
     @PostMapping("")
     suspend fun getApprovalKey(): ResponseEntity<ApprovalKeyResponseDto> {
-        val traceId = LogUtil.generateTraceId()
-        val userId = 1L
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", "요청 처리 시작")))
         val requestDto = KISApprovalRequestDto(
             grantType = "client_credentials",
             appKey = appKey,
             secretKey = appSecret)
         val result = accountService.getApprovalKey(requestDto)
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account", LogUtil.toJson(result))))
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/token")
     suspend fun getAccessToken(): ResponseEntity<AccessTokenAPIResponseDto> {
-        val traceId = LogUtil.generateTraceId()
-        val userId = 1L
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 시작")))
         val requestDto = KISTokenRequestDto(
             grantType = "client_credentials",
             appKey = appKey,
             appSecret = appSecret)
         val result = accountService.getAccessToken(requestDto)
-        log.info("{}", LogUtil.toJson(LogEntry(traceId, userId, "/account/token", "요청 처리 종료")))
 
         return ResponseEntity.ok(result)
     }
