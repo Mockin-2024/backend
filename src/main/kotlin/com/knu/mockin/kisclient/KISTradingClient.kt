@@ -1,11 +1,12 @@
 package com.knu.mockin.kisclient
 
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISBalanceRequestDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISOrderRequestDto
+import com.knu.mockin.model.dto.kisrequest.trading.KISBalanceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.trading.KISOrderRequestBodyDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
-import com.knu.mockin.util.httpUtils.addHeaders
+import com.knu.mockin.util.HttpUtils.addHeaders
+import com.knu.mockin.util.HttpUtils.buildUri
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.util.UriComponentsBuilder
@@ -19,30 +20,24 @@ class KISTradingClient(
 
     fun postOrder(
         kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisOrderRequestDto: KISOrderRequestDto
+        kisOrderRequestBodyDto: KISOrderRequestBodyDto
     ): Mono<KISOrderResponseDto> {
         return webClientMock.post()
             .uri("${tradingUrl}/order")
             .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .bodyValue(kisOrderRequestDto)
+            .bodyValue(kisOrderRequestBodyDto)
             .retrieve()
             .bodyToMono(KISOrderResponseDto::class.java)
     }
 
     fun getBalance(
         kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisBalanceRequestDto: KISBalanceRequestDto
+        kisBalanceRequestParameterDto: KISBalanceRequestParameterDto
     ): Mono<KISBalanceResponseDto>{
-        val uriBuilder = UriComponentsBuilder.fromUriString("${tradingUrl}/inquire-balance")
-            .queryParam("CANO", kisBalanceRequestDto.accountNumber)
-            .queryParam("ACNT_PRDT_CD", kisBalanceRequestDto.accountProductCode)
-            .queryParam("OVRS_EXCG_CD", kisBalanceRequestDto.overseasExchangeCode)
-            .queryParam("TR_CRCY_CD", kisBalanceRequestDto.transactionCurrencyCode)
-            .queryParam("CTX_AREA_FK200", kisBalanceRequestDto.continuousSearchCondition200)
-            .queryParam("CTX_AREA_NK200", kisBalanceRequestDto.continuousSearchKey200)
+        val targetUri = buildUri("${tradingUrl}/inquire-balance", kisBalanceRequestParameterDto)
 
         return webClientMock.get()
-            .uri(uriBuilder.build().toUriString())
+            .uri(targetUri)
             .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
             .retrieve()
             .bodyToMono(KISBalanceResponseDto::class.java)

@@ -1,10 +1,13 @@
 package com.knu.mockin.util
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisheader.response.KISOverSeaResponseHeaderDto
 import org.springframework.http.HttpHeaders
+import org.springframework.web.util.UriComponentsBuilder
+import kotlin.reflect.full.memberProperties
 
-object httpUtils {
+object HttpUtils {
     fun addHeaders(headers: HttpHeaders, headerDto: KISOverSeaRequestHeaderDto) {
         headers["content-type"] = headerDto.contentType
         headers["authorization"] = headerDto.authorization
@@ -29,5 +32,25 @@ object httpUtils {
             transactionContinuation = headers.getFirst("tr_cont") ?: "",
             globalUid = headers.getFirst("gt_uid") ?: ""
         )
+    }
+
+    fun <T : Any> buildUri(targetUrl: String, requestDto: T): String {
+        val uriBuilder = UriComponentsBuilder.fromUriString(targetUrl)
+        val properties = requestDto::class.memberProperties
+
+        requestDto::class.java.constructors[0].parameters.forEach { prop ->
+            val key = parseJsonProperty(prop.annotations[0].toString())
+            val value = properties.find { it.name == prop.name }
+            uriBuilder.queryParam(key, value?.call(requestDto))
+        }
+
+        return uriBuilder.toUriString()
+    }
+
+    private fun parseJsonProperty(input: String): String{
+        val startIndex = input.indexOf("value=\"") + "value=\"".length
+        val endIndex = input.indexOf("\"", startIndex)
+
+        return input.substring(startIndex, endIndex)
     }
 }

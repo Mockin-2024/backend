@@ -2,8 +2,8 @@ package com.knu.mockin.service
 
 import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISBalanceRequestDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISOrderRequestDto
+import com.knu.mockin.model.dto.kisrequest.trading.KISBalanceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.trading.KISOrderRequestBodyDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.enum.ExchangeCode
@@ -27,7 +27,7 @@ class TradingService(
             appSecret = user.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.SHENZHEN_BUY)
         )
-        val kisOrderRequestDto = KISOrderRequestDto(
+        val kisOrderRequestBodyDto = KISOrderRequestBodyDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
             overseasExchangeCode = ExchangeCode.SZAA.name,
@@ -36,7 +36,7 @@ class TradingService(
             overseasOrderUnitPrice = "0",
         )
         return kisTradingClient
-            .postOrder(kisOverSeaRequestHeaderDto, kisOrderRequestDto)
+            .postOrder(kisOverSeaRequestHeaderDto, kisOrderRequestBodyDto)
             .awaitSingle()
     }
 
@@ -48,7 +48,7 @@ class TradingService(
             appSecret = user.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE)
         )
-        val kisBalanceRequestDto = KISBalanceRequestDto(
+        val kisBalanceRequestParameterDto = KISBalanceRequestParameterDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
             overseasExchangeCode = ExchangeCode.SHAA.name,
@@ -57,7 +57,7 @@ class TradingService(
             continuousSearchKey200 = ""
         )
         return kisTradingClient
-            .getBalance(kisOverSeaRequestHeaderDto, kisBalanceRequestDto)
+            .getBalance(kisOverSeaRequestHeaderDto, kisBalanceRequestParameterDto)
             .awaitSingle()
     }
 }
