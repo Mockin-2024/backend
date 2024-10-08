@@ -6,10 +6,10 @@ data class KISBalanceResponseDto (
     @JsonProperty("rt_cd") val successFailure: String,  // 성공 실패 여부 (1자리)
     @JsonProperty("msg_cd") val responseCode: String,   // 응답코드 (8자리)
     @JsonProperty("msg1") val responseMessage: String,  // 응답메세지 (80자리)
-    @JsonProperty("ctx_area_fk200") val continuousSearchCondition200: String, // 연속조회검색조건200 (200자리)
-    @JsonProperty("ctx_area_nk200") val continuousSearchKey200: String, // 연속조회키200 (200자리)
-    @JsonProperty("output1") val output1: List<Output1>,                // 응답상세1
-    @JsonProperty("output2") val output2: Output2                       // 응답상세2
+    @JsonProperty("ctx_area_fk200") val continuousSearchCondition200: String = "0", // 연속조회검색조건200 (200자리)
+    @JsonProperty("ctx_area_nk200") val continuousSearchKey200: String = "0", // 연속조회키200 (200자리)
+    @JsonProperty("output1") val output1: List<Output1>?,                // 응답상세1
+    @JsonProperty("output2") val output2: Output2?                       // 응답상세2
 )
 
 data class Output1(
