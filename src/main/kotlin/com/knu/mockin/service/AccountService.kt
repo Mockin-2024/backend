@@ -25,16 +25,16 @@ class AccountService(
     }
 
     suspend fun getAccessToken(): AccessTokenAPIResponseDto {
-        val user = userRepository.findById(1).awaitFirst() // Mono<User>를 awaitFirst()로 변환
+        val user = userRepository.findById(1).awaitFirst()
         val requestDto = KISTokenRequestDto(
             grantType = "client_credentials",
             appKey = user.appKey,
             appSecret = user.appSecret)
-        val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle() // Mono<AccessTokenAPIResponseDto>를 awaitSingle()로 변환
+        val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle()
 
         user.token = dto.accessToken
-        userRepository.save(user).awaitSingle() // 사용자 저장 후 완료 대기
+        userRepository.save(user).awaitSingle()
 
-        return dto // 결과 반환
+        return dto
     }
 }
