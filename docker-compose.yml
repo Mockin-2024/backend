@@ -1,0 +1,7 @@
+version: '3'
+services:
+  backend:
+    image: ${DOCKER_USERNAME}/${DOCKER_IMAGE}
+    container_name: ${DOCKER_IMAGE}
+    ports:
+      - "8080:8080"
