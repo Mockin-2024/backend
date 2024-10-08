@@ -5,7 +5,7 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Test master branch
+name: Test before Pull Request
 
 on:
   pull_request:
@@ -28,13 +28,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-      # set up .env file
-#    - name: Create .env
-#      run: |
-#        touch ./.env
-#        echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> ./.env
-#        echo "DOCKER_IMAGE=${{ secrets.DOCKER_IMAGE }}" >> ./.env
-
       # set up application file
     - name: Create application file
       run: |
@@ -42,7 +35,6 @@ jobs:
         cd ./src/main/resources
         echo "${{ secrets.APPLICATION }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_LOGGING }}" >> ./application.properties
-        echo "${{ secrets.APPLICATION_KI_API }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_SQL }}" >> ./application.properties
         
       # set up mysql
@@ -71,4 +63,3 @@ jobs:
       run: |
         chmod +x ./gradlew
         ./gradlew clean build
-        

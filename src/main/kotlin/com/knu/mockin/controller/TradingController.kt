@@ -1,11 +1,8 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.logging.model.LogEntry
-import com.knu.mockin.logging.utils.LogUtil
 import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.service.TradingService
-import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
