@@ -1,7 +1,6 @@
 package com.knu.mockin.model.dto.kisresponse.basicprice.conditionsearch
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseOutputDto
 
 data class KISConditionSearchResponseBodyDto  (
         @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부

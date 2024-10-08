@@ -1,9 +1,8 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.kisclient.KISOverSeaClient
+import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basicprice.exchangeprice.KISExchangePriceRequestParameter
-import com.knu.mockin.model.dto.kisrequest.basicprice.termprice.KISTermPriceRequestParameter
 import com.knu.mockin.model.dto.kisresponse.basicprice.exchangeprice.KISExchangePriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
@@ -12,7 +11,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class ExchangePriceService (
-        private val kisOverSeaClient: KISOverSeaClient,
+        private val kisTradingClient: KISTradingClient,
         private val userRepository: UserRepository
 ) {
     fun getExchangePrice(): Mono<KISExchangePriceResponseDto> {
@@ -33,7 +32,7 @@ class ExchangePriceService (
                     fidInputIscd = ".DJI",
                     fidPeriodDivCode = "D"
             )
-            kisOverSeaClient.getExchangePrice(kisOverSeaRequestHeaderDto, requestParameter)
+            kisTradingClient.getExchangePrice(kisOverSeaRequestHeaderDto, requestParameter)
         }
     }
 }

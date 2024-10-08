@@ -1,6 +1,6 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.kisclient.KISOverSeaClient
+import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basicprice.conditionsearch.KISConditionSearchRequestParameter
 import com.knu.mockin.model.dto.kisresponse.basicprice.conditionsearch.KISConditionSearchResponseDto
@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class ConditionSearchService (
-        private val kisOverSeaClient: KISOverSeaClient,
+        private val kisTradingClient: KISTradingClient,
         private val userRepository: UserRepository
 ) {
     fun getConditionSearch(): Mono<KISConditionSearchResponseDto> {
@@ -55,7 +55,7 @@ class ConditionSearchService (
                     KEYB = ""
             )
 
-            kisOverSeaClient.getConditionSearch(kisOverSeaRequestHeaderDto, requestParameter)
+            kisTradingClient.getConditionSearch(kisOverSeaRequestHeaderDto, requestParameter)
         }
     }
 }

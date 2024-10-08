@@ -1,7 +1,7 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.kisresponse.basicprice.conditionsearch.KISConditionSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseBodyDto
 import com.knu.mockin.model.dto.kisresponse.basicprice.exchangeprice.KISExchangePriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basicprice.termprice.KISTermPriceResponseDto
 import com.knu.mockin.service.ConditionSearchService
@@ -24,10 +24,10 @@ class BasicPriceController (
 ){
 
     @GetMapping("/current")
-    fun getCurrentPrice(): Mono<ResponseEntity<KISCurrentPriceResponseDto>> {
-        return currentPriceService.getCurrentPrice().map {
-            dto -> ResponseEntity.ok(dto)
-        }
+    suspend fun getCurrentPrice(): ResponseEntity<KISCurrentPriceResponseBodyDto> {
+        val result = currentPriceService.getCurrentPrice()
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/term")

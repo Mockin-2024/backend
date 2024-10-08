@@ -1,10 +1,8 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.kisclient.KISOverSeaClient
+import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basicprice.currentprice.KISCurrentPriceRequestParameter
 import com.knu.mockin.model.dto.kisrequest.basicprice.termprice.KISTermPriceRequestParameter
-import com.knu.mockin.model.dto.kisresponse.basicprice.currentprice.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basicprice.termprice.KISTermPriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
@@ -13,7 +11,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class TermPriceService (
-        private val kisOverSeaClient: KISOverSeaClient,
+        private val kisTradingClient: KISTradingClient,
         private val userRepository: UserRepository
 ) {
     fun getTermPrice(): Mono<KISTermPriceResponseDto> {
@@ -38,7 +36,7 @@ class TermPriceService (
             )
 
             // KIS API 호출
-            kisOverSeaClient.getTermPrice(kisOverSeaRequestHeaderDto, requestParameter)
+            kisTradingClient.getTermPrice(kisOverSeaRequestHeaderDto, requestParameter)
         }
     }
 }
