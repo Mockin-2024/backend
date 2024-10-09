@@ -1,6 +1,7 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
+import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.service.TradingService
 import org.springframework.http.ResponseEntity
@@ -17,6 +18,13 @@ class TradingController(
     @PostMapping("/order")
     suspend fun order(): ResponseEntity<KISOrderResponseDto>{
         val result = tradingService.postOrder()
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/nccs")
+    suspend fun getNCCS(): ResponseEntity<KISNCCSResponseDto>{
+        val result = tradingService.getNCCS()
 
         return ResponseEntity.ok(result)
     }

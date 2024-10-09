@@ -21,10 +21,14 @@ enum class TradeId(val tradeId:String) {
     VIETNAM_CANCEL("VTTS0312U"),  // 베트남 정정 취소 주문
     INQUIRE_BALANCE("VTTS3012R"), // 잔고 조회
 
+
     CURRENT_PRICE("HHDFS00000300"),  // 해외주식 현재체결가
     TERM_PRICE("HHDFS76240000"),     // 해외주식 기간별시세
     EXCHANGE_PRICE("FHKST03030100"),  // 해외주식 종목/지수/환율 기간별 시세
     CONDITION_PRICE("HHDFS76410000");  // 해외주식 조건검색
+
+    INQUIRE_NCCS("VTTS3018R");    // 미체결내역 조회
+
     companion object {
         fun getTradeIdByEnum(enum: TradeId): String {
             return enum.tradeId
