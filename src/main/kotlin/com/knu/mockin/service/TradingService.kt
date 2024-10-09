@@ -11,6 +11,7 @@ import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISPsAmountResponseDto
 import com.knu.mockin.model.dto.request.trading.OrderRequestDto
+import com.knu.mockin.model.dto.request.trading.PsAmountRequestDto
 import com.knu.mockin.model.enum.ExchangeCode
 import com.knu.mockin.model.enum.TradeCurrencyCode
 import com.knu.mockin.model.enum.TradeId
@@ -89,7 +90,7 @@ class TradingService(
             .awaitSingle()
     }
 
-    suspend fun getPsAmount(): KISPsAmountResponseDto{
+    suspend fun getPsAmount(psAmountRequestDto: PsAmountRequestDto): KISPsAmountResponseDto{
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
@@ -100,9 +101,9 @@ class TradingService(
         val kisPsAmountRequestParameterDto = KISPsAmountRequestParameterDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = ExchangeCode.SZAA.name,
-            overseasOrderUnitPrice = "100.00",
-            itemCode = "1380"
+            overseasExchangeCode = psAmountRequestDto.overseasExchangeCode,
+            overseasOrderUnitPrice = psAmountRequestDto.overseasOrderUnitPrice,
+            itemCode = psAmountRequestDto.itemCode
         )
         return kisTradingClient
             .getPsAmount(kisOverSeaRequestHeaderDto, kisPsAmountRequestParameterDto)

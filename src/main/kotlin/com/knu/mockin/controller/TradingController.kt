@@ -5,9 +5,11 @@ import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISPsAmountResponseDto
 import com.knu.mockin.model.dto.request.trading.OrderRequestDto
+import com.knu.mockin.model.dto.request.trading.PsAmountRequestDto
 import com.knu.mockin.service.TradingService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -42,8 +44,10 @@ class TradingController(
     }
 
     @GetMapping("/psamount")
-    suspend fun getPsAmount(): ResponseEntity<KISPsAmountResponseDto> {
-        val result = tradingService.getPsAmount()
+    suspend fun getPsAmount(
+        @ModelAttribute psAmountRequestDto: PsAmountRequestDto
+    ): ResponseEntity<KISPsAmountResponseDto> {
+        val result = tradingService.getPsAmount(psAmountRequestDto)
 
         return ResponseEntity.ok(result)
     }
