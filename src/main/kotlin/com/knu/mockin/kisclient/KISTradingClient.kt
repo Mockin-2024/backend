@@ -4,9 +4,11 @@ import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.trading.KISBalanceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.trading.KISNCCSRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.trading.KISOrderRequestBodyDto
+import com.knu.mockin.model.dto.kisrequest.trading.KISPsAmountRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
+import com.knu.mockin.model.dto.kisresponse.trading.KISPsAmountResponseDto
 import com.knu.mockin.util.HttpUtils.addHeaders
 import com.knu.mockin.util.HttpUtils.buildUri
 import org.springframework.stereotype.Component
@@ -57,5 +59,18 @@ class KISTradingClient(
             .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
             .retrieve()
             .bodyToMono(KISBalanceResponseDto::class.java)
+    }
+
+    fun getPsAmount(
+        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
+        kisPsAmountRequestParameterDto: KISPsAmountRequestParameterDto
+    ): Mono<KISPsAmountResponseDto>{
+        val targetUri = buildUri("${tradingUrl}/inquire-psamount", kisPsAmountRequestParameterDto)
+
+        return webClientMock.get()
+            .uri(targetUri)
+            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
+            .retrieve()
+            .bodyToMono(KISPsAmountResponseDto::class.java)
     }
 }
