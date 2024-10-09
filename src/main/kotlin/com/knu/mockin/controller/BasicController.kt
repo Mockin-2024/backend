@@ -25,6 +25,6 @@ class BasicController (
     suspend fun getTermPrice(): ResponseEntity<KISTermPriceResponseDto> {
         val result = basicService.getTermPrice()
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(result)
     }
 }
