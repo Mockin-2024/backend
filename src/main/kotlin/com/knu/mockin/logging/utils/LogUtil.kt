@@ -3,7 +3,7 @@ package com.knu.mockin.logging.utils
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.util.UUID
 object LogUtil {
-    val objectMapper = jacksonObjectMapper()
+    private val objectMapper = jacksonObjectMapper()
 
     fun generateTraceId(): String {
         return UUID.randomUUID().toString()
