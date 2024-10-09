@@ -3,7 +3,9 @@ package com.knu.mockin.kisclient
 import com.knu.mockin.logging.utils.LogUtil
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISCurrentPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.KISTermPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
 import com.knu.mockin.util.HttpUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -32,4 +34,26 @@ class KISBasicClient (
                 .retrieve()
                 .bodyToMono(KISCurrentPriceResponseDto::class.java)
     }
+
+    fun getTermPrice(
+            header: KISOverSeaRequestHeaderDto,
+            requestParameter: KISTermPriceRequestParameterDto
+    ) : Mono<KISTermPriceResponseDto> {
+        return webClientMock.get()
+                .uri{ UriBuilder ->
+                    UriBuilder.path("${quotationUrl}/dailyprice")
+                            .queryParam("AUTH", requestParameter.AUTH)
+                            .queryParam("EXCD", requestParameter.EXCD)
+                            .queryParam("SYMB", requestParameter.SYMB)
+                            .queryParam("GUBN", requestParameter.GUBN)
+                            .queryParam("BYMD", requestParameter.BYMD)
+                            .queryParam("MODP", requestParameter.MODP)
+                            .build()
+                }
+                .headers { HttpUtils.addHeaders(it, header) }
+                .retrieve()
+                .bodyToMono(KISTermPriceResponseDto::class.java)
+    }
+
+
 }
