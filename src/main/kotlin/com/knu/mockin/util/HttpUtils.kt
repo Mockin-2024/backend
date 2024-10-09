@@ -1,6 +1,5 @@
 package com.knu.mockin.util
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisheader.response.KISOverSeaResponseHeaderDto
 import org.springframework.http.HttpHeaders
