@@ -3,6 +3,7 @@ package com.knu.mockin.controller
 import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
+import com.knu.mockin.model.dto.kisresponse.trading.KISPsAmountResponseDto
 import com.knu.mockin.service.TradingService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -32,6 +33,13 @@ class TradingController(
     @GetMapping("/balance")
     suspend fun inquireBalance(): ResponseEntity<KISBalanceResponseDto> {
         val result = tradingService.getBalance()
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/psamount")
+    suspend fun getPsAmount(): ResponseEntity<KISPsAmountResponseDto> {
+        val result = tradingService.getPsAmount()
 
         return ResponseEntity.ok(result)
     }
