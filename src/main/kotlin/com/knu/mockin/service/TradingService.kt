@@ -10,6 +10,7 @@ import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISPsAmountResponseDto
+import com.knu.mockin.model.dto.request.trading.OrderRequestDto
 import com.knu.mockin.model.enum.ExchangeCode
 import com.knu.mockin.model.enum.TradeCurrencyCode
 import com.knu.mockin.model.enum.TradeId
@@ -23,21 +24,23 @@ class TradingService(
     private val kisTradingClient: KISTradingClient,
     private val userRepository: UserRepository
 ) {
-    suspend fun postOrder(): KISOrderResponseDto {
+    suspend fun postOrder(
+        orderRequestDto: OrderRequestDto
+    ):KISOrderResponseDto {
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
             appKey = user.appKey,
             appSecret = user.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(TradeId.SHENZHEN_BUY)
+            transactionId = orderRequestDto.transactionId
         )
         val kisOrderRequestBodyDto = KISOrderRequestBodyDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = ExchangeCode.SZAA.name,
-            productNumber = "1380",
-            orderQuantity = "1",
-            overseasOrderUnitPrice = "0",
+            overseasExchangeCode = orderRequestDto.overseasExchangeCode,
+            productNumber = orderRequestDto.productNumber,
+            orderQuantity = orderRequestDto.orderQuantity,
+            overseasOrderUnitPrice = orderRequestDto.overseasOrderUnitPrice
         )
         return kisTradingClient
             .postOrder(kisOverSeaRequestHeaderDto, kisOrderRequestBodyDto)
