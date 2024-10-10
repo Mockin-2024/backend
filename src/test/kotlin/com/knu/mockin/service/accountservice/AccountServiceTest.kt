@@ -9,6 +9,8 @@ import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.entity.MockKey
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.MockKeyRepository
+import com.knu.mockin.repository.RealKeyRepository
+import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.AccountService
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -19,7 +21,14 @@ import reactor.core.publisher.Mono
 class AccountServiceTest: BehaviorSpec({
     val kisOauth2Client: KISOauth2Client = mockk<KISOauth2Client>()
     val mockKeyRepository: MockKeyRepository = mockk()
-    val accountService = AccountService(kisOauth2Client, mockKeyRepository)
+    val userRepository: UserRepository = mockk()
+    val realKeyRepository: RealKeyRepository = mockk()
+    val accountService = AccountService(
+        kisOauth2Client = kisOauth2Client,
+        mockKeyRepository = mockKeyRepository,
+        realKeyRepository = realKeyRepository,
+        userRepository = userRepository
+        )
 
     Given("get approval key test"){
         val mockKey = MockKey("test", "test appKey", "test appSecret")
