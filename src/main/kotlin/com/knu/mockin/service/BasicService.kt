@@ -4,9 +4,11 @@ import com.knu.mockin.kisclient.KISBasicClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISCurrentPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISDailyChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.KISSearchRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISTermPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
@@ -90,6 +92,50 @@ class BasicService (
 
     }
 
+    suspend fun getSearch(): KISSearchResponseDto {
+        val user = userRepository.findById(1).awaitFirst()
 
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+                authorization = "Bearer ${user.token}",
+                appKey = user.appKey,
+                appSecret = user.appSecret,
+                transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE)
+        )
+
+
+        val requestParameter = KISSearchRequestParameterDto(
+                AUTH = "",
+                EXCD = "NAS",
+                coYnPricecur = "1",
+                coStPricecur = "160",
+                coEnPricecur = "161",
+                coYnRate = "",
+                coStRate = "",
+                coEnRate = "",
+                coYnValx = "",
+                coStValx = "",
+                coEnValx = "",
+                coYnShar = "",
+                coStShar = "",
+                coEnShar = "",
+                coYnVolume = "",
+                coStVolume = "",
+                coEnVolume = "",
+                coYnAmt = "",
+                coStAmt = "",
+                coEnAmt = "",
+                coYnEps = "",
+                coStEps = "",
+                coEnEps = "",
+                coYnPer = "",
+                coStPer = "",
+                coEnPer = "",
+                KEYB = ""
+        )
+
+
+        return kisBasicClient.getSearch(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+
+    }
 
 }
