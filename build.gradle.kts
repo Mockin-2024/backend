@@ -62,6 +62,8 @@ dependencies {
 
     // Spring AOP
     implementation("org.springframework.boot:spring-boot-starter-aop")
+
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 }
 
 kotlin {
