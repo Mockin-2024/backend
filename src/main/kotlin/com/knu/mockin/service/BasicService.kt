@@ -75,7 +75,7 @@ class BasicService (
                 authorization = "Bearer ${user.token}",
                 appKey = user.appKey,
                 appSecret = user.appSecret,
-                transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE)
+                transactionId = TradeId.getTradeIdByEnum(TradeId.DAILY_CHART_PRICE)
         )
 
 
@@ -99,7 +99,7 @@ class BasicService (
                 authorization = "Bearer ${user.token}",
                 appKey = user.appKey,
                 appSecret = user.appSecret,
-                transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE)
+                transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH)
         )
 
 
