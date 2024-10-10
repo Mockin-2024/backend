@@ -1,14 +1,14 @@
 package com.knu.mockin.kisclient
 
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISCurrentPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISDailyChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISSearchRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISTermPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.kisrequest.basic.mock.KISCurrentPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.mock.KISDailyChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.mock.KISSearchRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.mock.KISTermPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISDailyChartPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISSearchResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISTermPriceResponseDto
 import com.knu.mockin.util.HttpUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
