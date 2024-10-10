@@ -12,18 +12,15 @@ class TokenService(
 
     private val expiration = Duration.ofDays(1)
 
-    // token 저장
     fun saveToken(email: String, token: String) {
         redisTemplate.opsForValue().set(email, token, expiration)
     }
 
-    // token 조회
     @Cacheable("token")
     fun getToken(email: String): String? {
         return redisTemplate.opsForValue().get(email)
     }
 
-    // token 삭제
     fun removeToken(email: String) {
         redisTemplate.delete(email)
     }
