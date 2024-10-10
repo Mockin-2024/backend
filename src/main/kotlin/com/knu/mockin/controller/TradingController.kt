@@ -1,11 +1,10 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISPsAmountResponseDto
-import com.knu.mockin.model.dto.request.trading.OrderRequestDto
-import com.knu.mockin.model.dto.request.trading.PsAmountRequestDto
+import com.knu.mockin.model.dto.kisresponse.trading.*
+import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
+import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
+import com.knu.mockin.model.dto.request.trading.PresentBalanceRequestParameterDto
+import com.knu.mockin.model.dto.request.trading.PsAmountRequestParameterDto
 import com.knu.mockin.service.TradingService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,16 +21,18 @@ class TradingController(
 ) {
     @PostMapping("/order")
     suspend fun postOrder(
-        @RequestBody orderRequestDto: OrderRequestDto
+        @RequestBody orderRequestBodyDto: OrderRequestBodyDto
     ): ResponseEntity<KISOrderResponseDto>{
-        val result = tradingService.postOrder(orderRequestDto)
+        val result = tradingService.postOrder(orderRequestBodyDto)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/nccs")
-    suspend fun getNCCS(): ResponseEntity<KISNCCSResponseDto>{
-        val result = tradingService.getNCCS()
+    suspend fun getNCCS(
+        @ModelAttribute nccsRequestParameterDto: NCCSRequestParameterDto
+    ): ResponseEntity<KISNCCSResponseDto>{
+        val result = tradingService.getNCCS(nccsRequestParameterDto)
 
         return ResponseEntity.ok(result)
     }
@@ -45,9 +46,18 @@ class TradingController(
 
     @GetMapping("/psamount")
     suspend fun getPsAmount(
-        @ModelAttribute psAmountRequestDto: PsAmountRequestDto
+        @ModelAttribute psAmountRequestParameterDto: PsAmountRequestParameterDto
     ): ResponseEntity<KISPsAmountResponseDto> {
-        val result = tradingService.getPsAmount(psAmountRequestDto)
+        val result = tradingService.getPsAmount(psAmountRequestParameterDto)
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/present-balance")
+    suspend fun getPresentBalance(
+        @ModelAttribute presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto
+    ): ResponseEntity<KISPresentBalanceResponseDto> {
+        val result = tradingService.getPresentBalance(presentBalanceRequestParameterDto)
 
         return ResponseEntity.ok(result)
     }

@@ -1,6 +1,6 @@
 package com.knu.mockin.model.dto.request.trading
 
-data class OrderRequestDto(
+data class OrderRequestBodyDto(
     val transactionId: String,          // 요청 종류
     val overseasExchangeCode: String,   // 해외거래소코드
     val productNumber: String,          // 상품번호

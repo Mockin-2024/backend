@@ -2,16 +2,12 @@ package com.knu.mockin.service
 
 import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISBalanceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISNCCSRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISOrderRequestBodyDto
-import com.knu.mockin.model.dto.kisrequest.trading.KISPsAmountRequestParameterDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISPsAmountResponseDto
-import com.knu.mockin.model.dto.request.trading.OrderRequestDto
-import com.knu.mockin.model.dto.request.trading.PsAmountRequestDto
+import com.knu.mockin.model.dto.kisrequest.trading.*
+import com.knu.mockin.model.dto.kisresponse.trading.*
+import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
+import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
+import com.knu.mockin.model.dto.request.trading.PresentBalanceRequestParameterDto
+import com.knu.mockin.model.dto.request.trading.PsAmountRequestParameterDto
 import com.knu.mockin.model.enum.ExchangeCode
 import com.knu.mockin.model.enum.TradeCurrencyCode
 import com.knu.mockin.model.enum.TradeId
@@ -26,29 +22,31 @@ class TradingService(
     private val userRepository: UserRepository
 ) {
     suspend fun postOrder(
-        orderRequestDto: OrderRequestDto
+        orderRequestBodyDto: OrderRequestBodyDto
     ):KISOrderResponseDto {
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
             appKey = user.appKey,
             appSecret = user.appSecret,
-            transactionId = orderRequestDto.transactionId
+            transactionId = orderRequestBodyDto.transactionId
         )
         val kisOrderRequestBodyDto = KISOrderRequestBodyDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = orderRequestDto.overseasExchangeCode,
-            productNumber = orderRequestDto.productNumber,
-            orderQuantity = orderRequestDto.orderQuantity,
-            overseasOrderUnitPrice = orderRequestDto.overseasOrderUnitPrice
+            overseasExchangeCode = orderRequestBodyDto.overseasExchangeCode,
+            productNumber = orderRequestBodyDto.productNumber,
+            orderQuantity = orderRequestBodyDto.orderQuantity,
+            overseasOrderUnitPrice = orderRequestBodyDto.overseasOrderUnitPrice
         )
         return kisTradingClient
             .postOrder(kisOverSeaRequestHeaderDto, kisOrderRequestBodyDto)
             .awaitSingle()
     }
 
-    suspend fun getNCCS(): KISNCCSResponseDto{
+    suspend fun getNCCS(
+        nccsRequestParameterDto: NCCSRequestParameterDto
+    ): KISNCCSResponseDto{
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
@@ -59,10 +57,10 @@ class TradingService(
         val kisnccsRequestParameterDto = KISNCCSRequestParameterDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = ExchangeCode.SHAA.name,
-            sortOrder = "DS",
-            continuousSearchCondition200 = "",
-            continuousSearchKey200 = ""
+            overseasExchangeCode = nccsRequestParameterDto.overseasExchangeCode,
+            sortOrder = nccsRequestParameterDto.sortOrder,
+            continuousSearchCondition200 = nccsRequestParameterDto.continuousSearchCondition200,
+            continuousSearchKey200 = nccsRequestParameterDto.continuousSearchKey200
         )
 
         return kisTradingClient
@@ -90,7 +88,9 @@ class TradingService(
             .awaitSingle()
     }
 
-    suspend fun getPsAmount(psAmountRequestDto: PsAmountRequestDto): KISPsAmountResponseDto{
+    suspend fun getPsAmount(
+        psAmountRequestParameterDto: PsAmountRequestParameterDto
+    ): KISPsAmountResponseDto{
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
@@ -101,12 +101,35 @@ class TradingService(
         val kisPsAmountRequestParameterDto = KISPsAmountRequestParameterDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = psAmountRequestDto.overseasExchangeCode,
-            overseasOrderUnitPrice = psAmountRequestDto.overseasOrderUnitPrice,
-            itemCode = psAmountRequestDto.itemCode
+            overseasExchangeCode = psAmountRequestParameterDto.overseasExchangeCode,
+            overseasOrderUnitPrice = psAmountRequestParameterDto.overseasOrderUnitPrice,
+            itemCode = psAmountRequestParameterDto.itemCode
         )
         return kisTradingClient
             .getPsAmount(kisOverSeaRequestHeaderDto, kisPsAmountRequestParameterDto)
+            .awaitSingle()
+    }
+
+    suspend fun getPresentBalance(
+        presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto
+    ): KISPresentBalanceResponseDto{
+        val user = userRepository.findById(1).awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+            authorization = "Bearer ${user.token}",
+            appKey = user.appKey,
+            appSecret = user.appSecret,
+            transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_PRESENT_BALANCE)
+        )
+        val kisPresentBalanceRequestParameterDto = KISPresentBalanceRequestParameterDto(
+            accountNumber = user.accountNumber,
+            accountProductCode = "01",
+            currencyDivisionCode= presentBalanceRequestParameterDto.currencyDivisionCode,
+            countryCode= presentBalanceRequestParameterDto.countryCode,
+            marketCode = presentBalanceRequestParameterDto.marketCode,
+            inquiryDivisionCode= presentBalanceRequestParameterDto.inquiryDivisionCode
+        )
+        return kisTradingClient
+            .getPresentBalance(kisOverSeaRequestHeaderDto, kisPresentBalanceRequestParameterDto)
             .awaitSingle()
     }
 }
