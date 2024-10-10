@@ -35,8 +35,10 @@ class TradingController(
     }
 
     @GetMapping("/balance")
-    suspend fun getBalance(): ResponseEntity<KISBalanceResponseDto> {
-        val result = tradingService.getBalance()
+    suspend fun getBalance(
+        @ModelAttribute balanceRequestParameterDto: BalanceRequestParameterDto
+    ): ResponseEntity<KISBalanceResponseDto> {
+        val result = tradingService.getBalance(balanceRequestParameterDto)
 
         return ResponseEntity.ok(result)
     }

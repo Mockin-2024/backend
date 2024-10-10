@@ -64,7 +64,9 @@ class TradingService(
             .getNCCS(kisOverSeaRequestHeaderDto, kisnccsRequestParameterDto)
             .awaitSingle()
     }
-    suspend fun getBalance(): KISBalanceResponseDto{
+    suspend fun getBalance(
+        balanceRequestParameterDto: BalanceRequestParameterDto
+    ): KISBalanceResponseDto{
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
@@ -75,10 +77,10 @@ class TradingService(
         val kisBalanceRequestParameterDto = KISBalanceRequestParameterDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = ExchangeCode.SHAA.name,
-            transactionCurrencyCode = TradeCurrencyCode.CNY.name,
-            continuousSearchCondition200 = "",
-            continuousSearchKey200 = ""
+            overseasExchangeCode = balanceRequestParameterDto.overseasExchangeCode,
+            transactionCurrencyCode = balanceRequestParameterDto.transactionCurrencyCode,
+            continuousSearchCondition200 = balanceRequestParameterDto.continuousSearchCondition200,
+            continuousSearchKey200 = balanceRequestParameterDto.continuousSearchKey200
         )
         return kisTradingClient
             .getBalance(kisOverSeaRequestHeaderDto, kisBalanceRequestParameterDto)
