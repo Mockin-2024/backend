@@ -23,6 +23,7 @@ enum class TradeId(val tradeId:String) {
     INQUIRE_NCCS("VTTS3018R"),            // 미체결내역 조회
     INQUIRE_PSAMOUNT("VTTS3007R"),        // 매수가능금액 조회
     INQUIRE_PRESENT_BALANCE("VTRP6504R"), // 체결기준현재잔고 조회
+    INQUIRE_CCNL("VTTS3035R"),            // 주문체결내역 조회
     CURRENT_PRICE("HHDFS00000300"),       // 해외주식 현재체결가
     TERM_PRICE("HHDFS76240000"),          // 해외주식 기간별시세
     EXCHANGE_PRICE("FHKST03030100"),      // 해외주식 종목/지수/환율 기간별 시세

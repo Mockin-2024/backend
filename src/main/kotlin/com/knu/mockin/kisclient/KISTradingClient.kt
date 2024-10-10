@@ -80,4 +80,17 @@ class KISTradingClient(
             .retrieve()
             .bodyToMono(KISPresentBalanceResponseDto::class.java)
     }
+
+    fun getCCNL(
+        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
+        kisccnlRequestParameterDto: KISCCNLRequestParameterDto
+    ): Mono<KISCCNLResponseDto>{
+        val targetUri = buildUri("${tradingUrl}/inquire-ccnl", kisccnlRequestParameterDto)
+
+        return webClientMock.get()
+            .uri(targetUri)
+            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
+            .retrieve()
+            .bodyToMono(KISCCNLResponseDto::class.java)
+    }
 }

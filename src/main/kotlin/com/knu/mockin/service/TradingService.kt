@@ -4,10 +4,7 @@ import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
-import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
-import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
-import com.knu.mockin.model.dto.request.trading.PresentBalanceRequestParameterDto
-import com.knu.mockin.model.dto.request.trading.PsAmountRequestParameterDto
+import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.enum.ExchangeCode
 import com.knu.mockin.model.enum.TradeCurrencyCode
 import com.knu.mockin.model.enum.TradeId
@@ -67,7 +64,9 @@ class TradingService(
             .getNCCS(kisOverSeaRequestHeaderDto, kisnccsRequestParameterDto)
             .awaitSingle()
     }
-    suspend fun getBalance(): KISBalanceResponseDto{
+    suspend fun getBalance(
+        balanceRequestParameterDto: BalanceRequestParameterDto
+    ): KISBalanceResponseDto{
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
@@ -78,10 +77,10 @@ class TradingService(
         val kisBalanceRequestParameterDto = KISBalanceRequestParameterDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = ExchangeCode.SHAA.name,
-            transactionCurrencyCode = TradeCurrencyCode.CNY.name,
-            continuousSearchCondition200 = "",
-            continuousSearchKey200 = ""
+            overseasExchangeCode = balanceRequestParameterDto.overseasExchangeCode,
+            transactionCurrencyCode = balanceRequestParameterDto.transactionCurrencyCode,
+            continuousSearchCondition200 = balanceRequestParameterDto.continuousSearchCondition200,
+            continuousSearchKey200 = balanceRequestParameterDto.continuousSearchKey200
         )
         return kisTradingClient
             .getBalance(kisOverSeaRequestHeaderDto, kisBalanceRequestParameterDto)
@@ -130,6 +129,27 @@ class TradingService(
         )
         return kisTradingClient
             .getPresentBalance(kisOverSeaRequestHeaderDto, kisPresentBalanceRequestParameterDto)
+            .awaitSingle()
+    }
+
+    suspend fun getCCNL(
+        ccnlRequestParameterDto: CCNLRequestParameterDto
+    ): KISCCNLResponseDto{
+        val user = userRepository.findById(1).awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+            authorization = "Bearer ${user.token}",
+            appKey = user.appKey,
+            appSecret = user.appSecret,
+            transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL)
+        )
+        val kisccnlRequestParameterDto = KISCCNLRequestParameterDto(
+            accountNumber = user.accountNumber,
+            accountProductCode = "01",
+            orderStartDate = ccnlRequestParameterDto.orderStartDate,
+            orderEndDate = ccnlRequestParameterDto.orderEndDate
+        )
+        return kisTradingClient
+            .getCCNL(kisOverSeaRequestHeaderDto, kisccnlRequestParameterDto)
             .awaitSingle()
     }
 }
