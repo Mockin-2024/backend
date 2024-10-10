@@ -1,6 +1,7 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
 import com.knu.mockin.service.BasicService
 import org.springframework.http.ResponseEntity
@@ -24,6 +25,13 @@ class BasicController (
     @GetMapping("/term")
     suspend fun getTermPrice(): ResponseEntity<KISTermPriceResponseDto> {
         val result = basicService.getTermPrice()
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/daily-chart-price")
+    suspend fun getDailyChartPrice(): ResponseEntity<KISDailyChartPriceResponseDto> {
+        val result = basicService.getDailyChartPrice()
 
         return ResponseEntity.ok(result)
     }

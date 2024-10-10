@@ -3,8 +3,10 @@ package com.knu.mockin.service
 import com.knu.mockin.kisclient.KISBasicClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISCurrentPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.KISDailyChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISTermPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
@@ -61,6 +63,30 @@ class BasicService (
 
         
         return kisBasicClient.getTermPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+
+    }
+
+    suspend fun getDailyChartPrice(): KISDailyChartPriceResponseDto {
+        val user = userRepository.findById(1).awaitFirst()
+
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+                authorization = "Bearer ${user.token}",
+                appKey = user.appKey,
+                appSecret = user.appSecret,
+                transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE)
+        )
+
+
+        val requestParameter = KISDailyChartPriceRequestParameterDto(
+                fidCondMrktDivCode = "N",
+                fidInputDate1 = "20220401",
+                fidInputDate2 = "20220613",
+                fidInputIscd = ".DJI",
+                fidPeriodDivCode = "D"
+        )
+
+
+        return kisBasicClient.getDailyChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
 
     }
 
