@@ -1,9 +1,9 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISDailyChartPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISSearchResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.mock.KISTermPriceResponseDto
 import com.knu.mockin.service.BasicService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
