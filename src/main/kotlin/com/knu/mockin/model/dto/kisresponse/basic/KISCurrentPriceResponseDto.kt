@@ -7,10 +7,10 @@ data class KISCurrentPriceResponseDto(
         @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부
         @JsonProperty("msg_cd") val responseCode: String,           // 응답코드
         @JsonProperty("msg1") val responseMessage: String,          // 응답메세지
-        @JsonProperty("output") val output: Output?               // 응답상세
+        @JsonProperty("output") val output: CurrentPriceOutput?               // 응답상세
 )
 
-data class Output(
+data class CurrentPriceOutput(
         @JsonProperty("rsym") val rsym: String,          // 실시간 조회 종목 코드
         @JsonProperty("zdiv") val zdiv: String,             // 소수점 자리수
         @JsonProperty("base") val base: String,          // 전일 종가
