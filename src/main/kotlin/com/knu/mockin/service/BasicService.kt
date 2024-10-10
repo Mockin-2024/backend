@@ -70,10 +70,9 @@ class BasicService (
         val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
                 authorization = "Bearer ",
-                appKey = user.appKey,
-                appSecret = user.appSecret,
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.DAILY_CHART_PRICE)
-
         )
 
 
@@ -91,12 +90,12 @@ class BasicService (
     }
 
     suspend fun getSearch(): KISSearchResponseDto {
-        val user = userRepository.findById(1).awaitFirst()
+        val mockKey = mockKeyRepository.findByEmail("1").awaitFirst()
 
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${user.token}",
-                appKey = user.appKey,
-                appSecret = user.appSecret,
+                authorization = "Bearer ",
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH)
         )
 
