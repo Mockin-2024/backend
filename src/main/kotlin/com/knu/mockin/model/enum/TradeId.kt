@@ -21,7 +21,8 @@ enum class TradeId(val tradeId:String) {
     VIETNAM_CANCEL("VTTS0312U"),  // 베트남 정정 취소 주문
     INQUIRE_BALANCE("VTTS3012R"), // 잔고 조회
     INQUIRE_NCCS("VTTS3018R"),    // 미체결내역 조회
-    INQUIRE_PSAMOUNT("VTTS3007R");// 매수가능금액 조회
+    INQUIRE_PSAMOUNT("VTTS3007R"),
+    INQUIRE_PRESENT_BALANCE("VTRP6504R");// 매수가능금액 조회
 
 
     companion object {
