@@ -22,14 +22,9 @@ class KISBasicClient (
             header: KISOverSeaRequestHeaderDto,
             requestParameter: KISCurrentPriceRequestParameterDto
     ) : Mono<KISCurrentPriceResponseDto> {
-        val uriBuilder = UriComponentsBuilder.fromUriString("${quotationUrl}/price")
-                .queryParam("AUTH", requestParameter.AUTH)
-                .queryParam("SYMB", requestParameter.SYMB)
-                .queryParam("EXCD", requestParameter.EXCD)
-        println(uriBuilder.toUriString())
-        println(LogUtil.toJson(requestParameter))
+        val targetUri = HttpUtils.buildUri("${quotationUrl}/price", requestParameter)
         return webClientMock.get()
-                .uri(uriBuilder.toUriString())
+                .uri(targetUri)
                 .headers { HttpUtils.addHeaders(it, header) }
                 .retrieve()
                 .bodyToMono(KISCurrentPriceResponseDto::class.java)
@@ -39,17 +34,9 @@ class KISBasicClient (
             header: KISOverSeaRequestHeaderDto,
             requestParameter: KISTermPriceRequestParameterDto
     ) : Mono<KISTermPriceResponseDto> {
+        val targetUri = HttpUtils.buildUri("${quotationUrl}/dailyprice", requestParameter)
         return webClientMock.get()
-                .uri{ UriBuilder ->
-                    UriBuilder.path("${quotationUrl}/dailyprice")
-                            .queryParam("AUTH", requestParameter.AUTH)
-                            .queryParam("EXCD", requestParameter.EXCD)
-                            .queryParam("SYMB", requestParameter.SYMB)
-                            .queryParam("GUBN", requestParameter.GUBN)
-                            .queryParam("BYMD", requestParameter.BYMD)
-                            .queryParam("MODP", requestParameter.MODP)
-                            .build()
-                }
+                .uri(targetUri)
                 .headers { HttpUtils.addHeaders(it, header) }
                 .retrieve()
                 .bodyToMono(KISTermPriceResponseDto::class.java)
