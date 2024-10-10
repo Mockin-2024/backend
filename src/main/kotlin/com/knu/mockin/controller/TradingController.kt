@@ -1,10 +1,7 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.kisresponse.trading.*
-import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
-import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
-import com.knu.mockin.model.dto.request.trading.PresentBalanceRequestParameterDto
-import com.knu.mockin.model.dto.request.trading.PsAmountRequestParameterDto
+import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.service.TradingService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -58,6 +55,15 @@ class TradingController(
         @ModelAttribute presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto
     ): ResponseEntity<KISPresentBalanceResponseDto> {
         val result = tradingService.getPresentBalance(presentBalanceRequestParameterDto)
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/ccnl")
+    suspend fun getCCNL(
+        @ModelAttribute ccnlRequestParameterDto: CCNLRequestParameterDto
+    ): ResponseEntity<KISCCNLResponseDto> {
+        val result = tradingService.getCCNL(ccnlRequestParameterDto)
 
         return ResponseEntity.ok(result)
     }
