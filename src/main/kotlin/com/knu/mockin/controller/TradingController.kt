@@ -1,6 +1,7 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.kisresponse.trading.*
+import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
 import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
 import com.knu.mockin.model.dto.request.trading.PresentBalanceRequestParameterDto
 import com.knu.mockin.model.dto.request.trading.PsAmountRequestParameterDto
@@ -28,8 +29,10 @@ class TradingController(
     }
 
     @GetMapping("/nccs")
-    suspend fun getNCCS(): ResponseEntity<KISNCCSResponseDto>{
-        val result = tradingService.getNCCS()
+    suspend fun getNCCS(
+        @ModelAttribute nccsRequestParameterDto: NCCSRequestParameterDto
+    ): ResponseEntity<KISNCCSResponseDto>{
+        val result = tradingService.getNCCS(nccsRequestParameterDto)
 
         return ResponseEntity.ok(result)
     }

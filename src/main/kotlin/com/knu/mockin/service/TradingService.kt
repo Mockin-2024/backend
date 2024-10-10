@@ -4,6 +4,7 @@ import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
+import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
 import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
 import com.knu.mockin.model.dto.request.trading.PresentBalanceRequestParameterDto
 import com.knu.mockin.model.dto.request.trading.PsAmountRequestParameterDto
@@ -43,7 +44,9 @@ class TradingService(
             .awaitSingle()
     }
 
-    suspend fun getNCCS(): KISNCCSResponseDto{
+    suspend fun getNCCS(
+        nccsRequestParameterDto: NCCSRequestParameterDto
+    ): KISNCCSResponseDto{
         val user = userRepository.findById(1).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${user.token}",
@@ -54,10 +57,10 @@ class TradingService(
         val kisnccsRequestParameterDto = KISNCCSRequestParameterDto(
             accountNumber = user.accountNumber,
             accountProductCode = "01",
-            overseasExchangeCode = ExchangeCode.SHAA.name,
-            sortOrder = "DS",
-            continuousSearchCondition200 = "",
-            continuousSearchKey200 = ""
+            overseasExchangeCode = nccsRequestParameterDto.overseasExchangeCode,
+            sortOrder = nccsRequestParameterDto.sortOrder,
+            continuousSearchCondition200 = nccsRequestParameterDto.continuousSearchCondition200,
+            continuousSearchKey200 = nccsRequestParameterDto.continuousSearchKey200
         )
 
         return kisTradingClient
