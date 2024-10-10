@@ -1,6 +1,5 @@
 package com.knu.mockin.repository
 
-import com.knu.mockin.model.entity.MockKey
 import com.knu.mockin.model.entity.RealKey
 import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
