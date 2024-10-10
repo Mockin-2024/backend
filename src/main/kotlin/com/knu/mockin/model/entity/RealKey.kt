@@ -3,9 +3,9 @@ package com.knu.mockin.model.entity
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 
-@Table("user")
-data class User(
+@Table("real_key")
+data class RealKey(
     @Id val email: String,
-    val name: String,
-    val accountNumber: String = ""
+    val appKey: String,
+    val appSecret: String
 )

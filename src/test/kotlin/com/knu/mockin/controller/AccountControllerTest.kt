@@ -2,6 +2,7 @@ package com.knu.mockin.controller
 
 import com.knu.mockin.logging.utils.LogUtil
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
+import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.service.AccountService
 import com.ninjasquad.springmockk.MockkBean
@@ -48,14 +49,16 @@ class AccountControllerTest(
         restDocumentation.afterTest()
     }
     "POST /account returns approvalKey" {
+        val accountDto = AccountRequestDto("test")
         val requestDto = KISApprovalRequestDto(
             grantType = "client_credentials",
             appKey = "appKey",
             secretKey = "appSecret")
         val expectedDto = ApprovalKeyResponseDto("test")
-        coEvery { accountService.getApprovalKey() } returns expectedDto
+        coEvery { accountService.getApprovalKey(accountDto) } returns expectedDto
 
         val result = webTestClient.post().uri("/account/approval-key").accept(APPLICATION_JSON)
+            .bodyValue(accountDto)
             .exchange()
             .expectStatus()
             .isOk()

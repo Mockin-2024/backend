@@ -3,9 +3,9 @@ package com.knu.mockin.model.entity
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 
-@Table("user")
-data class User(
+@Table("mock_key")
+data class MockKey(
     @Id val email: String,
-    val name: String,
-    val accountNumber: String = ""
+    val appKey: String,
+    val appSecret: String
 )
