@@ -5,8 +5,6 @@ import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
-import com.knu.mockin.model.enum.ExchangeCode
-import com.knu.mockin.model.enum.TradeCurrencyCode
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import kotlinx.coroutines.reactive.awaitFirst
