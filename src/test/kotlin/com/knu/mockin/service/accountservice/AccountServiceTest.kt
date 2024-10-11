@@ -1,6 +1,7 @@
 package com.knu.mockin.service.accountservice
 
 import com.knu.mockin.kisclient.KISOauth2Client
+import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
 import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.request.account.AccountRequestDto
@@ -22,11 +23,13 @@ import reactor.core.publisher.Mono
 
 class AccountServiceTest: BehaviorSpec({
     val kisOauth2Client: KISOauth2Client = mockk<KISOauth2Client>()
+    val kisOauth2RealClient: KISOauth2RealClient = mockk<KISOauth2RealClient>()
     val mockKeyRepository: MockKeyRepository = mockk()
     val userRepository: UserRepository = mockk()
     val realKeyRepository: RealKeyRepository = mockk()
     val accountService = AccountService(
         kisOauth2Client = kisOauth2Client,
+        kisOauth2RealClient = kisOauth2RealClient,
         mockKeyRepository = mockKeyRepository,
         realKeyRepository = realKeyRepository,
         userRepository = userRepository
@@ -46,7 +49,7 @@ class AccountServiceTest: BehaviorSpec({
         every { kisOauth2Client.postApproval(requestDto) } returns Mono.just(expectedDto)
         every { mockKeyRepository.findById("test")} returns Mono.just(mockKey)
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getApprovalKey(accountRequestDto)
+            val result = accountService.getMockApprovalKey(accountRequestDto)
 
             Then("키가 반환된다"){
                 result shouldBe expectedDto
@@ -72,7 +75,7 @@ class AccountServiceTest: BehaviorSpec({
         every { RedisUtil.saveToken(accountRequestDto.email, expectedDto.accessToken) } returns Unit
 
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getAccessToken(accountRequestDto)
+            val result = accountService.getMockAccessToken(accountRequestDto)
 
             Then("토큰이 반환된다"){
                 result shouldBe expectedDto
