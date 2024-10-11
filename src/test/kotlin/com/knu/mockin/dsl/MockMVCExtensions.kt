@@ -1,8 +1,9 @@
-package com.knu.mockin
+package com.knu.mockin.dsl
 
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
+import org.springframework.restdocs.payload.FieldDescriptor
+import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.request.ParameterDescriptor
-import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.restdocs.request.RequestDocumentation.queryParameters
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActionsDsl
@@ -20,14 +21,10 @@ fun <T> MockMvc.getWithParams(uri: String, requestParams: T): ResultActionsDsl {
     }
 }
 
-fun setParameters(vararg params: Pair<String, String>): List<ParameterDescriptor> {
-    return params.map { (name, description) ->
-        parameterWithName(name).description(description) }
-}
-
 fun ResultActionsDsl.makeDocument(
     identifier:String,
-    parameters: List<ParameterDescriptor>
+    parameters: List<ParameterDescriptor>,
+    body: List<FieldDescriptor>
 ): ResultActionsDsl {
     return this.andExpect {
         status { is2xxSuccessful() }
@@ -35,9 +32,8 @@ fun ResultActionsDsl.makeDocument(
         handle(
             MockMvcRestDocumentation.document(
                 identifier,
-                queryParameters(
-                    parameters
-                )
+                queryParameters(parameters),
+                responseFields(body)
             )
         )
     }
