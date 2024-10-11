@@ -19,7 +19,6 @@ import com.knu.mockin.util.RedisUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 
 @Service
