@@ -16,7 +16,9 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.springframework.data.redis.core.RedisTemplate
 import reactor.core.publisher.Mono
+
 
 class AccountServiceTest: BehaviorSpec({
     val kisOauth2Client: KISOauth2Client = mockk<KISOauth2Client>()
@@ -29,7 +31,8 @@ class AccountServiceTest: BehaviorSpec({
         realKeyRepository = realKeyRepository,
         userRepository = userRepository
         )
-    val redisUtil = mockk<RedisUtil>()
+    val redisTemplate = mockk<RedisTemplate<String, String>>()
+    RedisUtil.init(redisTemplate)
 
     Given("get approval key test"){
         val mockKey = MockKey("test", "test appKey", "test appSecret")
@@ -66,7 +69,8 @@ class AccountServiceTest: BehaviorSpec({
 
         every { kisOauth2Client.postTokenP(requestDto) } returns Mono.just(expectedDto)
         every { mockKeyRepository.findById("test")} returns Mono.just(mockKey)
-        every { redisUtil.saveToken(accountRequestDto.email, "test") } returns Unit
+        every { RedisUtil.saveToken(accountRequestDto.email, expectedDto.accessToken) } returns Unit
+
         When("서비스 계층에 요청을 보내면:"){
             val result = accountService.getAccessToken(accountRequestDto)
 
