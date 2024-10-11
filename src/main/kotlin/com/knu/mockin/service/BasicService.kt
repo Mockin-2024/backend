@@ -4,12 +4,14 @@ import com.knu.mockin.kisclient.KISBasicClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISCurrentPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISDailyChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.KISSearchRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISTermPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
 import com.knu.mockin.model.enum.TradeId
-import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.repository.MockKeyRepository
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.stereotype.Service
@@ -17,15 +19,14 @@ import org.springframework.stereotype.Service
 @Service
 class BasicService (
         private val kisBasicClient: KISBasicClient,
-        private val userRepository: UserRepository
+        private val mockKeyRepository: MockKeyRepository
 ) {
     suspend fun getCurrentPrice(): KISCurrentPriceResponseDto {
-        val user = userRepository.findById(1).awaitFirst()
-        
+        val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${user.token}",
-                appKey = user.appKey,
-                appSecret = user.appSecret,
+                authorization = "Bearer ",
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.CURRENT_PRICE) 
         )
 
@@ -41,12 +42,11 @@ class BasicService (
     }
 
     suspend fun getTermPrice(): KISTermPriceResponseDto {
-        val user = userRepository.findById(1).awaitFirst()
-        
+        val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${user.token}",
-                appKey = user.appKey,
-                appSecret = user.appSecret,
+                authorization = "Bearer ",
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE) 
         )
 
@@ -67,13 +67,12 @@ class BasicService (
     }
 
     suspend fun getDailyChartPrice(): KISDailyChartPriceResponseDto {
-        val user = userRepository.findById(1).awaitFirst()
-
+        val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${user.token}",
-                appKey = user.appKey,
-                appSecret = user.appSecret,
-                transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE)
+                authorization = "Bearer ",
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
+                transactionId = TradeId.getTradeIdByEnum(TradeId.DAILY_CHART_PRICE)
         )
 
 
@@ -90,6 +89,50 @@ class BasicService (
 
     }
 
+    suspend fun getSearch(): KISSearchResponseDto {
+        val mockKey = mockKeyRepository.findByEmail("1").awaitFirst()
 
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+                authorization = "Bearer ",
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
+                transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH)
+        )
+
+
+        val requestParameter = KISSearchRequestParameterDto(
+                AUTH = "",
+                EXCD = "NAS",
+                coYnPricecur = "1",
+                coStPricecur = "160",
+                coEnPricecur = "161",
+                coYnRate = "",
+                coStRate = "",
+                coEnRate = "",
+                coYnValx = "",
+                coStValx = "",
+                coEnValx = "",
+                coYnShar = "",
+                coStShar = "",
+                coEnShar = "",
+                coYnVolume = "",
+                coStVolume = "",
+                coEnVolume = "",
+                coYnAmt = "",
+                coStAmt = "",
+                coEnAmt = "",
+                coYnEps = "",
+                coStEps = "",
+                coEnEps = "",
+                coYnPer = "",
+                coStPer = "",
+                coEnPer = "",
+                KEYB = ""
+        )
+
+
+        return kisBasicClient.getSearch(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+
+    }
 
 }
