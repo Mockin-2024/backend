@@ -57,7 +57,7 @@ class AccountControllerTest(
         val expectedDto = ApprovalKeyResponseDto("test")
         coEvery { accountService.getMockApprovalKey(accountDto) } returns expectedDto
 
-        val result = webTestClient.post().uri("/account/approval-key").accept(APPLICATION_JSON)
+        val result = webTestClient.post().uri("/account/mock-approval-key").accept(APPLICATION_JSON)
             .bodyValue(accountDto)
             .exchange()
             .expectStatus()
