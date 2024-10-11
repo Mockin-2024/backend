@@ -1,7 +1,21 @@
-version: '3'
 services:
   backend:
     image: ${DOCKER_USERNAME}/${DOCKER_IMAGE}
     container_name: ${DOCKER_IMAGE}
     ports:
       - "8080:8080"
+    depends_on:
+      - redis
+    networks:
+      - mockin_net
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mockin_net
+
+networks:
+  mockin_net:
+    driver: bridge

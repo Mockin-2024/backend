@@ -8,6 +8,7 @@ import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.RedisUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class TradingService(
         val user = userRepository.findById(orderRequestBodyDto.email).awaitFirst()
         val mockKey = mockKeyRepository.findByEmail(orderRequestBodyDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ",
+            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
             appKey = mockKey.appKey,
             appSecret = mockKey.appSecret,
             transactionId = orderRequestBodyDto.transactionId
@@ -48,7 +49,7 @@ class TradingService(
         val user = userRepository.findById(nccsRequestParameterDto.email).awaitFirst()
         val mockKey = mockKeyRepository.findByEmail(nccsRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer }",
+            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
             appKey = mockKey.appKey,
             appSecret = mockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_NCCS)
@@ -72,7 +73,7 @@ class TradingService(
         val user = userRepository.findById(balanceRequestParameterDto.email).awaitFirst()
         val mockKey = mockKeyRepository.findByEmail(balanceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ",
+            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
             appKey = mockKey.appKey,
             appSecret = mockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE)
@@ -96,7 +97,7 @@ class TradingService(
         val user = userRepository.findById(psAmountRequestParameterDto.email).awaitFirst()
         val mockKey = mockKeyRepository.findByEmail(psAmountRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ",
+            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
             appKey = mockKey.appKey,
             appSecret = mockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_PSAMOUNT)
@@ -119,7 +120,7 @@ class TradingService(
         val user = userRepository.findById(presentBalanceRequestParameterDto.email).awaitFirst()
         val mockKey = mockKeyRepository.findByEmail(presentBalanceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ",
+            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
             appKey = mockKey.appKey,
             appSecret = mockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_PRESENT_BALANCE)
@@ -143,7 +144,7 @@ class TradingService(
         val user = userRepository.findById(ccnlRequestParameterDto.email).awaitFirst()
         val mockKey = mockKeyRepository.findByEmail(ccnlRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer",
+            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
             appKey = mockKey.appKey,
             appSecret = mockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL)

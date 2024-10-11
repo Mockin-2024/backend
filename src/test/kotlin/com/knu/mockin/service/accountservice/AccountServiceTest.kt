@@ -7,16 +7,18 @@ import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.entity.MockKey
-import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.AccountService
+import com.knu.mockin.util.RedisUtil
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.springframework.data.redis.core.RedisTemplate
 import reactor.core.publisher.Mono
+
 
 class AccountServiceTest: BehaviorSpec({
     val kisOauth2Client: KISOauth2Client = mockk<KISOauth2Client>()
@@ -29,6 +31,8 @@ class AccountServiceTest: BehaviorSpec({
         realKeyRepository = realKeyRepository,
         userRepository = userRepository
         )
+    val redisTemplate = mockk<RedisTemplate<String, String>>()
+    RedisUtil.init(redisTemplate)
 
     Given("get approval key test"){
         val mockKey = MockKey("test", "test appKey", "test appSecret")
@@ -41,7 +45,6 @@ class AccountServiceTest: BehaviorSpec({
 
         every { kisOauth2Client.postApproval(requestDto) } returns Mono.just(expectedDto)
         every { mockKeyRepository.findById("test")} returns Mono.just(mockKey)
-
         When("서비스 계층에 요청을 보내면:"){
             val result = accountService.getApprovalKey(accountRequestDto)
 
@@ -66,6 +69,7 @@ class AccountServiceTest: BehaviorSpec({
 
         every { kisOauth2Client.postTokenP(requestDto) } returns Mono.just(expectedDto)
         every { mockKeyRepository.findById("test")} returns Mono.just(mockKey)
+        every { RedisUtil.saveToken(accountRequestDto.email, expectedDto.accessToken) } returns Unit
 
         When("서비스 계층에 요청을 보내면:"){
             val result = accountService.getAccessToken(accountRequestDto)
