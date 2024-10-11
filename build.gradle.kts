@@ -66,49 +66,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 }
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+val snippetsDir = file(property("snippetsDirPath")!!)
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
     }
 }
 
-val snippetsDir by extra { file("build/generated-snippets") }
-
-//tasks.withType<Test> {
-//    useJUnitPlatform()
-//}
-
-// Ascii Doc Create Tasks
-tasks {
-    // Test 결과를 snippet Directory에 출력
-    test {
-        outputs.dir(snippetsDir)
-        useJUnitPlatform()
-    }
-
-    asciidoctor {
-        // test 가 성공해야만, 아래 Task 실행
-        dependsOn(test)
-
-//        // 기존에 존재하는 Docs 삭제(문서 최신화를 위해)
-//        doFirst {
-//            delete(file("src/main/resources/static/docs"))
-//        }
-
-        // snippet Directory 설정
-        inputs.dir(snippetsDir)
-
-        // Ascii Doc 파일 생성
-        doLast {
-            copy {
-                from("build/docs/asciidoc")
-                into("src/main/resources/static/docs")
-            }
-        }
-    }
-
-    build {
-        // Ascii Doc 파일 생성이 성공해야만, Build 진행
-        dependsOn(asciidoctor)
-    }
+tasks.asciidoctor {
+    inputs.dir(snippetsDir)
+    dependsOn(tasks.test)
 }
