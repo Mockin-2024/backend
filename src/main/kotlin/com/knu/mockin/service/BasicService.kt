@@ -12,6 +12,8 @@ import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.MockKeyRepository
+import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.RedisUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.stereotype.Service
@@ -19,12 +21,14 @@ import org.springframework.stereotype.Service
 @Service
 class BasicService (
         private val kisBasicClient: KISBasicClient,
-        private val mockKeyRepository: MockKeyRepository
+        private val mockKeyRepository: MockKeyRepository,
+        private val userRepository: UserRepository,
 ) {
     suspend fun getCurrentPrice(): KISCurrentPriceResponseDto {
         val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
+        val user = userRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ",
+                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.CURRENT_PRICE) 
@@ -43,8 +47,9 @@ class BasicService (
 
     suspend fun getTermPrice(): KISTermPriceResponseDto {
         val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
+        val user = userRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ",
+                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE) 
@@ -68,8 +73,9 @@ class BasicService (
 
     suspend fun getDailyChartPrice(): KISDailyChartPriceResponseDto {
         val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
+        val user = userRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ",
+                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.DAILY_CHART_PRICE)
@@ -91,9 +97,9 @@ class BasicService (
 
     suspend fun getSearch(): KISSearchResponseDto {
         val mockKey = mockKeyRepository.findByEmail("1").awaitFirst()
-
+        val user = userRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ",
+                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH)
