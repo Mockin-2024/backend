@@ -1,5 +1,7 @@
 package com.knu.mockin.config
 
+import com.knu.mockin.util.RedisUtil
+import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,9 +27,11 @@ class RedisConfig {
     @Bean
     fun redisTemplate(): RedisTemplate<String, String> {
         val redisTemplate = RedisTemplate<String, String>()
-        redisTemplate.setKeySerializer(StringRedisSerializer())
-        redisTemplate.setValueSerializer(StringRedisSerializer())
-        redisTemplate.setConnectionFactory(redisConnectionFactory())
+        redisTemplate.keySerializer = StringRedisSerializer()
+        redisTemplate.valueSerializer = StringRedisSerializer()
+        redisTemplate.connectionFactory = redisConnectionFactory()
         return redisTemplate
     }
+
+
 }
