@@ -96,7 +96,7 @@ class BasicService (
     }
 
     suspend fun getSearch(): KISSearchResponseDto {
-        val mockKey = mockKeyRepository.findByEmail("1").awaitFirst()
+        val mockKey = mockKeyRepository.findByEmail("!").awaitFirst()
         val user = userRepository.findByEmail("!").awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
                 authorization = "Bearer ${RedisUtil.getToken(user.email)}",
