@@ -15,9 +15,11 @@ import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.RedisUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 
 @Service
@@ -90,9 +92,7 @@ class AccountService(
             appSecret = user.appSecret)
         val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle()
 
-        // TODO Redis 추가 후 Redis에 저장하도록 설정
-//        user.token = dto.accessToken
-//        userRepository.save(user).awaitSingle()
+        RedisUtil.saveToken(user.email, dto.accessToken)
 
         return dto
     }
