@@ -1,0 +1,46 @@
+:snippets: ./build/generated-snippets
+
+= 대상 컨트롤러 이름
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<key1, 이름1>>
+* <<key2, 이름2>>
+
+[#key1]
+== 서비스 이름
+
+=== Request
+
+
+=== Request-Field
+
+
+=== Response
+
+
+=== Response-Field
+
+[#key2]
+...
+
+'''
+
+**규칙**
+
+include:: 작성 시 나오는 자동완성을 통해 파일 가져오기
+adoc 파일은 반드시 컨트롤러 테스트 코드를 작성해 실행 성공해야만 생성됨.
+
+순서대로
+
+1. http-request.adoc
+2. query-parameters.adoc (GET)
+또는 request-fields.adoc (POST)
+3. http-response.adoc
+4. response-fields.adoc
+
+을 가져와 작성
+잘 모르면 다른 adoc 파일 보고 참고하기
+
+새로운 문서 작성 시 위 템플릿 복사해서 시작하기

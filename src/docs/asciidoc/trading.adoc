@@ -1,0 +1,41 @@
+:snippets: ./build/generated-snippets
+
+= Trading
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<get-nccs, 미체결내역조회>>
+* <<psamount, 매수가능금액조회>>
+
+
+
+[#get-nccs]
+== 미체결내역조회
+
+=== Request
+include::{snippets}/trading/nccs/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/trading/nccs/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/trading/nccs/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/trading/nccs/response-fields.adoc[]
+
+[#psamount]
+== 매수가능금액조회
+
+=== Request
+include::{snippets}/trading/psamount/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/trading/psamount/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/trading/psamount/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/trading/psamount/response-fields.adoc[]
