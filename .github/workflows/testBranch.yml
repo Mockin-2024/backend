@@ -31,6 +31,7 @@ jobs:
       # set up application file
     - name: Create application file
       run: |
+        pwd
         mkdir -p ./src/main/resources
         cd ./src/main/resources
         echo "${{ secrets.APPLICATION }}" >> ./application.properties
@@ -41,6 +42,7 @@ jobs:
       # build directory 생성(REST DOCS)
     - name: Create build directory
       run: |
+        pwd
         mkdir -p ./build/generated-snippets
         mkdir -p ./build/docs/asciidoc/
         chmod -R 777 ./build
