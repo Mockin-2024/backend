@@ -42,6 +42,7 @@ jobs:
     - name: Create build directory
       run: |
         mkdir -p ./build/generated-snippets
+        mkdir -p ./build/docs/asciidoc/
         chmod -R 777 ./build
 
       # set up mysql
