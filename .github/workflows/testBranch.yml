@@ -43,9 +43,11 @@ jobs:
     - name: Create build directory
       run: |
         pwd
+        ls
         mkdir -p ./build/generated-snippets
         mkdir -p ./build/docs/asciidoc/
         chmod -R 777 ./build
+        ls
 
       # set up mysql
     - name: Setup MySQL
