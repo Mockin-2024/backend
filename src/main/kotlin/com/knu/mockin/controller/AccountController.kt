@@ -48,20 +48,38 @@ class AccountController(
         return ResponseEntity.ok("등록 완료")
     }
 
-    @PostMapping("/approval-key")
-    suspend fun getApprovalKey(
+    @PostMapping("/mock-approval-key")
+    suspend fun getMockApprovalKey(
         @RequestBody accountRequestDto: AccountRequestDto
     ): ResponseEntity<ApprovalKeyResponseDto> {
-        val result = accountService.getApprovalKey(accountRequestDto)
+        val result = accountService.getMockApprovalKey(accountRequestDto)
 
         return ResponseEntity.ok(result)
     }
 
-    @PostMapping("/token")
-    suspend fun getAccessToken(
+    @PostMapping("/real-approval-key")
+    suspend fun getRealApprovalKey(
+            @RequestBody accountRequestDto: AccountRequestDto
+    ): ResponseEntity<ApprovalKeyResponseDto> {
+        val result = accountService.getRealApprovalKey(accountRequestDto)
+
+        return ResponseEntity.ok(result)
+    }
+
+    @PostMapping("/mock-token")
+    suspend fun getMockAccessToken(
         @RequestBody accountRequestDto: AccountRequestDto
     ): ResponseEntity<AccessTokenAPIResponseDto> {
-        val result = accountService.getAccessToken(accountRequestDto)
+        val result = accountService.getMockAccessToken(accountRequestDto)
+
+        return ResponseEntity.ok(result)
+    }
+
+    @PostMapping("/real-token")
+    suspend fun getRealMockAccessToken(
+            @RequestBody accountRequestDto: AccountRequestDto
+    ): ResponseEntity<AccessTokenAPIResponseDto> {
+        val result = accountService.getRealAccessToken(accountRequestDto)
 
         return ResponseEntity.ok(result)
     }
