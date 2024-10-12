@@ -31,7 +31,6 @@ jobs:
       # set up application file
     - name: Create application file
       run: |
-        pwd
         mkdir -p ./src/main/resources
         cd ./src/main/resources
         echo "${{ secrets.APPLICATION }}" >> ./application.properties
@@ -42,12 +41,10 @@ jobs:
       # build directory 생성(REST DOCS)
     - name: Create build directory
       run: |
-        pwd
-        ls
         mkdir -p ./build/generated-snippets
-        mkdir -p ./build/docs/asciidoc/
+        mkdir -p ./build/docs/asciidoc
         chmod -R 777 ./build
-        ls
+        
 
       # set up mysql
     - name: Setup MySQL
@@ -74,4 +71,4 @@ jobs:
     - name: Setup Gradle
       run: |
         chmod +x ./gradlew
-        ./gradlew clean build
+        sudo ./gradlew clean build
