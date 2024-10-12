@@ -47,8 +47,8 @@ jobs:
 
       # build directory 생성(REST DOCS)
     - name: Create build directory
-      run: mkdir -p build/generated-snippets
-      
+      run: mkdir -p ${{ github.workspace }}/build/generated-snippets
+
       # set up mysql
     - name: Setup MySQL
       uses: mirromutth/mysql-action@v1.1
