@@ -70,6 +70,7 @@ val snippetsDir = file(property("snippetsDirPath")!!)
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    outputs.dir(snippetsDir)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -82,4 +83,19 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.asciidoctor {
     inputs.dir(snippetsDir)
     dependsOn(tasks.test)
+}
+
+tasks.asciidoctor {
+    finalizedBy("copyDocument")
+}
+
+tasks.register<Copy>("copyDocument") {
+    dependsOn("asciidoctor")
+
+    from(file("./build/docs/asciidoc/"))
+    into(file("./src/main/resources/static/docs"))
+}
+
+tasks.named("build") {
+    dependsOn("copyDocument")
 }
