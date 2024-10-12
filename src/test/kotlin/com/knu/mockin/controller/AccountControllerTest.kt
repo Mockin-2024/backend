@@ -1,7 +1,6 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.dsl.*
-import com.knu.mockin.model.OBJECT
 import com.knu.mockin.model.STRING
 import com.knu.mockin.model.dto.request.account.UserRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
@@ -60,11 +59,11 @@ class AccountControllerTest(
 
         response.makeDocument(
             "/account/user",
-            setBody(
+            requestBody(
                 "email" type STRING means "사용자 이메일",
                 "name" type STRING means "사용자 이름",
             ),
-            setBody(
+            responseBody(
                 "message" type STRING means "응답 메세지",
             )
         )

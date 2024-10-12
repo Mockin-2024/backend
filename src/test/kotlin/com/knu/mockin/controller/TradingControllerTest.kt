@@ -1,7 +1,6 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.dsl.*
-import com.knu.mockin.logging.utils.LogUtil
 import com.knu.mockin.model.ARRAY
 import com.knu.mockin.model.OBJECT
 import com.knu.mockin.model.STRING
@@ -16,7 +15,8 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.ManualRestDocumentation
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
+import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
@@ -36,7 +36,10 @@ class TradingControllerTest(
     beforeTest {
         mockMvc = MockMvcBuilders
             .webAppContextSetup(webApplicationContext)
-            .apply<DefaultMockMvcBuilder>(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
+            .apply<DefaultMockMvcBuilder>(documentationConfiguration(restDocumentation)
+                .operationPreprocessors()
+                .withRequestDefaults(Preprocessors.prettyPrint())
+                .withResponseDefaults(Preprocessors.prettyPrint()))
             .build()
         restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
     }
@@ -58,27 +61,26 @@ class TradingControllerTest(
         )
         val expectedDto = KISNCCSResponseDto(
             successFailure = "0",
-            responseCode = "",
-            responseMessage = "",
+            responseCode = "70070000",
+            responseMessage = "Test success",
             continuousSearchCondition200 = "",
             continuousSearchKey200 = "",
             output = listOf()
         )
-        println(LogUtil.toJson(expectedDto))
         coEvery { tradingService.getNCCS(any()) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             "/trading/nccs",
-            setParameters(
+            parameters(
                 "overseasExchangeCode" means "해외거래소코드",
                 "sortOrder" means "정렬 순서",
                 "continuousSearchCondition200" means "연속조회검색조건200",
                 "continuousSearchKey200" means "연속조회키200",
                 "email" means "이메일"
             ),
-            setResponseBody(
+            responseBody(
                 "rt_cd" type STRING means "성공 여부",
                 "msg_cd" type STRING  means "응답 코드",
                 "msg1" type STRING means "응답 메세지",
@@ -101,7 +103,7 @@ class TradingControllerTest(
         val expectedDto = KISPsAmountResponseDto(
             successFailure = "0",
             responseCode = "test",
-            responseMessage = "테스트 성공",
+            responseMessage = "test success!",
             output = null
         )
 
@@ -110,13 +112,13 @@ class TradingControllerTest(
 
         response.makeDocument(
             "/trading/psamount",
-            setParameters(
+            parameters(
                 "overseasExchangeCode" means "거래소 코드",
                 "overseasOrderUnitPrice" means "주당 가격",
                 "itemCode" means "종목 코드",
                 "email" means "사용자 이메일"
             ),
-            setResponseBody(
+            responseBody(
                 "rt_cd" type STRING means "성공 여부",
                 "msg_cd" type STRING means "응답 코드",
                 "msg1" type STRING means "응답 메세지",
