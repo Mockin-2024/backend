@@ -5,13 +5,31 @@
 == 목차
 
 * xref:/docs/index.html[메인으로 돌아가기]
+* <<order, 주문>>
 * <<get-nccs, 미체결내역조회>>
+* <<balance, 잔고>>
+* <<ccnl, 주문체결내역>>
+* <<present-balance, 체결기준현재잔고>>
 * <<psamount, 매수가능금액조회>>
 
+[#order]
+== 주문
+
+=== Request
+include::{snippets}/trading/order/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/trading/order/request-fields.adoc[]
+
+=== Response
+include::{snippets}/trading/order/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/trading/order/response-fields.adoc[]
 
 
 [#get-nccs]
-== 미체결내역조회
+== 미체결내역 조회
 
 === Request
 include::{snippets}/trading/nccs/http-request.adoc[]
@@ -24,6 +42,55 @@ include::{snippets}/trading/nccs/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/trading/nccs/response-fields.adoc[]
+
+
+[#balance]
+== 잔고
+
+=== Request
+include::{snippets}/trading/balance/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/trading/balance/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/trading/balance/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/trading/balance/response-fields.adoc[]
+
+
+[#ccnl]
+== 주문체결내역
+
+=== Request
+include::{snippets}/trading/ccnl/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/trading/ccnl/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/trading/ccnl/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/trading/ccnl/response-fields.adoc[]
+
+[#present-balance]
+== 체결기준현재잔고
+
+=== Request
+include::{snippets}/trading/present-balance/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/trading/present-balance/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/trading/present-balance/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/trading/present-balance/response-fields.adoc[]
+
+
 
 [#psamount]
 == 매수가능금액조회
@@ -39,3 +106,4 @@ include::{snippets}/trading/psamount/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/trading/psamount/response-fields.adoc[]
+
