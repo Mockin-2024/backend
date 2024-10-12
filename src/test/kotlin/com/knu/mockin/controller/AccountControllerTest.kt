@@ -50,7 +50,7 @@ class AccountControllerTest(
             email = "test@naver.com",
             name = "test"
         )
-        val expectedDto = SimpleMessageResponseDto("등록 완료")
+        val expectedDto = SimpleMessageResponseDto("Register Complete")
         coEvery { accountService.postUser(requestDto) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)

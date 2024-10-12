@@ -39,14 +39,14 @@ class AccountService(
             name = userRequestDto.name
         )
         userRepository.save(user).awaitSingleOrNull()
-        return SimpleMessageResponseDto("등록 완료")
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun patchUser(
         userAccountNumberRequestDto: UserAccountNumberRequestDto
     ): SimpleMessageResponseDto {
         userRepository.updateByEmail(userAccountNumberRequestDto.email, userAccountNumberRequestDto.accountNumber).awaitSingleOrNull()
-        return SimpleMessageResponseDto("등록 완료")
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun postMockKey(
@@ -60,7 +60,7 @@ class AccountService(
             appSecret = keyPairRequestDto.appSecret,
         )
         mockKeyRepository.save(mockKey).awaitSingleOrNull()
-        return SimpleMessageResponseDto("등록 완료")
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun postRealKey(
@@ -74,7 +74,7 @@ class AccountService(
             appSecret = keyPairRequestDto.appSecret,
         )
         realKeyRepository.save(realKey).awaitSingleOrNull()
-        return SimpleMessageResponseDto("등록 완료")
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun getMockApprovalKey(
