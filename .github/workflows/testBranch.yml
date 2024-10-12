@@ -41,8 +41,8 @@ jobs:
       # build directory 생성(REST DOCS)
     - name: Create build directory
       run: |
-        mkdir -p /build/generated-snippets
-        chmod -R 777 /build
+        mkdir -p ./build/generated-snippets
+        chmod -R 777 ./build
 
       # set up mysql
     - name: Setup MySQL
