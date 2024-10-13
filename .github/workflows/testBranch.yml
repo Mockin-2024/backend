@@ -17,16 +17,16 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
+      contents: read
 
     # set up java
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+#    - name: Set up JDK 17
+#      uses: actions/setup-java@v4
+#      with:
+#        java-version: '17'
+#        distribution: 'temurin'
 
       # set up application file
     - name: Create application file
@@ -52,33 +52,3 @@ jobs:
       # push docker image
     - name: docker Hub push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:test
-
-
-      # set up mysql
-#    - name: Setup MySQL
-#      uses: mirromutth/mysql-action@v1.1
-#      with:
-#        host port: 3306
-#        container port: 3306
-#        mysql database: 'testdb'
-#        mysql user: 'test'
-#        mysql password: 'test'
-
-      # apply caching
-#    - name: Gradle Caching
-#      uses: actions/cache@v3
-#      with:
-#        path: |
-#          ~/.gradle/caches
-#          ~/.gradle/wrapper
-#        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#        restore-keys: |
-#          ${{ runner.os }}-gradle-
-
-#    # gradle grant execution permission and build project
-#    - name: Setup Gradle
-#      run: |
-#        chmod +x ./gradlew
-#        ./gradlew clean build
-#
-
