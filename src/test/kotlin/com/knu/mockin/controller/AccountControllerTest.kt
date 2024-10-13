@@ -56,12 +56,12 @@ class AccountControllerTest(
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-            "/account/user",
-            requestBody(
+            identifier = "/account/user",
+            requestBody = requestBody(
                 "email" type STRING means "사용자 이메일",
                 "name" type STRING means "사용자 이름",
             ),
-            responseBody(
+            responseBody =  responseBody(
                 "message" type STRING means "응답 메세지",
             )
         )

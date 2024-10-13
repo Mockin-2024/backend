@@ -47,7 +47,6 @@ fun ResultActionsDsl.makeDocument(
     parameters: List<ParameterDescriptor>,
     responseBody: List<FieldDescriptor>
 ): ResultActionsDsl {
-    println("make Document 실행")
     return this.andDo {
         handle(
             MockMvcRestDocumentation.document(
@@ -65,7 +64,6 @@ fun ResultActionsDsl.makeDocument(
     responseBody: List<FieldDescriptor>,
     isRequestBodyPresent: Boolean? = true
 ): ResultActionsDsl {
-    println("make Document 실행")
     return this.andDo {
         handle(
             MockMvcRestDocumentation.document(
