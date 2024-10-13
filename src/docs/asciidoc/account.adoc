@@ -1,4 +1,4 @@
-:snippets: /app/build/generated-snippets
+:snippets: ./build/generated-snippets
 
 = Account
 
