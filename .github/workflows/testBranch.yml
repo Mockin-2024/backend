@@ -59,8 +59,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
-    # gradle grant execution permission and build project
-    - name: Setup Gradle
-      run: |
-        chmod +x ./gradlew
-        ./gradlew clean build
+#    # gradle grant execution permission and build project
+#    - name: Setup Gradle
+#      run: |
+#        chmod +x ./gradlew
+#        ./gradlew clean build
+#
+
+      # build Docker image
+    - name: docker image build
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }} .
