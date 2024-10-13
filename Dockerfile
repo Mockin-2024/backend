@@ -6,7 +6,6 @@ COPY . .
 RUN chmod +x ./gradlew
 RUN ./gradlew clean build
 RUN ls -al /app/build/generated-snippets
-RUN ls -al ../build/generated-snippets
 RUN ls -al .
 RUN ls -al ../
 
