@@ -2,7 +2,9 @@ package com.knu.mockin.dsl
 
 import com.knu.mockin.logging.utils.LogUtil.toJson
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.restdocs.ManualRestDocumentation
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
+import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
@@ -12,7 +14,24 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActionsDsl
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.context.WebApplicationContext
 import kotlin.reflect.full.memberProperties
+
+fun buildMockMvc(
+    webApplicationContext: WebApplicationContext,
+    restDocumentation: ManualRestDocumentation
+): MockMvc {
+    return MockMvcBuilders
+        .webAppContextSetup(webApplicationContext)
+        .apply<DefaultMockMvcBuilder>(
+            MockMvcRestDocumentation.documentationConfiguration(restDocumentation)
+            .operationPreprocessors()
+            .withRequestDefaults(Preprocessors.prettyPrint())
+            .withResponseDefaults(Preprocessors.prettyPrint()))
+        .build()
+}
 
 fun <T> MockMvc.getWithParams(uri: String, requestParams: T, expectedDto: T): ResultActionsDsl {
     val params = requestParams!!::class.java.kotlin.memberProperties
