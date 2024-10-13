@@ -37,14 +37,14 @@ jobs:
         echo "${{ secrets.APPLICATION_LOGGING }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_SQL }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_REDIS }}" >> ./application.properties
-        
+
       # build Docker image
     - name: docker image build
       run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:test .
 
       # push docker image
     - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:test
 
 
       # set up mysql
