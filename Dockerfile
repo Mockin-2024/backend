@@ -6,6 +6,7 @@ COPY . .
 RUN chmod +x ./gradlew
 RUN ./gradlew clean build
 RUN ls -al /app/build/generated-snippets
+RUN ls -al /build/generated-snippets
 
 # 2단계: 런타임 단계
 FROM azul/zulu-openjdk-alpine:17-latest
