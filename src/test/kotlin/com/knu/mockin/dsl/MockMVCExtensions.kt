@@ -23,6 +23,7 @@ fun <T> MockMvc.getWithParams(uri: String, requestParams: T, expectedDto: T): Re
             if (value != null) param(key, value.toString())
         }
     }.asyncDispatch().andExpect {
+        status { isOk() }
         content {
             json(toJson(expectedDto))
         }
@@ -34,6 +35,7 @@ fun <T> MockMvc.postWithBody(uri: String, requestBody: T, expectedDto: T): Resul
         contentType = APPLICATION_JSON
         content = toJson(requestBody)
     }.asyncDispatch().andExpect {
+        status { isOk() }
         content {
             json(toJson(expectedDto))
         }
@@ -45,9 +47,8 @@ fun ResultActionsDsl.makeDocument(
     parameters: List<ParameterDescriptor>,
     responseBody: List<FieldDescriptor>
 ): ResultActionsDsl {
-    return this.andExpect {
-        status { is2xxSuccessful() }
-    }.andDo {
+    println("make Document 실행")
+    return this.andDo {
         handle(
             MockMvcRestDocumentation.document(
                 identifier,
@@ -64,9 +65,8 @@ fun ResultActionsDsl.makeDocument(
     responseBody: List<FieldDescriptor>,
     isRequestBodyPresent: Boolean? = true
 ): ResultActionsDsl {
-    return this.andExpect {
-        status { is2xxSuccessful() }
-    }.andDo {
+    println("make Document 실행")
+    return this.andDo {
         handle(
             MockMvcRestDocumentation.document(
                 identifier,
