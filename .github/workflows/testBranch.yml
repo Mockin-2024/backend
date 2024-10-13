@@ -38,14 +38,6 @@ jobs:
         echo "${{ secrets.APPLICATION_SQL }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_REDIS }}" >> ./application.properties
 
-#      # build directory 생성(REST DOCS)
-#    - name: Create build directory
-#      run: |
-#        mkdir -p ./build/generated-snippets
-#        mkdir -p ./build/docs/asciidoc
-#        chmod -R 777 ./build
-        
-
       # set up mysql
     - name: Setup MySQL
       uses: mirromutth/mysql-action@v1.1
@@ -72,9 +64,3 @@ jobs:
       run: |
         chmod +x ./gradlew
         ./gradlew clean build
-
-    - name: Upload Test Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-report
-        path: build/reports/tests/test/index.html

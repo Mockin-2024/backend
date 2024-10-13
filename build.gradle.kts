@@ -52,8 +52,8 @@ dependencies {
     // Spring R2DBC with MySQL
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("io.asyncer:r2dbc-mysql:1.2.0")
-    runtimeOnly("mysql:mysql-connector-java:8.0.33")
-    runtimeOnly("com.h2database:h2")
+    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("com.h2database:h2")
 
     // Kotlin Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.9.0")
