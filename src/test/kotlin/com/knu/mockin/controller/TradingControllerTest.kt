@@ -29,7 +29,7 @@ class TradingControllerTest(
 ): StringSpec({
     val restDocumentation = ManualRestDocumentation()
     lateinit var mockMvc: MockMvc
-
+    timeout = 5000
     beforeTest {
         mockMvc = MockMvcBuilders
             .webAppContextSetup(webApplicationContext)

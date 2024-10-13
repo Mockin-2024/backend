@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import kotlin.time.Duration.Companion.seconds
 
 @WebMvcTest(AccountController::class)
 class AccountControllerTest(
@@ -27,6 +28,7 @@ class AccountControllerTest(
 ): StringSpec({
     val restDocumentation = ManualRestDocumentation()
     lateinit var mockMvc: MockMvc
+    timeout = 5000
 
     beforeTest {
         mockMvc = MockMvcBuilders
