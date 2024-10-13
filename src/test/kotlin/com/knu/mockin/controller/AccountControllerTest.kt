@@ -1,156 +1,71 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.logging.utils.LogUtil
-import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
-import com.knu.mockin.model.dto.request.account.AccountRequestDto
-import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
+import com.knu.mockin.dsl.*
+import com.knu.mockin.model.STRING
+import com.knu.mockin.model.dto.request.account.UserRequestDto
+import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.service.AccountService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.mockk.coEvery
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.MediaType.APPLICATION_JSON
+import io.mockk.mockk
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.ManualRestDocumentation
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
-import org.springframework.restdocs.payload.JsonFieldType
-import org.springframework.restdocs.payload.PayloadDocumentation
-import org.springframework.restdocs.snippet.Snippet
-import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.test.web.servlet.MockMvcResultHandlersDsl
-import org.springframework.test.web.servlet.client.MockMvcWebTestClient
+import org.springframework.restdocs.operation.preprocess.Preprocessors
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
-//@WebMvcTest(AccountController::class)
-@SpringBootTest
-//@WebFluxTest
-//@WebAppConfiguration
-//@AutoConfigureRestDocs
+@WebMvcTest(AccountController::class)
 class AccountControllerTest(
     @MockkBean
-    private val accountService:AccountService,
-    private val webApplicationContext:WebApplicationContext,
+    val accountService:AccountService = mockk(),
+    val webApplicationContext: WebApplicationContext
 ): StringSpec({
-
-    lateinit var webTestClient: WebTestClient
     val restDocumentation = ManualRestDocumentation()
+    lateinit var mockMvc: MockMvc
 
     beforeTest {
-        webTestClient = MockMvcWebTestClient.bindToApplicationContext(webApplicationContext)
-            .configureClient()
-            .filters { documentationConfiguration(restDocumentation) }
+        mockMvc = MockMvcBuilders
+            .webAppContextSetup(webApplicationContext)
+            .apply<DefaultMockMvcBuilder>(documentationConfiguration(restDocumentation)
+                .operationPreprocessors()
+                .withRequestDefaults(Preprocessors.prettyPrint())
+                .withResponseDefaults(Preprocessors.prettyPrint()))
             .build()
-        restDocumentation.beforeTest(AccountControllerTest::class.java, it.name.testName)
+        restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
     }
 
     afterTest {
         restDocumentation.afterTest()
     }
-    "POST /account returns approvalKey" {
-        val accountDto = AccountRequestDto("test")
-        val requestDto = KISApprovalRequestDto(
-            grantType = "client_credentials",
-            appKey = "appKey",
-            secretKey = "appSecret")
-        val expectedDto = ApprovalKeyResponseDto("test")
-        coEvery { accountService.getMockApprovalKey(accountDto) } returns expectedDto
+    val baseUri = "/account"
 
-        val result = webTestClient.post().uri("/account/mock-approval-key").accept(APPLICATION_JSON)
-            .bodyValue(accountDto)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectBody()
-            .json(LogUtil.toJson(expectedDto))
-            .consumeWith{
-                document("get approval key",
-                    PayloadDocumentation.responseFields(
-                        PayloadDocumentation
-                            .fieldWithPath("approval_key")
-                            .type(JsonFieldType.STRING)
-                            .description("해당 approval key"))
-                )
-            }
-            .returnResult()
-//        MockMvcWebTestClient.resultActionsFor(result)
-//            .andExpect(model().attribute("approval_key", "test"))
+    "POST /account/user" {
+        val uri = "$baseUri/user"
+        val requestDto = UserRequestDto(
+            email = "test@naver.com",
+            name = "test"
+        )
+        val expectedDto = SimpleMessageResponseDto("Register Complete")
+        coEvery { accountService.postUser(requestDto) } returns expectedDto
+
+        val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
+
+        response.makeDocument(
+            identifier = "/account/user",
+            requestBody = requestBody(
+                "email" type STRING means "사용자 이메일",
+                "name" type STRING means "사용자 이름",
+            ),
+            responseBody =  responseBody(
+                "message" type STRING means "응답 메세지",
+            )
+        )
     }
 }){
     override fun extensions() = listOf(SpringExtension)
-
-    fun MockMvcResultHandlersDsl.document(identifier: String, vararg snippets: Snippet) {
-        handle(MockMvcRestDocumentation.document(identifier, *snippets))
-    }
 }
-
-
-////@WebMvcTest(AccountController::class)
-//@SpringBootTest
-//@WebAppConfiguration
-//class AccountControllerTest(
-//    @MockkBean
-//    private val accountService:AccountService,
-//    private val webApplicationContext:WebApplicationContext,
-//    @Value("\${ki.app-key}") var appKey: String,
-//    @Value("\${ki.app-secret}") var appSecret: String
-//): StringSpec({
-//
-//    lateinit var mockMvc:MockMvc
-//    val restDocumentation = ManualRestDocumentation()
-//
-//    beforeTest {
-//        mockMvc = MockMvcBuilders
-//            .webAppContextSetup(webApplicationContext)
-//            .apply<DefaultMockMvcBuilder>(
-//                MockMvcRestDocumentation.documentationConfiguration(restDocumentation)
-//                    .operationPreprocessors()
-//                    .withResponseDefaults(prettyPrint())
-//            )
-//            .build()
-//        restDocumentation.beforeTest(AccountControllerTest::class.java, it.name.testName)
-//    }
-//
-//    afterTest {
-//        restDocumentation.afterTest()
-//    }
-//    "POST /account returns approvalKey" {
-//        val requestDto = KISApprovalRequestDto(
-//            grantType = "client_credentials",
-//            appKey = appKey,
-//            secretKey = appSecret)
-//        val expectedDto = ApprovalKeyResponseDto("test")
-//        every { accountService.getApprovalKey(requestDto) } returns Mono.just(expectedDto)
-//
-//        mockMvc.post("/account"){
-//            accept(APPLICATION_JSON)
-//        }.andExpect{
-//            status().isOk
-//            content().contentType(APPLICATION_JSON)
-//            jsonPath("$.approval_key").value(expectedDto.approvalKey)
-//        }.andDo{
-//            handle(
-//                document("get approval key",
-//                PayloadDocumentation.responseFields(
-//                    PayloadDocumentation
-//                        .fieldWithPath("approval_key")
-//                        .type(JsonFieldType.STRING)
-//                        .description("해당 approval key"))
-//                )
-//            )
-//        }.andReturn().asyncResult
-//
-////        StepVerifier.create(result)
-////            .expectNextMatches { response ->
-////                response.approvalKey == expectedDto.approvalKey
-////            }
-////            .verifyComplete()
-//    }
-//}){
-//    override fun extensions() = listOf(SpringExtension)
-//
-//    fun MockMvcResultHandlersDsl.document(identifier: String, vararg snippets: Snippet) {
-//        handle(MockMvcRestDocumentation.document(identifier, *snippets))
-//    }
-//}

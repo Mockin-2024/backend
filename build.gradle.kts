@@ -52,8 +52,8 @@ dependencies {
     // Spring R2DBC with MySQL
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("io.asyncer:r2dbc-mysql:1.2.0")
-    runtimeOnly("mysql:mysql-connector-java:8.0.33")
-    runtimeOnly("com.h2database:h2")
+    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("com.h2database:h2")
 
     // Kotlin Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.9.0")
@@ -66,49 +66,36 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 }
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+val snippetsDir = file(property("snippetsDirPath")!!)
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    outputs.dir(snippetsDir)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
     }
 }
 
-val snippetsDir by extra { file("build/generated-snippets") }
+tasks.asciidoctor {
+    inputs.dir(snippetsDir)
+    dependsOn(tasks.test)
+}
 
-//tasks.withType<Test> {
-//    useJUnitPlatform()
-//}
+tasks.asciidoctor {
+    finalizedBy("copyDocument")
+}
 
-// Ascii Doc Create Tasks
-tasks {
-    // Test 결과를 snippet Directory에 출력
-    test {
-        outputs.dir(snippetsDir)
-        useJUnitPlatform()
-    }
+tasks.register<Copy>("copyDocument") {
+    dependsOn("asciidoctor")
 
-    asciidoctor {
-        // test 가 성공해야만, 아래 Task 실행
-        dependsOn(test)
+    from(file("./build/docs/asciidoc/"))
+    into(file("./src/main/resources/static/docs"))
+}
 
-//        // 기존에 존재하는 Docs 삭제(문서 최신화를 위해)
-//        doFirst {
-//            delete(file("src/main/resources/static/docs"))
-//        }
-
-        // snippet Directory 설정
-        inputs.dir(snippetsDir)
-
-        // Ascii Doc 파일 생성
-        doLast {
-            copy {
-                from("build/docs/asciidoc")
-                into("src/main/resources/static/docs")
-            }
-        }
-    }
-
-    build {
-        // Ascii Doc 파일 생성이 성공해야만, Build 진행
-        dependsOn(asciidoctor)
-    }
+tasks.named("build") {
+    dependsOn("copyDocument")
 }

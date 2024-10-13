@@ -7,6 +7,7 @@ import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
 import com.knu.mockin.model.dto.request.account.UserRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
+import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.service.AccountService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -19,33 +20,33 @@ class AccountController(
     @PostMapping("/user")
     suspend fun postUser(
         @RequestBody userRequestDto: UserRequestDto
-    ): ResponseEntity<String> {
-        accountService.postUser(userRequestDto)
-        return ResponseEntity.ok("등록 완료")
+    ): ResponseEntity<SimpleMessageResponseDto> {
+        val result = accountService.postUser(userRequestDto)
+        return ResponseEntity.ok(result)
     }
 
     @PatchMapping("/user")
     suspend fun patchUser(
         @RequestBody userAccountNumberRequestDto: UserAccountNumberRequestDto
-    ): ResponseEntity<String> {
-        accountService.patchUser(userAccountNumberRequestDto)
-        return ResponseEntity.ok("등록 완료")
+    ): ResponseEntity<SimpleMessageResponseDto> {
+        val result = accountService.patchUser(userAccountNumberRequestDto)
+        return ResponseEntity.ok(result)
     }
 
     @PostMapping("/mock-key")
     suspend fun postMockKey(
         @RequestBody keyPairRequestDto: KeyPairRequestDto
-    ): ResponseEntity<String> {
-        accountService.postMockKey(keyPairRequestDto)
-        return ResponseEntity.ok("등록 완료")
+    ): ResponseEntity<SimpleMessageResponseDto> {
+        val result = accountService.postMockKey(keyPairRequestDto)
+        return ResponseEntity.ok(result)
     }
 
     @PostMapping("/real-key")
     suspend fun postRealKey(
         @RequestBody keyPairRequestDto: KeyPairRequestDto
-    ): ResponseEntity<String> {
-        accountService.postRealKey(keyPairRequestDto)
-        return ResponseEntity.ok("등록 완료")
+    ): ResponseEntity<SimpleMessageResponseDto> {
+        val result = accountService.postRealKey(keyPairRequestDto)
+        return ResponseEntity.ok(result)
     }
 
     @PostMapping("/mock-approval-key")

@@ -8,7 +8,7 @@ data class KISPresentBalanceResponseDto(
     @JsonProperty("msg1") val responseMessage: String,      // 응답메세지
     @JsonProperty("output1") val output1: List<Output1Dto>, // 응답상세1 (체결기준 잔고)
     @JsonProperty("output2") val output2: List<Output2Dto>, // 응답상세2
-    @JsonProperty("output3") val output3: Output3Dto        // 응답상세3
+    @JsonProperty("output3") val output3: Output3Dto?       // 응답상세3
 )
 
 data class Output1Dto(

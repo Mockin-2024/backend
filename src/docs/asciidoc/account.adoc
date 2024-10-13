@@ -1,0 +1,23 @@
+:snippets: ./build/generated-snippets
+
+= Account
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<user, 사용자 등록>>
+
+[#user]
+== 사용자 등록
+
+=== Request
+include::{snippets}/account/user/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/user/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/user/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/user/response-fields.adoc[]

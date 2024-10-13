@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 
 RUN chmod +x ./gradlew
-RUN ./gradlew clean build -x test
+RUN ./gradlew clean build
 
 # 2단계: 런타임 단계
 FROM azul/zulu-openjdk-alpine:17-latest

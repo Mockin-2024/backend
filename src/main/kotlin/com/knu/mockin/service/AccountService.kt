@@ -10,6 +10,7 @@ import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
 import com.knu.mockin.model.dto.request.account.UserRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
+import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.MockKey
 import com.knu.mockin.model.entity.RealKey
 import com.knu.mockin.model.entity.User
@@ -32,23 +33,25 @@ class AccountService(
 ) {
     suspend fun postUser(
         userRequestDto: UserRequestDto
-    ){
+    ): SimpleMessageResponseDto {
         val user = User(
             email = userRequestDto.email,
             name = userRequestDto.name
         )
         userRepository.save(user).awaitSingleOrNull()
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun patchUser(
         userAccountNumberRequestDto: UserAccountNumberRequestDto
-    ){
+    ): SimpleMessageResponseDto {
         userRepository.updateByEmail(userAccountNumberRequestDto.email, userAccountNumberRequestDto.accountNumber).awaitSingleOrNull()
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun postMockKey(
         keyPairRequestDto: KeyPairRequestDto
-    ){
+    ): SimpleMessageResponseDto {
         val user = userRepository.findByEmail(keyPairRequestDto.email).awaitFirst()
 
         val mockKey = MockKey(
@@ -57,11 +60,12 @@ class AccountService(
             appSecret = keyPairRequestDto.appSecret,
         )
         mockKeyRepository.save(mockKey).awaitSingleOrNull()
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun postRealKey(
         keyPairRequestDto: KeyPairRequestDto
-    ){
+    ): SimpleMessageResponseDto {
         val user = userRepository.findByEmail(keyPairRequestDto.email).awaitFirst()
         println(user.email)
         val realKey = RealKey(
@@ -70,6 +74,7 @@ class AccountService(
             appSecret = keyPairRequestDto.appSecret,
         )
         realKeyRepository.save(realKey).awaitSingleOrNull()
+        return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun getMockApprovalKey(
