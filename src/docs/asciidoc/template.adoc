@@ -1,4 +1,4 @@
-:snippets: ./build/generated-snippets
+:snippets: /app/build/generated-snippets
 
 = 대상 컨트롤러 이름
 
