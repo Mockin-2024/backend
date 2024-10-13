@@ -92,8 +92,8 @@ tasks.asciidoctor {
 tasks.register<Copy>("copyDocument") {
     dependsOn("asciidoctor")
 
-    from(file("./build/docs/asciidoc/"))
-    into(file("./src/main/resources/static/docs"))
+    from(file("/app/build/docs/asciidoc/"))
+    into(file("/app/src/main/resources/static/docs"))
 }
 
 tasks.named("build") {
