@@ -1,0 +1,75 @@
+:snippets: ./build/generated-snippets
+
+= Basic
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<current, 현재체결가>>
+* <<term, 기간별시세>>
+* <<daily-chart-price, 종목/지수/환율기간별시세>>
+* <<search, 조건검색>>
+
+[#current]
+== 현재체결가
+
+=== Request
+include::{snippets}/basic/current/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/current/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/current/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/current/response-fields.adoc[]
+
+
+[#term]
+== 기간별시세
+
+=== Request
+include::{snippets}/basic/term/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/term/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/term/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/term/response-fields.adoc[]
+
+
+[#daily-chart-price]
+== 종목/지수/환율기간별시세
+
+=== Request
+include::{snippets}/basic/daily-chart-price/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/daily-chart-price/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/daily-chart-price/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/daily-chart-price/response-fields.adoc[]
+
+
+[#search]
+== 조건검색
+
+=== Request
+include::{snippets}/basic/search/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/search/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/search/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/search/response-fields.adoc[]
+
