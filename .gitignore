@@ -42,3 +42,6 @@ out/
 ### properties ###
 src/main/resources/application-*.properties
 logs
+
+src/main/resources/static/docs
+!src/main/resources/static/docs/index.html
