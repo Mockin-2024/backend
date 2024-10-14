@@ -12,6 +12,7 @@
 * <<countries-holiday, 결제일자조회>>
 * <<price-detail, 현재가상세>>
 * <<item-chart-price, 주식분봉조회>>
+* <<index-chart-price, 지수분봉조회>>
 
 [#current]
 == 현재체결가
@@ -121,5 +122,22 @@ include::{snippets}/basic/item-chart-price/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/basic/item-chart-price/response-fields.adoc[]
+
+
+[#index-chart-price]
+== 지수분봉조회
+
+=== Request
+include::{snippets}/basic/index-chart-price/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/index-chart-price/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/index-chart-price/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/index-chart-price/response-fields.adoc[]
+
 
 

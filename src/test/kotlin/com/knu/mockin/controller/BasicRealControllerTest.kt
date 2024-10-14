@@ -161,7 +161,51 @@ class BasicRealControllerTest (
                     "output1" type OBJECT isOptional true means "응답 상세 1",
                     "output2" type ARRAY isOptional true means "응답 상세 2"
             )
-    )
-}
+        )
+    }
+
+
+    "GET /basic/index-chart-price" {
+        val uri = "${baseUri}/index-chart-price"
+        val requestParams = IndexChartPriceRequestParameterDto(
+                fidCondMrktDivCode = "N",  // 예시 값으로 대체
+                fidInputIscd = "SPX",        // 예시 값으로 대체
+                fidHourClsCode = "0",     // 예시 값으로 대체
+                fidPwDataIncuYn = "Y",                // 과거 데이터 포함 여부
+                email = "test@naver.com"
+        )
+        val expectedDto = KISIndexChartPriceResponseDto(
+                successFailureStatus = "0",
+                responseCode = "MCA00000",
+                responseMessage = "test completed",
+                output1 = null,
+                output2 = listOf()
+        )
+
+        coEvery { basicRealService.getIndexChartPrice(any()) } returns expectedDto
+
+        val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
+
+        response.makeDocument(
+                uri,
+                parameters(
+                        "fidCondMrktDivCode" means "조건 시장 분류 코드",
+                        "fidInputIscd" means "입력 종목코드",
+                        "fidHourClsCode" means "시간 구분 코드",
+                        "fidPwDataIncuYn" means "과거 데이터 포함 여부",
+                        "email" means "사용자 이메일"
+                ),
+
+                responseBody(
+                        "rt_cd" type STRING means "결과 코드",
+                        "msg_cd" type STRING means "메시지 코드",
+                        "msg1" type STRING means "메시지",
+                        "output1" type OBJECT isOptional true means "응답 상세 1",
+                        "output2" type ARRAY isOptional true means "응답 상세 2"
+                )
+        )
+    }
+
+
 
 })

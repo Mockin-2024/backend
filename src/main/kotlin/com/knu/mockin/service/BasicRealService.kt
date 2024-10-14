@@ -3,12 +3,15 @@ package com.knu.mockin.service
 import com.knu.mockin.kisclient.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISCountriesHolidayRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.KISIndexChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISItemChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISPriceDetailRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISIndexChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
 import com.knu.mockin.model.dto.request.basic.CountriesHolidayRequestParameterDto
+import com.knu.mockin.model.dto.request.basic.IndexChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.ItemChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.PriceDetailRequestParameterDto
 import com.knu.mockin.model.enum.TradeId
@@ -96,6 +99,28 @@ class BasicRealService (
         )
 
         return kisBasicRealClient.getItemChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+    }
+
+    suspend fun getIndexChartPrice(
+            indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto
+    ): KISIndexChartPriceResponseDto {
+        val mockKey = realKeyRepository.findByEmail(indexChartPriceRequestParameterDto.email).awaitFirst()
+        val user = userRepository.findByEmail(indexChartPriceRequestParameterDto.email).awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
+                transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE) // 거래 ID를 INDEX_CHART_PRICE로 변경
+        )
+
+        val requestParameter = KISIndexChartPriceRequestParameterDto(
+                fidCondMrktDivCode = indexChartPriceRequestParameterDto.fidCondMrktDivCode,
+                fidInputIscd = indexChartPriceRequestParameterDto.fidInputIscd,
+                fidHourClsCode = indexChartPriceRequestParameterDto.fidHourClsCode,
+                fidPwDataIncuYn = indexChartPriceRequestParameterDto.fidPwDataIncuYn
+        )
+
+        return kisBasicRealClient.getIndexChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
 
 }
