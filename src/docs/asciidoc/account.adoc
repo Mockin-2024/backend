@@ -5,9 +5,16 @@
 == 목차
 
 * xref:/docs/index.html[메인으로 돌아가기]
-* <<user, 사용자 등록>>
+* <<user-post, 사용자 등록>>
+* <<user-patch, 계좌번호 등록>>
+* <<mock-key, 모의 앱 키, 앱 시크릿 저장>>
+* <<real-key, 실전 앱 키, 앱 시크릿 저장>>
+* <<mock-approval-key, 모의 승인키 요청>>
+* <<real-approval-key, 실전 승인키 요청>>
+* <<mock-token, 모의 토큰 요청>>
+* <<real-token, 실전 토큰 요청>>
 
-[#user]
+[#user-post]
 == 사용자 등록
 
 === Request
@@ -21,3 +28,112 @@ include::{snippets}/account/user/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/account/user/response-fields.adoc[]
+
+/*
+[#user-patch]
+== 계좌번호 등록
+
+=== Request
+include::{snippets}/account/user-patch/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/user-patch/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/user-patch/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/user-patch/response-fields.adoc[]
+*/
+
+[#mock-key]
+== 모의 앱 키, 앱 시크릿 저장
+
+=== Request
+include::{snippets}/account/mock-key/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/mock-key/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/mock-key/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/mock-key/response-fields.adoc[]
+
+[#real-key]
+== 실전 앱 키, 앱 시크릿 저장
+
+=== Request
+include::{snippets}/account/real-key/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/real-key/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/real-key/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/real-key/response-fields.adoc[]
+
+[#mock-approval-key]
+== 모의 승인키 요청
+
+=== Request
+include::{snippets}/account/mock-approval-key/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/mock-approval-key/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/mock-approval-key/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/mock-approval-key/response-fields.adoc[]
+
+[#real-approval-key]
+== 실전 승인키 요청
+
+=== Request
+include::{snippets}/account/real-approval-key/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/real-approval-key/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/real-approval-key/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/real-approval-key/response-fields.adoc[]
+
+[#mock-token]
+== 모의 토큰 요청
+
+=== Request
+include::{snippets}/account/mock-token/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/mock-token/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/mock-token/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/mock-token/response-fields.adoc[]
+
+[#real-token]
+== 실전 토큰 요청
+
+=== Request
+include::{snippets}/account/real-token/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/account/real-token/request-fields.adoc[]
+
+=== Response
+include::{snippets}/account/real-token/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/account/real-token/response-fields.adoc[]
+
+
