@@ -28,7 +28,8 @@ enum class TradeId(val tradeId:String) {
     TERM_PRICE("HHDFS76240000"),          // 해외주식 기간별시세
     DAILY_CHART_PRICE("FHKST03030100"),      // 해외주식 종목/지수/환율 기간별 시세
     SEARCH("HHDFS76410000"),     // 해외주식 조건검색
-    COUNTRIES_HOLIDAY("CTOS5011R");      // 해외결제일자조회
+    COUNTRIES_HOLIDAY("CTOS5011R"),      // 해외결제일자조회
+    PRICE_DETAIL("HHDFS76200200");        // 해외주식 현재가상세
   
   
     companion object {
