@@ -10,10 +10,7 @@ import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.request.ParameterDescriptor
 import org.springframework.restdocs.request.RequestDocumentation.queryParameters
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.ResultActionsDsl
-import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.*
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
@@ -51,6 +48,18 @@ fun <T> MockMvc.getWithParams(uri: String, requestParams: T, expectedDto: T): Re
 
 fun <T> MockMvc.postWithBody(uri: String, requestBody: T, expectedDto: T): ResultActionsDsl{
     return this.post(uri){
+        contentType = APPLICATION_JSON
+        content = toJson(requestBody)
+    }.asyncDispatch().andExpect {
+        status { isOk() }
+        content {
+            json(toJson(expectedDto))
+        }
+    }
+}
+
+fun <T> MockMvc.patchWithBody(uri: String, requestBody: T, expectedDto: T): ResultActionsDsl {
+    return this.patch(uri) {
         contentType = APPLICATION_JSON
         content = toJson(requestBody)
     }.asyncDispatch().andExpect {
