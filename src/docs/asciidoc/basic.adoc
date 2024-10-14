@@ -9,6 +9,8 @@
 * <<term, 기간별시세>>
 * <<daily-chart-price, 종목/지수/환율기간별시세>>
 * <<search, 조건검색>>
+* <<countries-holiday, 결제일자조회>>
+* <<price-detail, 현재가상세>>
 
 [#current]
 == 현재체결가
@@ -72,4 +74,36 @@ include::{snippets}/basic/search/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/basic/search/response-fields.adoc[]
+
+[#countries-holiday]
+== 결제일자조회
+
+=== Request
+include::{snippets}/basic/countries-holiday/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/countries-holiday/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/countries-holiday/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/countries-holiday/response-fields.adoc[]
+
+[#price-detail]
+== 현재가상세
+
+=== Request
+include::{snippets}/basic/price-detail/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/price-detail/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/price-detail/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/price-detail/response-fields.adoc[]
+
+
 
