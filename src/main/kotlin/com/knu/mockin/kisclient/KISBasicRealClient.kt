@@ -2,8 +2,10 @@ package com.knu.mockin.kisclient
 
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISCountriesHolidayRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.KISItemChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISPriceDetailRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
 import com.knu.mockin.util.HttpUtils
 import org.springframework.stereotype.Component
@@ -39,6 +41,18 @@ class KISBasicRealClient (
                 .headers { HttpUtils.addHeaders(it, header) }
                 .retrieve()
                 .bodyToMono(KISPriceDetailResponseDto::class.java)
+    }
+
+    fun getItemChartPrice(
+            header: KISOverSeaRequestHeaderDto,
+            requestParameter: KISItemChartPriceRequestParameterDto
+    ): Mono<KISItemChartPriceResponseDto> {
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-time-itemchartprice", requestParameter)
+        return webClientReal.get()
+                .uri(targetUri)
+                .headers { HttpUtils.addHeaders(it, header) }
+                .retrieve()
+                .bodyToMono(KISItemChartPriceResponseDto::class.java)
     }
 
 }
