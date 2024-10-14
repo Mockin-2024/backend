@@ -1,8 +1,10 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
 import com.knu.mockin.model.dto.request.basic.CountriesHolidayRequestParameterDto
+import com.knu.mockin.model.dto.request.basic.ItemChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.PriceDetailRequestParameterDto
 import com.knu.mockin.service.BasicRealService
 import org.springframework.http.ResponseEntity
@@ -32,6 +34,15 @@ class BasicRealController (
             @ModelAttribute priceDetailRequestParameterDto: PriceDetailRequestParameterDto
     ): ResponseEntity<KISPriceDetailResponseDto> {
         val result = basicRealService.getPriceDetail(priceDetailRequestParameterDto)
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/item-chart-price")
+    suspend fun getItemChartPrice(
+            @ModelAttribute itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto
+    ): ResponseEntity<KISItemChartPriceResponseDto> {
+        val result = basicRealService.getItemChartPrice(itemChartPriceRequestParameterDto)
 
         return ResponseEntity.ok(result)
     }

@@ -3,10 +3,13 @@ package com.knu.mockin.service
 import com.knu.mockin.kisclient.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISCountriesHolidayRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.KISItemChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.basic.KISPriceDetailRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
+import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
 import com.knu.mockin.model.dto.request.basic.CountriesHolidayRequestParameterDto
+import com.knu.mockin.model.dto.request.basic.ItemChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.PriceDetailRequestParameterDto
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.RealKeyRepository
@@ -66,6 +69,33 @@ class BasicRealService (
         )
 
         return kisBasicRealClient.getPriceDetail(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+    }
+
+    suspend fun getItemChartPrice(
+            itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto
+    ): KISItemChartPriceResponseDto {
+        val mockKey = realKeyRepository.findByEmail(itemChartPriceRequestParameterDto.email).awaitFirst()
+        val user = userRepository.findByEmail(itemChartPriceRequestParameterDto.email).awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                appKey = mockKey.appKey,
+                appSecret = mockKey.appSecret,
+                transactionId = TradeId.getTradeIdByEnum(TradeId.ITEM_CHART_PRICE)
+        )
+
+        val requestParameter = KISItemChartPriceRequestParameterDto(
+                AUTH = itemChartPriceRequestParameterDto.AUTH,
+                EXCD = itemChartPriceRequestParameterDto.EXCD,
+                SYMB = itemChartPriceRequestParameterDto.SYMB,
+                NMIN = itemChartPriceRequestParameterDto.NMIN,
+                PINC = itemChartPriceRequestParameterDto.PINC,
+                NEXT = itemChartPriceRequestParameterDto.NEXT,
+                NREC = itemChartPriceRequestParameterDto.NREC,
+                FILL = itemChartPriceRequestParameterDto.FILL,
+                KEYB = itemChartPriceRequestParameterDto.KEYB
+        )
+
+        return kisBasicRealClient.getItemChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
 
 }
