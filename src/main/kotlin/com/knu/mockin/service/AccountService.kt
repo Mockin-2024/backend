@@ -1,5 +1,7 @@
 package com.knu.mockin.service
 
+import com.knu.mockin.exeption.CustomException
+import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
@@ -17,6 +19,7 @@ import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
@@ -34,25 +37,35 @@ class AccountService(
     suspend fun postUser(
         userRequestDto: UserRequestDto
     ): SimpleMessageResponseDto {
-        val user = User(
+        val user = userRepository.findByEmail(userRequestDto.email).awaitSingleOrNull()
+        if(user != null) throw CustomException(ErrorCode.ALREADY_REGISTERED)
+
+        userRepository.save(User(
             email = userRequestDto.email,
             name = userRequestDto.name
-        )
-        userRepository.save(user).awaitSingleOrNull()
+        )).awaitSingleOrNull()
+
         return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun patchUser(
         userAccountNumberRequestDto: UserAccountNumberRequestDto
     ): SimpleMessageResponseDto {
-        userRepository.updateByEmail(userAccountNumberRequestDto.email, userAccountNumberRequestDto.accountNumber).awaitSingleOrNull()
+        userRepository.findByEmail(userAccountNumberRequestDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
+        userRepository.updateByEmail(userAccountNumberRequestDto.email, userAccountNumberRequestDto.accountNumber)
+            .awaitSingleOrNull() ?: throw CustomException(ErrorCode.INTERNAL_SERVER_ERROR)
+
         return SimpleMessageResponseDto("Register Complete")
     }
 
     suspend fun postMockKey(
         keyPairRequestDto: KeyPairRequestDto
     ): SimpleMessageResponseDto {
-        val user = userRepository.findByEmail(keyPairRequestDto.email).awaitFirst()
+        val user = userRepository.findByEmail(keyPairRequestDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND).awaitFirst()
 
         val mockKey = MockKey(
             email = user.email,
@@ -67,7 +80,7 @@ class AccountService(
         keyPairRequestDto: KeyPairRequestDto
     ): SimpleMessageResponseDto {
         val user = userRepository.findByEmail(keyPairRequestDto.email).awaitFirst()
-        println(user.email)
+
         val realKey = RealKey(
             email = user.email,
             appKey = keyPairRequestDto.appKey,
