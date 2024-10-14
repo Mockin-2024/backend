@@ -14,11 +14,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.ManualRestDocumentation
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
-import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
 @WebMvcTest(TradingController::class)
@@ -31,13 +27,7 @@ class TradingControllerTest(
     lateinit var mockMvc: MockMvc
 
     beforeTest {
-        mockMvc = MockMvcBuilders
-            .webAppContextSetup(webApplicationContext)
-            .apply<DefaultMockMvcBuilder>(documentationConfiguration(restDocumentation)
-                .operationPreprocessors()
-                .withRequestDefaults(Preprocessors.prettyPrint())
-                .withResponseDefaults(Preprocessors.prettyPrint()))
-            .build()
+        mockMvc = buildMockMvc(webApplicationContext, restDocumentation)
         restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
     }
 
