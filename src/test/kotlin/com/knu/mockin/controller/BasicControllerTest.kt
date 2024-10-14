@@ -36,13 +36,7 @@ class BasicControllerTest(
     lateinit var mockMvc: MockMvc
 
     beforeTest {
-        mockMvc = MockMvcBuilders
-                .webAppContextSetup(webApplicationContext)
-                .apply<DefaultMockMvcBuilder>(documentationConfiguration(restDocumentation)
-                        .operationPreprocessors()
-                        .withRequestDefaults(Preprocessors.prettyPrint())
-                        .withResponseDefaults(Preprocessors.prettyPrint()))
-                .build()
+        mockMvc = buildMockMvc(webApplicationContext, restDocumentation)
         restDocumentation.beforeTest(BasicControllerTest::class.java, it.name.testName)
     }
 
