@@ -16,7 +16,7 @@ object ExtensionUtil {
             val successFailureCode = properties.find { it.name == "successFailureStatus" }?.call(instance)
             val message = properties.find { it.name == "responseMessage" }?.call(instance)
 
-            if (successFailureCode != null && successFailureCode != 0) {
+            if (successFailureCode != null && successFailureCode != "0") {
                 return@flatMap Mono.error(CustomException(ErrorCode.KIS_API_FAILED, message.toString()))
             }
 
