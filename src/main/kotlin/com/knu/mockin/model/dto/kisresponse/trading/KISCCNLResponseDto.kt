@@ -3,9 +3,9 @@ package com.knu.mockin.model.dto.kisresponse.trading
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class KISCCNLResponseDto(
-    @JsonProperty("rt_cd") val resultCode: String,           // 성공 실패 여부
+    @JsonProperty("rt_cd") val successFailureStatus: String,           // 성공 실패 여부
     @JsonProperty("msg_cd") val messageCode: String, // 응답코드
-    @JsonProperty("msg1") val message: String, // 응답메세지
+    @JsonProperty("msg1") val responseMessage: String, // 응답메세지
     @JsonProperty("ctx_area_fk200") val continuousQuerySearchCondition200: String, // 연속조회검색조건200
     @JsonProperty("ctx_area_nk200") val continuousQueryKey200: String, // 연속조회키200
     @JsonProperty("output") val output: List<OrderDetail> // 응답상세
