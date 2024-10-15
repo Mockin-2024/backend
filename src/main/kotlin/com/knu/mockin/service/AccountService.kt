@@ -21,6 +21,7 @@ import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.StringUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -137,7 +138,7 @@ class AccountService(
                 appSecret = user.appSecret)
         val dto = kisOauth2RealClient.postTokenP(requestDto).awaitSingle()
 
-        RedisUtil.saveToken(user.email, dto.accessToken)
+        RedisUtil.saveToken(StringUtil.appendRealSuffix(user.email), dto.accessToken)
 
         return dto
     }

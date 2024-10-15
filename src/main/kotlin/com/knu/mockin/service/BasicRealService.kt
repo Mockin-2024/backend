@@ -18,6 +18,7 @@ import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.StringUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.stereotype.Service
@@ -29,6 +30,10 @@ class BasicRealService (
         private val userRepository: UserRepository
 ) {
 
+    fun appendRealSuffix(email: String): String {
+        return "${email}-real"
+    }
+
     suspend fun getCountriesHoliday(
             countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto
     ) : KISCountriesHolidayResponseDto {
@@ -37,7 +42,7 @@ class BasicRealService (
         val user = userRepository.findByEmail(
                 countriesHolidayRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.COUNTRIES_HOLIDAY)
@@ -59,7 +64,7 @@ class BasicRealService (
         val mockKey = realKeyRepository.findByEmail(priceDetailRequestParameterDto.email).awaitFirst()
         val user = userRepository.findByEmail(priceDetailRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.PRICE_DETAIL)
@@ -80,7 +85,7 @@ class BasicRealService (
         val mockKey = realKeyRepository.findByEmail(itemChartPriceRequestParameterDto.email).awaitFirst()
         val user = userRepository.findByEmail(itemChartPriceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.ITEM_CHART_PRICE)
@@ -107,7 +112,7 @@ class BasicRealService (
         val mockKey = realKeyRepository.findByEmail(indexChartPriceRequestParameterDto.email).awaitFirst()
         val user = userRepository.findByEmail(indexChartPriceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE) // 거래 ID를 INDEX_CHART_PRICE로 변경
