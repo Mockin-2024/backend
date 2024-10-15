@@ -86,7 +86,7 @@ class TradingControllerTest(
             email = "test@naver.com"
         )
         val expectedDto = KISNCCSResponseDto(
-            successFailure = "0",
+            successFailureStatus = "0",
             responseCode = "70070000",
             responseMessage = "Test success",
             continuousSearchCondition200 = "",
@@ -127,7 +127,7 @@ class TradingControllerTest(
             email = "test@naver.com"
         )
         val expectedDto = KISBalanceResponseDto(
-            successFailure = "0",
+            successFailureStatus = "0",
             responseCode = "70070000",
             responseMessage = "Test success",
             continuousSearchCondition200 = "",
@@ -169,7 +169,7 @@ class TradingControllerTest(
             email = "test@naver.com"
         )
         val expectedDto = KISPsAmountResponseDto(
-            successFailure = "0",
+            successFailureStatus = "0",
             responseCode = "test",
             responseMessage = "test success!",
             output = null
@@ -205,7 +205,7 @@ class TradingControllerTest(
             email = "test@naver.com"
         )
         val expectedDto = KISPresentBalanceResponseDto(
-            successFailure = "0",
+            successFailureStatus = "0",
             responseCode = "test",
             responseMessage = "test success!",
             output1 = listOf(),
@@ -244,9 +244,9 @@ class TradingControllerTest(
             email = "test@naver.com"
         )
         val expectedDto = KISCCNLResponseDto(
-            resultCode = "0",
+            successFailureStatus = "0",
             messageCode = "test",
-            message = "test success!",
+            responseMessage = "test success!",
             continuousQuerySearchCondition200 = "",
             continuousQueryKey200 = "listOf()",
             output = listOf()
