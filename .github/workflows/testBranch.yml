@@ -33,17 +33,6 @@ jobs:
         echo "${{ secrets.APPLICATION_SQL }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_REDIS }}" >> ./application.properties
 
-      # login dockerhub
-    - name: login to dockerHub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
       # build Docker image
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:test .
-
-      # push docker image
-    - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:test
+      run: docker build -f Dockerfile-test -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:test .

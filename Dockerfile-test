@@ -1,0 +1,8 @@
+# 1단계: 빌드 단계
+FROM azul/zulu-openjdk-alpine:17-latest AS build
+WORKDIR /app
+COPY . .
+
+RUN chmod +x ./gradlew
+RUN ./gradlew build
+

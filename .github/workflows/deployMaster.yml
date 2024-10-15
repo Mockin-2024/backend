@@ -42,7 +42,7 @@ jobs:
 
     # build Docker image
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }} .
+      run: docker build -f Dockerfile-deploy -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }} .
 
     # push docker image
     - name: docker Hub push
@@ -61,7 +61,7 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          sudo docker compose down
+          sudo docker stop ${{ secrets.DOCKER_IMAGE }} 2>/dev/null || true
           sudo docker rm ${{ secrets.DOCKER_IMAGE }}
           sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_IMAGE }}

@@ -66,7 +66,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 }
 
-val snippetsDir = file(property("snippetsDirPath")!!)
+val snippetsDir = file("./build/generated-snippets")
 
 tasks.withType<Test> {
     useJUnitPlatform()
@@ -80,9 +80,24 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
+tasks.register<Copy>("copySnippets"){
+    dependsOn(tasks.test)
+
+    from(file("../trading")) {
+        into("trading")
+    }
+    from(file("../account")) {
+        into("account")
+    }
+    from(file("../basic")) {
+        into("basic")
+    }
+    into(file("./build/generated-snippets"))
+}
+
 tasks.asciidoctor {
     inputs.dir(snippetsDir)
-    dependsOn(tasks.test)
+    dependsOn("copySnippets")
 }
 
 tasks.asciidoctor {
