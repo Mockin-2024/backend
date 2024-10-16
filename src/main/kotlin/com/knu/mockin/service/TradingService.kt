@@ -7,7 +7,6 @@ import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.enum.TradeId
-import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service
 class TradingService(
     private val kisTradingClient: KISTradingClient,
     private val userRepository: UserRepository,
-    private val mockKeyRepository: MockKeyRepository
 ) {
     suspend fun postOrder(
         orderRequestBodyDto: OrderRequestBodyDto
