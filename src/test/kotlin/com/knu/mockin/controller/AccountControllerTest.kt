@@ -95,7 +95,7 @@ class AccountControllerTest(
                 appSecret = "mockAppSecret"
         )
         val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postMockKey(requestDto) } returns expectedDto
+        coEvery { accountService.postMockKeyPair(requestDto) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
@@ -120,7 +120,7 @@ class AccountControllerTest(
                 appSecret = "realAppSecret"
         )
         val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postRealKey(requestDto) } returns expectedDto
+        coEvery { accountService.postRealKeyPair(requestDto) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
