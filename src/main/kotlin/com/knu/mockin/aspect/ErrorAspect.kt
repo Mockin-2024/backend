@@ -14,8 +14,6 @@ import kotlin.reflect.full.memberProperties
 @Aspect
 @Component
 class ErrorAspect {
-    private val log = LoggerFactory.getLogger(ErrorAspect::class.java)
-
     @Around("execution(* com.knu.mockin.kisclient..*(..))")
     fun handleKISWebClientException(joinPoint: ProceedingJoinPoint): Any {
         return try {
