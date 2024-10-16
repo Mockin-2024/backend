@@ -65,7 +65,8 @@ class AccountService(
         keyPairRequestDto: KeyPairRequestDto
     ): SimpleMessageResponseDto {
         val user = userRepository.findByEmail(keyPairRequestDto.email)
-            .orThrow(ErrorCode.USER_NOT_FOUND).awaitFirst()
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
 
         val mockKey = MockKey(
             email = user.email,
@@ -79,7 +80,9 @@ class AccountService(
     suspend fun postRealKeyPair(
         keyPairRequestDto: KeyPairRequestDto
     ): SimpleMessageResponseDto {
-        val user = userRepository.findByEmail(keyPairRequestDto.email).awaitFirst()
+        val user = userRepository.findByEmail(keyPairRequestDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
 
         val realKey = RealKey(
             email = user.email,
@@ -93,7 +96,10 @@ class AccountService(
     suspend fun getMockApprovalKey(
         accountRequestDto: AccountRequestDto
     ): ApprovalKeyResponseDto {
-        val user = mockKeyRepository.findById(accountRequestDto.email).awaitFirst()
+        val user = mockKeyRepository.findById(accountRequestDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
         val requestDto = KISApprovalRequestDto(
             grantType = "client_credentials",
             appKey = user.appKey,
@@ -104,7 +110,10 @@ class AccountService(
     suspend fun getRealApprovalKey(
             accountRequestDto: AccountRequestDto
     ): ApprovalKeyResponseDto {
-        val user = realKeyRepository.findById(accountRequestDto.email).awaitFirst()
+        val user = realKeyRepository.findById(accountRequestDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
         val requestDto = KISApprovalRequestDto(
                 grantType = "client_credentials",
                 appKey = user.appKey,
@@ -115,14 +124,17 @@ class AccountService(
     suspend fun getMockAccessToken(
         accountRequestDto: AccountRequestDto
     ): AccessTokenAPIResponseDto {
-        val mockKey = mockKeyRepository.findById(accountRequestDto.email).awaitFirst()
+        val user = mockKeyRepository.findById(accountRequestDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
         val requestDto = KISTokenRequestDto(
             grantType = "client_credentials",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret)
+            appKey = user.appKey,
+            appSecret = user.appSecret)
         val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle()
 
-        RedisUtil.saveToken(mockKey.email, dto.accessToken)
+        RedisUtil.saveToken(user.email, dto.accessToken)
 
         return dto
     }
@@ -130,14 +142,17 @@ class AccountService(
     suspend fun getRealAccessToken(
             accountRequestDto: AccountRequestDto
     ): AccessTokenAPIResponseDto {
-        val realKey = realKeyRepository.findById(accountRequestDto.email).awaitFirst()
+        val user = realKeyRepository.findById(accountRequestDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
         val requestDto = KISTokenRequestDto(
                 grantType = "client_credentials",
-                appKey = realKey.appKey,
-                appSecret = realKey.appSecret)
+                appKey = user.appKey,
+                appSecret = user.appSecret)
         val dto = kisOauth2RealClient.postTokenP(requestDto).awaitSingle()
 
-        RedisUtil.saveToken(realKey.email, dto.accessToken)
+        RedisUtil.saveToken(user.email, dto.accessToken)
 
         return dto
     }
