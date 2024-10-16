@@ -30,10 +30,6 @@ class BasicRealService (
         private val userRepository: UserRepository
 ) {
 
-    fun appendRealSuffix(email: String): String {
-        return "${email}-real"
-    }
-
     suspend fun getCountriesHoliday(
             countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto
     ) : KISCountriesHolidayResponseDto {
