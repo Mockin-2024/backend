@@ -1,13 +1,14 @@
 package com.knu.mockin.service
 
+import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.enum.TradeId
-import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
@@ -17,21 +18,22 @@ import org.springframework.stereotype.Service
 class TradingService(
     private val kisTradingClient: KISTradingClient,
     private val userRepository: UserRepository,
-    private val mockKeyRepository: MockKeyRepository
 ) {
     suspend fun postOrder(
         orderRequestBodyDto: OrderRequestBodyDto
     ):KISOrderResponseDto {
-        val user = userRepository.findById(orderRequestBodyDto.email).awaitFirst()
-        val mockKey = mockKeyRepository.findByEmail(orderRequestBodyDto.email).awaitFirst()
+        val userWithMockKey = userRepository.findByEmailWithMockKey(orderRequestBodyDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret,
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            appKey = userWithMockKey.appKey,
+            appSecret = userWithMockKey.appSecret,
             transactionId = orderRequestBodyDto.transactionId
         )
         val kisOrderRequestBodyDto = KISOrderRequestBodyDto(
-            accountNumber = user.accountNumber,
+            accountNumber = userWithMockKey.accountNumber,
             accountProductCode = "01",
             overseasExchangeCode = orderRequestBodyDto.overseasExchangeCode,
             productNumber = orderRequestBodyDto.productNumber,
@@ -46,16 +48,18 @@ class TradingService(
     suspend fun getNCCS(
         nccsRequestParameterDto: NCCSRequestParameterDto
     ): KISNCCSResponseDto{
-        val user = userRepository.findById(nccsRequestParameterDto.email).awaitFirst()
-        val mockKey = mockKeyRepository.findByEmail(nccsRequestParameterDto.email).awaitFirst()
+        val userWithMockKey = userRepository.findByEmailWithMockKey(nccsRequestParameterDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret,
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            appKey = userWithMockKey.appKey,
+            appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_NCCS)
         )
         val kisnccsRequestParameterDto = KISNCCSRequestParameterDto(
-            accountNumber = user.accountNumber,
+            accountNumber = userWithMockKey.accountNumber,
             accountProductCode = "01",
             overseasExchangeCode = nccsRequestParameterDto.overseasExchangeCode,
             sortOrder = nccsRequestParameterDto.sortOrder,
@@ -70,16 +74,17 @@ class TradingService(
     suspend fun getBalance(
         balanceRequestParameterDto: BalanceRequestParameterDto
     ): KISBalanceResponseDto{
-        val user = userRepository.findById(balanceRequestParameterDto.email).awaitFirst()
-        val mockKey = mockKeyRepository.findByEmail(balanceRequestParameterDto.email).awaitFirst()
+        val userWithMockKey = userRepository.findByEmailWithMockKey(balanceRequestParameterDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret,
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            appKey = userWithMockKey.appKey,
+            appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE)
         )
         val kisBalanceRequestParameterDto = KISBalanceRequestParameterDto(
-            accountNumber = user.accountNumber,
+            accountNumber = userWithMockKey.accountNumber,
             accountProductCode = "01",
             overseasExchangeCode = balanceRequestParameterDto.overseasExchangeCode,
             transactionCurrencyCode = balanceRequestParameterDto.transactionCurrencyCode,
@@ -94,16 +99,17 @@ class TradingService(
     suspend fun getPsAmount(
         psAmountRequestParameterDto: PsAmountRequestParameterDto
     ): KISPsAmountResponseDto{
-        val user = userRepository.findById(psAmountRequestParameterDto.email).awaitFirst()
-        val mockKey = mockKeyRepository.findByEmail(psAmountRequestParameterDto.email).awaitFirst()
+        val userWithMockKey = userRepository.findByEmailWithMockKey(psAmountRequestParameterDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret,
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            appKey = userWithMockKey.appKey,
+            appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_PSAMOUNT)
         )
         val kisPsAmountRequestParameterDto = KISPsAmountRequestParameterDto(
-            accountNumber = user.accountNumber,
+            accountNumber = userWithMockKey.accountNumber,
             accountProductCode = "01",
             overseasExchangeCode = psAmountRequestParameterDto.overseasExchangeCode,
             overseasOrderUnitPrice = psAmountRequestParameterDto.overseasOrderUnitPrice,
@@ -117,16 +123,17 @@ class TradingService(
     suspend fun getPresentBalance(
         presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto
     ): KISPresentBalanceResponseDto{
-        val user = userRepository.findById(presentBalanceRequestParameterDto.email).awaitFirst()
-        val mockKey = mockKeyRepository.findByEmail(presentBalanceRequestParameterDto.email).awaitFirst()
+        val userWithMockKey = userRepository.findByEmailWithMockKey(presentBalanceRequestParameterDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret,
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            appKey = userWithMockKey.appKey,
+            appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_PRESENT_BALANCE)
         )
         val kisPresentBalanceRequestParameterDto = KISPresentBalanceRequestParameterDto(
-            accountNumber = user.accountNumber,
+            accountNumber = userWithMockKey.accountNumber,
             accountProductCode = "01",
             currencyDivisionCode= presentBalanceRequestParameterDto.currencyDivisionCode,
             countryCode= presentBalanceRequestParameterDto.countryCode,
@@ -141,16 +148,17 @@ class TradingService(
     suspend fun getCCNL(
         ccnlRequestParameterDto: CCNLRequestParameterDto
     ): KISCCNLResponseDto{
-        val user = userRepository.findById(ccnlRequestParameterDto.email).awaitFirst()
-        val mockKey = mockKeyRepository.findByEmail(ccnlRequestParameterDto.email).awaitFirst()
+        val userWithMockKey = userRepository.findByEmailWithMockKey(ccnlRequestParameterDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(user.email)}",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret,
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            appKey = userWithMockKey.appKey,
+            appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL)
         )
         val kisccnlRequestParameterDto = KISCCNLRequestParameterDto(
-            accountNumber = user.accountNumber,
+            accountNumber = userWithMockKey.accountNumber,
             accountProductCode = "01",
             orderStartDate = ccnlRequestParameterDto.orderStartDate,
             orderEndDate = ccnlRequestParameterDto.orderEndDate
