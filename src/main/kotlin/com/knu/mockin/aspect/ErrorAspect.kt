@@ -2,7 +2,6 @@ package com.knu.mockin.aspect
 
 import com.knu.mockin.exeption.CustomException
 import com.knu.mockin.exeption.ErrorCode
-import com.knu.mockin.util.ExtensionUtil.returnWhenSuccess
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -10,12 +9,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
+import kotlin.reflect.full.memberProperties
 
 @Aspect
 @Component
 class ErrorAspect {
-    private val log = LoggerFactory.getLogger(ErrorAspect::class.java)
-
     @Around("execution(* com.knu.mockin.kisclient..*(..))")
     fun handleKISWebClientException(joinPoint: ProceedingJoinPoint): Any {
         return try {
@@ -40,5 +38,17 @@ class ErrorAspect {
             Mono.error(CustomException(ErrorCode.INTERNAL_SERVER_ERROR))
         }
     }
+    private fun <T> Mono<T>.returnWhenSuccess():Mono<T> {
+        return this.flatMap { instance ->
+            val properties = instance!!::class.memberProperties
+            val successFailureCode = properties.find { it.name == "successFailureStatus" }?.call(instance)
+            val message = properties.find { it.name == "responseMessage" }?.call(instance)
 
+            if (successFailureCode != null && successFailureCode != "0") {
+                return@flatMap Mono.error(CustomException(ErrorCode.KIS_API_FAILED, message.toString()))
+            }
+
+            Mono.just(instance)
+        }
+    }
 }
