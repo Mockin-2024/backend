@@ -61,7 +61,7 @@ class AccountService(
         return SimpleMessageResponseDto("Register Complete")
     }
 
-    suspend fun postMockKey(
+    suspend fun postMockKeyPair(
         keyPairRequestDto: KeyPairRequestDto
     ): SimpleMessageResponseDto {
         val user = userRepository.findByEmail(keyPairRequestDto.email)
@@ -76,7 +76,7 @@ class AccountService(
         return SimpleMessageResponseDto("Register Complete")
     }
 
-    suspend fun postRealKey(
+    suspend fun postRealKeyPair(
         keyPairRequestDto: KeyPairRequestDto
     ): SimpleMessageResponseDto {
         val user = userRepository.findByEmail(keyPairRequestDto.email).awaitFirst()
@@ -115,14 +115,14 @@ class AccountService(
     suspend fun getMockAccessToken(
         accountRequestDto: AccountRequestDto
     ): AccessTokenAPIResponseDto {
-        val user = mockKeyRepository.findById(accountRequestDto.email).awaitFirst()
+        val mockKey = mockKeyRepository.findById(accountRequestDto.email).awaitFirst()
         val requestDto = KISTokenRequestDto(
             grantType = "client_credentials",
-            appKey = user.appKey,
-            appSecret = user.appSecret)
+            appKey = mockKey.appKey,
+            appSecret = mockKey.appSecret)
         val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle()
 
-        RedisUtil.saveToken(user.email, dto.accessToken)
+        RedisUtil.saveToken(mockKey.email, dto.accessToken)
 
         return dto
     }
@@ -130,14 +130,14 @@ class AccountService(
     suspend fun getRealAccessToken(
             accountRequestDto: AccountRequestDto
     ): AccessTokenAPIResponseDto {
-        val user = realKeyRepository.findById(accountRequestDto.email).awaitFirst()
+        val realKey = realKeyRepository.findById(accountRequestDto.email).awaitFirst()
         val requestDto = KISTokenRequestDto(
                 grantType = "client_credentials",
-                appKey = user.appKey,
-                appSecret = user.appSecret)
+                appKey = realKey.appKey,
+                appSecret = realKey.appSecret)
         val dto = kisOauth2RealClient.postTokenP(requestDto).awaitSingle()
 
-        RedisUtil.saveToken(user.email, dto.accessToken)
+        RedisUtil.saveToken(realKey.email, dto.accessToken)
 
         return dto
     }

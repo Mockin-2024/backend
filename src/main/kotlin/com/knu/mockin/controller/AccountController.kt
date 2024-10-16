@@ -34,18 +34,18 @@ class AccountController(
     }
 
     @PostMapping("/mock-key")
-    suspend fun postMockKey(
+    suspend fun postMockKeyPair(
         @RequestBody keyPairRequestDto: KeyPairRequestDto
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = accountService.postMockKey(keyPairRequestDto)
+        val result = accountService.postMockKeyPair(keyPairRequestDto)
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/real-key")
-    suspend fun postRealKey(
+    suspend fun postRealKeyPair(
         @RequestBody keyPairRequestDto: KeyPairRequestDto
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = accountService.postRealKey(keyPairRequestDto)
+        val result = accountService.postRealKeyPair(keyPairRequestDto)
         return ResponseEntity.ok(result)
     }
 
