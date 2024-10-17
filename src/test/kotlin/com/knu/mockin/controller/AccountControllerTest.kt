@@ -1,14 +1,12 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.dsl.*
+import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.model.NUMBER
 import com.knu.mockin.model.STRING
-import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
-import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
-import com.knu.mockin.model.dto.request.account.UserRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
@@ -45,64 +43,47 @@ class AccountControllerTest(
 
     "POST /account/user" {
         val uri = "${baseUri}/user"
-        val requestDto = RestDocsUtils.readJsonFile(uri, "requestDto.json")
-        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
         coEvery { accountService.postUser(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
             uri,
-            requestBodyTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
     "PATCH /account/user" {
         val uri = "${baseUri}/user"
-        val requestDto = UserAccountNumberRequestDto(
-                email = "test@naver.com",
-                accountNumber = "123456789"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.patchUser(requestDto) } returns expectedDto
+        val uriPatch = "${uri}Patch"
+        val requestDto = readJsonFile(uriPatch, "requestDto.json")
+        val expectedDto = readJsonFile(uriPatch, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.patchUser(any()) } returns expectedDto
 
         val response = mockMvc.patchWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/user-patch",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일",
-                        "accountNumber" type STRING means "사용자 계좌 번호"
-                ),
-                responseBody = responseBody(
-                        "message" type STRING means "응답 메세지"
-                )
+            uriPatch,
+            requestBodyTemp(readJsonFile(uriPatch, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(readJsonFile(uriPatch, "responseDtoDescription.json").toBody())
         )
     }
 
     "POST /account/mock-key" {
         val uri = "${baseUri}/mock-key"
-        val requestDto = KeyPairRequestDto(
-                email = "test@naver.com",
-                appKey = "mockAppKey",
-                appSecret = "mockAppSecret"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postMockKeyPair(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.postMockKeyPair(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/mock-key",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일",
-                        "appKey" type STRING means "모의 앱 키",
-                        "appSecret" type STRING means "모의 앱 비밀 키"
-                ),
-                responseBody = responseBody(
-                        "message" type STRING means "응답 메세지"
-                )
+            uri,
+            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
