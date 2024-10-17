@@ -89,36 +89,17 @@ class TradingControllerTest(
 
     "GET /trading/psamount" {
         val uri = "${baseUri}/psamount"
-        val requestParams = PsAmountRequestParameterDto(
-            overseasExchangeCode = "SZAA",
-            overseasOrderUnitPrice = "100",
-            itemCode = "1380",
-            email = "test@naver.com"
-        )
-        val expectedDto = KISPsAmountResponseDto(
-            successFailureStatus = "0",
-            responseCode = "test",
-            responseMessage = "test success!",
-            output = null
-        )
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto PsAmountRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPsAmountResponseDto::class.java
 
-        coEvery { tradingService.getPsAmount(any())} returns expectedDto
+        coEvery { tradingService.getPsAmount(any()) } returns expectedDto
+
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
-            parameters(
-                "overseasExchangeCode" means "거래소 코드",
-                "overseasOrderUnitPrice" means "주당 가격",
-                "itemCode" means "종목 코드",
-                "email" means "사용자 이메일"
-            ),
-            responseBody(
-                "rt_cd" type STRING means "성공 여부",
-                "msg_cd" type STRING means "응답 코드",
-                "msg1" type STRING means "응답 메세지",
-                "output" type OBJECT isOptional true means "처리 결과"
-            )
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
