@@ -43,32 +43,15 @@ class TradingControllerTest(
     "POST /trading/order" {
         val uri = "${baseUri}/order"
         val requestDto = readJsonFile(uri,"requestDto.json")
-        val expectedDto = KISOrderResponseDto(
-            successFailureStatus = "0",
-            responseCode = "000",
-            responseMessage = "Test success",
-            output = null
-        )
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderResponseDto::class.java
         coEvery { tradingService.postOrder(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
             uri,
-            requestBody(
-                "transactionId" type STRING means "요청 종류",
-                "overseasExchangeCode" type STRING means "해외 거래소 코드",
-                "productNumber" type STRING means "상품 번호",
-                "orderQuantity" type STRING means "주문 수량",
-                "overseasOrderUnitPrice" type STRING means "해외 주문 단가",
-                "email" type STRING means "이메일"
-            ),
-            responseBody(
-                "rt_cd" type STRING means "성공 여부",
-                "msg_cd" type STRING  means "응답 코드",
-                "msg1" type STRING means "응답 메세지",
-                "output" type ARRAY isOptional true means "처리 결과"
-            )
+            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
