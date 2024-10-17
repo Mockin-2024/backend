@@ -1,0 +1,18 @@
+{
+  "rt_cd": "성공 실패 여부",
+  "msg_cd": "응답코드",
+  "msg1": "응답메세지",
+  "output": {
+    "echm_af_ord_psbl_amt": "환전이후주문가능금액 - 항상 0",
+    "echm_af_ord_psbl_qty": "환전이후주문가능수량 - 항상 0",
+    "exrt": "환율",
+    "frcr_ord_psbl_amt1": "주문가능금액1",
+    "max_ord_psbl_qty": "최대주문가능수량",
+    "ord_psbl_frcr_amt": "주문가능외화금액",
+    "ord_psbl_qty": "주문가능수량",
+    "ovrs_max_ord_psbl_qty": "해외최대주문가능수량",
+    "ovrs_ord_psbl_amt": "해외주문가능금액",
+    "sll_ruse_psbl_amt": "매도재사용가능금액",
+    "tr_crcy_cd": "거래통화코드"
+  }
+}
