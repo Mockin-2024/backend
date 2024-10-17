@@ -1,8 +1,10 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.dsl.*
+import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.model.NUMBER
 import com.knu.mockin.model.STRING
+import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
@@ -43,24 +45,16 @@ class AccountControllerTest(
 
     "POST /account/user" {
         val uri = "${baseUri}/user"
-        val requestDto = UserRequestDto(
-            email = "test@naver.com",
-            name = "test"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postUser(requestDto) } returns expectedDto
+        val requestDto = RestDocsUtils.readJsonFile(uri, "requestDto.json")
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.postUser(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-            identifier = "/account/user",
-            requestBody = requestBody(
-                "email" type STRING means "사용자 이메일",
-                "name" type STRING means "사용자 이름",
-            ),
-            responseBody =  responseBody(
-                "message" type STRING means "응답 메세지",
-            )
+            uri,
+            requestBodyTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
