@@ -41,7 +41,10 @@ object RestDocsUtils {
             if (fieldName.contains("output")) {
                 fieldDescriptions.addAll(jsonNode[fieldName].processOutput(fieldName))
             }else{
-                fieldDescriptions.add(fieldName type STRING means jsonNode[fieldName].asText())
+                if(fieldName in listOf("expire_in")){
+                    fieldDescriptions.add(fieldName type NUMBER means jsonNode[fieldName].asText())
+                }
+                else fieldDescriptions.add(fieldName type STRING means jsonNode[fieldName].asText())
             }
         }
 
