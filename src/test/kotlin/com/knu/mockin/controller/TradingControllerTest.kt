@@ -2,6 +2,8 @@ package com.knu.mockin.controller
 
 import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
+import com.knu.mockin.dsl.RestDocsUtils.toBody
+import com.knu.mockin.dsl.RestDocsUtils.toPairs
 import com.knu.mockin.model.ARRAY
 import com.knu.mockin.model.OBJECT
 import com.knu.mockin.model.STRING
@@ -40,7 +42,7 @@ class TradingControllerTest(
 
     "POST /trading/order" {
         val uri = "${baseUri}/order"
-        val requestDto = readJsonFile(uri,"orderRequestDto.json")
+        val requestDto = readJsonFile(uri,"requestDto.json")
         val expectedDto = KISOrderResponseDto(
             successFailureStatus = "0",
             responseCode = "000",
@@ -113,29 +115,17 @@ class TradingControllerTest(
 
     "GET /trading/balance" {
         val uri = "${baseUri}/balance"
-        val requestParams = readJsonFile(uri, "balanceRequestDto.json") toDto BalanceRequestParameterDto::class.java
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISBalanceResponseDto::class.java
 
-        val expectedDto = readJsonFile(uri, "balanceResponseDto.json") toDto KISBalanceResponseDto::class.java
         coEvery { tradingService.getBalance(any()) } returns expectedDto
-//        "overseasExchangeCode" means "해외거래소코드",
-//        "transactionCurrencyCode" means "거래통화코드",
-//        "continuousSearchCondition200" means "연속조회검색조건200",
-//        "continuousSearchKey200" means "연속조회키200",
-//        "email" means "이메일"
+
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
-        val params = readJsonFile(uri, "balanceRequestDtoDescription.json").toPairs()
+
         response.makeDocument(
             uri,
-            parametersTemp(params),
-            responseBody(
-                "rt_cd" type STRING means "성공 여부",
-                "msg_cd" type STRING  means "응답 코드",
-                "msg1" type STRING means "응답 메세지",
-                "ctx_area_fk200" type STRING means "연속조회검색조건200",
-                "ctx_area_nk200" type STRING means "연속조회키200",
-                "output1" type ARRAY isOptional true means "처리 결과1",
-                "output2" type OBJECT isOptional true means "처리 결과2"
-            )
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
