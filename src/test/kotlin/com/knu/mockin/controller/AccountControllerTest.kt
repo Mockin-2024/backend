@@ -89,26 +89,16 @@ class AccountControllerTest(
 
     "POST /account/real-key" {
         val uri = "${baseUri}/real-key"
-        val requestDto = KeyPairRequestDto(
-                email = "test@naver.com",
-                appKey = "realAppKey",
-                appSecret = "realAppSecret"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postRealKeyPair(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.postRealKeyPair(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/real-key",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일",
-                        "appKey" type STRING means "실제 앱 키",
-                        "appSecret" type STRING means "실제 앱 비밀 키"
-                ),
-                responseBody = responseBody(
-                        "message" type STRING means "응답 메세지"
-                )
+            uri,
+            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
