@@ -121,38 +121,17 @@ class TradingControllerTest(
 
     "GET /trading/ccnl" {
         val uri = "${baseUri}/ccnl"
-        val requestParams = CCNLRequestParameterDto(
-            orderStartDate = "20241010",
-            orderEndDate = "20241015",
-            email = "test@naver.com"
-        )
-        val expectedDto = KISCCNLResponseDto(
-            successFailureStatus = "0",
-            messageCode = "test",
-            responseMessage = "test success!",
-            continuousQuerySearchCondition200 = "",
-            continuousQueryKey200 = "listOf()",
-            output = listOf()
-        )
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCCNLResponseDto::class.java
 
-        coEvery { tradingService.getCCNL(any())} returns expectedDto
+        coEvery { tradingService.getCCNL(any()) } returns expectedDto
+
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
-            parameters(
-                "orderStartDate" means "주문시작일자",
-                "orderEndDate" means "주문종료일자",
-                "email" means "이메일"
-            ),
-            responseBody(
-                "rt_cd" type STRING means "성공 여부",
-                "msg_cd" type STRING means "응답 코드",
-                "msg1" type STRING means "응답 메세지",
-                "ctx_area_fk200" type STRING means "연속조회검색조건200",
-                "ctx_area_nk200" type STRING means "연속조회키200",
-                "output" type ARRAY isOptional true means "응답상세3"
-            )
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 })
