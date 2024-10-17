@@ -20,7 +20,11 @@ fun requestBody(vararg bodies: Pair<Field, String>): List<FieldDescriptor>{
         field.descriptor.description(description)
     }
 }
-
+fun requestBodyTemp(bodies: List<Pair<Field, String>>): List<FieldDescriptor>{
+    return bodies.map{ (field, description) ->
+        field.descriptor.description(description)
+    }
+}
 fun responseBody(vararg bodies: Pair<Field, String>): List<FieldDescriptor>{
     return bodies.map{ (field, description) ->
         field.descriptor.description(description)
