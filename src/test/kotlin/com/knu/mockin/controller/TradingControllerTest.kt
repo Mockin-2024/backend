@@ -105,42 +105,17 @@ class TradingControllerTest(
 
     "GET /trading/present-balance" {
         val uri = "${baseUri}/present-balance"
-        val requestParams = PresentBalanceRequestParameterDto(
-            currencyDivisionCode = "CNY",
-            countryCode = "000",
-            marketCode = "000",
-            inquiryDivisionCode = "00",
-            email = "test@naver.com"
-        )
-        val expectedDto = KISPresentBalanceResponseDto(
-            successFailureStatus = "0",
-            responseCode = "test",
-            responseMessage = "test success!",
-            output1 = listOf(),
-            output2 = listOf(),
-            output3 = null
-        )
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto PresentBalanceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPresentBalanceResponseDto::class.java
 
-        coEvery { tradingService.getPresentBalance(any())} returns expectedDto
+        coEvery { tradingService.getPresentBalance(any()) } returns expectedDto
+
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
-            parameters(
-                "currencyDivisionCode" means "원화외화구분코드",
-                "countryCode" means "국가코드",
-                "marketCode" means "거래시장코드",
-                "inquiryDivisionCode" means "조회구분코드",
-                "email" means "이메일"
-            ),
-            responseBody(
-                "rt_cd" type STRING means "성공 여부",
-                "msg_cd" type STRING means "응답 코드",
-                "msg1" type STRING means "응답 메세지",
-                "output1" type ARRAY isOptional true means "응답상세1",
-                "output2" type ARRAY isOptional true means "응답상세2",
-                "output3" type OBJECT isOptional true means "응답상세3"
-            )
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
