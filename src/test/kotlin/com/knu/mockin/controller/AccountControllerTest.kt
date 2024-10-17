@@ -119,22 +119,16 @@ class AccountControllerTest(
 
     "POST /account/real-approval-key" {
         val uri = "${baseUri}/real-approval-key"
-        val requestDto = AccountRequestDto(email = "test@naver.com")
-        val expectedDto = ApprovalKeyResponseDto(
-                approvalKey = "Real Approval Key"
-        )
-        coEvery { accountService.getRealApprovalKey(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto ApprovalKeyResponseDto::class.java
+        coEvery { accountService.getRealApprovalKey(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/real-approval-key",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일"
-                ),
-                responseBody = responseBody(
-                        "approval_key" type STRING means "실제 승인 키"
-                )
+            uri,
+            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
