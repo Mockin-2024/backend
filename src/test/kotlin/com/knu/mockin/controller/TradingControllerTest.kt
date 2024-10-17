@@ -4,12 +4,8 @@ import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
-import com.knu.mockin.model.ARRAY
-import com.knu.mockin.model.OBJECT
-import com.knu.mockin.model.STRING
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
-import com.knu.mockin.model.enum.ExchangeCode
 import com.knu.mockin.service.TradingService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
