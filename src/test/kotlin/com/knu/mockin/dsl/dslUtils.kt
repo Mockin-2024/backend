@@ -10,6 +10,11 @@ fun parameters(vararg params: Pair<String, String>): List<ParameterDescriptor> {
         RequestDocumentation.parameterWithName(name).description(description) }
 }
 
+fun parametersTemp(params: List<Pair<String, String>>): List<ParameterDescriptor> {
+    return params.map { (name, description) ->
+        RequestDocumentation.parameterWithName(name).description(description) }
+}
+
 fun requestBody(vararg bodies: Pair<Field, String>): List<FieldDescriptor>{
     return bodies.map{ (field, description) ->
         field.descriptor.description(description)
