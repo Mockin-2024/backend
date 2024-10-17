@@ -69,47 +69,17 @@ class BasicControllerTest(
 
     "GET /basic/term" {
         val uri = "${baseUri}/term"
-        val requestParams = TermPriceRequestParameterDto(
-                AUTH = "",
-                EXCD = "NAS",
-                SYMB = "TSLA",
-                GUBN = "0",
-                BYMD = "",
-                MODP = "0",
-                KEYB = "",
-                email = "test@naver.com"
-        )
-        val expectedDto = KISTermPriceResponseDto(
-                successFailureStatus = "0",
-                responseCode = "MCA00000",
-                responseMessage = "Test success",
-                output1 = null,
-                output2 = listOf()
-        )
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto TermPriceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISTermPriceResponseDto::class.java
+
         coEvery { basicService.getTermPrice(any()) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
-                uri,
-                parameters(
-                        "AUTH" means "인증 정보",
-                        "EXCD" means "거래소 코드",
-                        "SYMB" means "주식 기호",
-                        "GUBN" means "카테고리",
-                        "BYMD" means "기준 날짜",
-                        "MODP" means "수정 파라미터",
-                        "KEYB" means "다음 키 버퍼",
-                        "email" means "사용자 이메일"
-                ),
-
-                responseBody(
-                        "rt_cd" type STRING means "결과 코드",
-                        "msg_cd" type STRING means "메시지 코드",
-                        "msg1" type STRING means "메시지",
-                        "output1" type OBJECT isOptional true means "처리 결과1",
-                        "output2" type ARRAY isOptional true means "처리 결과2"
-                )
+            uri,
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
