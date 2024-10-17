@@ -57,42 +57,17 @@ class TradingControllerTest(
 
     "GET /trading/nccs" {
         val uri = "${baseUri}/nccs"
-        val requestParams = NCCSRequestParameterDto(
-            overseasExchangeCode = ExchangeCode.SHAA.name,
-            sortOrder = "DS",
-            continuousSearchCondition200 = "",
-            continuousSearchKey200 = "",
-            email = "test@naver.com"
-        )
-        val expectedDto = KISNCCSResponseDto(
-            successFailureStatus = "0",
-            responseCode = "70070000",
-            responseMessage = "Test success",
-            continuousSearchCondition200 = "",
-            continuousSearchKey200 = "",
-            output = listOf()
-        )
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISNCCSResponseDto::class.java
+
         coEvery { tradingService.getNCCS(any()) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
-            parameters(
-                "overseasExchangeCode" means "해외거래소코드",
-                "sortOrder" means "정렬 순서",
-                "continuousSearchCondition200" means "연속조회검색조건200",
-                "continuousSearchKey200" means "연속조회키200",
-                "email" means "이메일"
-            ),
-            responseBody(
-                "rt_cd" type STRING means "성공 여부",
-                "msg_cd" type STRING  means "응답 코드",
-                "msg1" type STRING means "응답 메세지",
-                "ctx_area_fk200" type STRING means "연속조회검색조건200",
-                "ctx_area_nk200" type STRING means "연속조회키200",
-                "output" type ARRAY isOptional true means "처리 결과"
-            )
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
