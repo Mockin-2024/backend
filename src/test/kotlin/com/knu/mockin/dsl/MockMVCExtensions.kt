@@ -49,7 +49,7 @@ fun <T> MockMvc.getWithParams(uri: String, requestParams: T, expectedDto: T): Re
 fun <T> MockMvc.postWithBody(uri: String, requestBody: T, expectedDto: T): ResultActionsDsl{
     return this.post(uri){
         contentType = APPLICATION_JSON
-        content = toJson(requestBody)
+        content = requestBody
     }.asyncDispatch().andExpect {
         status { isOk() }
         content {
