@@ -38,7 +38,7 @@ object RestDocsUtils {
         val fieldDescriptions = mutableListOf<Pair<Field, String>>()
 
         jsonNode.fieldNames().forEach { fieldName ->
-            if (fieldName in listOf("output1", "output2", "output3")) {
+            if (fieldName.contains("output")) {
                 fieldDescriptions.addAll(jsonNode[fieldName].processOutput(fieldName))
             }else{
                 fieldDescriptions.add(fieldName type STRING means jsonNode[fieldName].asText())
@@ -47,7 +47,7 @@ object RestDocsUtils {
 
         return fieldDescriptions
     }
-    fun JsonNode?.processOutput(name: String): List<Pair<Field, String>> {
+    private fun JsonNode?.processOutput(name: String): List<Pair<Field, String>> {
         val fieldDescriptions = mutableListOf<Pair<Field, String>>()
         if (this != null) {
             if (this.isArray) {
