@@ -1,7 +1,7 @@
 {
   "rt_cd": "0",
-  "msg_cd": "APBK0013",
-  "msg1": "조회 성공하였습니다.",
+  "msg_cd": "APBK0013 -> 다른 값일 것",
+  "msg1": "조회 성공하였습니다. -> 다른 값일 것",
   "output": {
     "echm_af_ord_psbl_amt": "0.00",
     "echm_af_ord_psbl_qty": "0",
