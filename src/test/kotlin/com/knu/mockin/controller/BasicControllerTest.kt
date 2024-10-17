@@ -1,6 +1,9 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.dsl.*
+import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
+import com.knu.mockin.dsl.RestDocsUtils.toBody
+import com.knu.mockin.dsl.RestDocsUtils.toPairs
 import com.knu.mockin.model.ARRAY
 import com.knu.mockin.model.OBJECT
 import com.knu.mockin.model.STRING
@@ -8,10 +11,12 @@ import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.request.basic.CurrentPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.DailyChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.SearchRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.TermPriceRequestParameterDto
+import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
 import com.knu.mockin.service.BasicService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
@@ -48,37 +53,17 @@ class BasicControllerTest(
 
     "GET /basic/current" {
         val uri = "${baseUri}/current"
-        val requestParams = CurrentPriceRequestParameterDto(
-                AUTH = "",
-                EXCD = "NAS",
-                SYMB = "TSLA",
-                email = "test@naver.com"
-        )
-        val expectedDto = KISCurrentPriceResponseDto(
-                successFailureStatus = "0",
-                responseCode = "MCA00000",
-                responseMessage = "Test success",
-                output = null
-        )
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto CurrentPriceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCurrentPriceResponseDto::class.java
+
         coEvery { basicService.getCurrentPrice(any()) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
-                uri,
-                parameters(
-                        "AUTH" means "인증 정보",
-                        "EXCD" means "거래소 코드",
-                        "SYMB" means "주식 기호",
-                        "email" means "사용자 이메일"
-                ),
-
-                responseBody(
-                        "rt_cd" type STRING means "결과 코드",
-                        "msg_cd" type STRING means "메시지 코드",
-                        "msg1" type STRING means "메시지",
-                        "output" type OBJECT isOptional true means "처리 결과"
-                )
+            uri,
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
