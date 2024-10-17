@@ -3,10 +3,6 @@ package com.knu.mockin.controller
 import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
-import com.knu.mockin.model.NUMBER
-import com.knu.mockin.model.STRING
-import com.knu.mockin.model.dto.request.account.AccountRequestDto
-import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
@@ -149,28 +145,16 @@ class AccountControllerTest(
 
     "POST /account/real-token" {
         val uri = "${baseUri}/real-token"
-        val requestDto = AccountRequestDto(email = "test@naver.com")
-        val expectedDto = AccessTokenAPIResponseDto(
-                accessToken = "RealAccessToken",
-                accessTokenTokenExpired = "2023-12-22 08:16:59",
-                expiresIn = 86400,
-                tokenType = "Bearer"
-        )
-        coEvery { accountService.getRealAccessToken(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto AccessTokenAPIResponseDto::class.java
+        coEvery { accountService.getRealAccessToken(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/real-token",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일"
-                ),
-                responseBody = responseBody(
-                        "access_token" type STRING means "실제 액세스 토큰",
-                        "token_type" type STRING means "접근토큰유형",
-                        "expire_in" type NUMBER means "유효기간(초)",
-                        "access_token_token_expired" type STRING means "유효기간(년:월:일 시:분:초)"
-                )
+            uri,
+            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
