@@ -38,5 +38,5 @@ data class SearchOutput2 (
         @JsonProperty("per") val per: String,                       // PER
         @JsonProperty("rank") val rank: String,                     // 순위
         @JsonProperty("ename") val ename: String,                   // 영문종목명
-        @JsonProperty("e_ordyn") val eOrdyn: String                 // 매매가능 (가능: O)
+        @JsonProperty("e_ordyn") val eordyn: String                 // 매매가능 (가능: O)
 )
