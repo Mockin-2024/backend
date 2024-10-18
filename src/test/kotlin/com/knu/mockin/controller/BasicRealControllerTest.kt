@@ -79,52 +79,17 @@ class BasicRealControllerTest (
 
     "GET /basic/item-chart-price" {
     val uri = "${baseUri}/item-chart-price"
-    val requestParams = ItemChartPriceRequestParameterDto(
-            AUTH = "",
-            EXCD = "NAS",
-            SYMB = "TSLA",
-            NMIN = "5",
-            PINC = "1",
-            NEXT = "",
-            NREC = "120",
-            FILL = "",
-            KEYB = "",
-            email = "test@naver.com"
-    )
-    val expectedDto = KISItemChartPriceResponseDto(
-            successFailureStatus = "0",
-            responseCode = "MCA00000",
-            responseMessage = "정상처리 되었습니다.",
-            output1 = null,
-            output2 = listOf()
-    )
+        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto ItemChartPriceRequestParameterDto::class.java
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISItemChartPriceResponseDto::class.java
 
-    coEvery { basicRealService.getItemChartPrice(any()) } returns expectedDto
+        coEvery { basicRealService.getItemChartPrice(any()) } returns expectedDto
 
-    val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
+        val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
-    response.makeDocument(
+        response.makeDocument(
             uri,
-            parameters(
-                    "AUTH" means "사용자 권한정보",
-                    "EXCD" means "거래소명",
-                    "SYMB" means "종목코드",
-                    "NMIN" means "분갭",
-                    "PINC" means "전일포함여부",
-                    "NEXT" means "다음여부",
-                    "NREC" means "요청갯수",
-                    "FILL" means "미체결채움구분",
-                    "KEYB" means "다음 키 버퍼",
-                    "email" means "사용자 이메일"
-            ),
-
-            responseBody(
-                    "rt_cd" type STRING means "결과 코드",
-                    "msg_cd" type STRING means "메시지 코드",
-                    "msg1" type STRING means "메시지",
-                    "output1" type OBJECT isOptional true means "응답 상세 1",
-                    "output2" type ARRAY isOptional true means "응답 상세 2"
-            )
+            parametersTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
