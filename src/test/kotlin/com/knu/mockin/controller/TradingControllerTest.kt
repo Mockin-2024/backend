@@ -52,6 +52,21 @@ class TradingControllerTest(
         )
     }
 
+    "POST /trading/order-reverse"{
+        val uri = "${baseUri}/order-reverse"
+        val requestDto = readJsonFile(uri,"requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderReverseResponseDto::class.java
+        coEvery { tradingService.postOrderReverse(any()) } returns expectedDto
+
+        val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
+
+        response.makeDocument(
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
+        )
+    }
+
     "GET /trading/nccs" {
         val uri = "${baseUri}/nccs"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java

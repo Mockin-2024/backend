@@ -45,6 +45,35 @@ class TradingService(
             .awaitSingle()
     }
 
+    suspend fun postOrderReverse(
+        orderReverseRequestBodyDto: OrderReverseRequestBodyDto
+    ): KISOrderReverseResponseDto {
+        val userWithMockKey = userRepository.findByEmailWithMockKey(orderReverseRequestBodyDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            appKey = userWithMockKey.appKey,
+            appSecret = userWithMockKey.appSecret,
+            transactionId = orderReverseRequestBodyDto.transactionId
+        )
+
+        val kisOrderReverseRequestBodyDto = KISOrderReverseRequestBodyDto(
+            accountNumber = userWithMockKey.accountNumber,
+            overseasExchangeCode = orderReverseRequestBodyDto.overseasExchangeCode,
+            productNumber = orderReverseRequestBodyDto.productNumber,
+            originalOrderNumber = orderReverseRequestBodyDto.originalOrderNumber,
+            cancelOrReviseCode = orderReverseRequestBodyDto.cancelOrReviseCode,
+            orderQuantity = orderReverseRequestBodyDto.orderQuantity,
+            overseasOrderPrice = orderReverseRequestBodyDto.overseasOrderPrice
+        )
+
+        return kisTradingClient
+            .postOrderReverse(kisOverSeaRequestHeaderDto, kisOrderReverseRequestBodyDto)
+            .awaitSingle()
+    }
+
     suspend fun getNCCS(
         nccsRequestParameterDto: NCCSRequestParameterDto
     ): KISNCCSResponseDto{
