@@ -1,11 +1,15 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.dsl.*
+import com.knu.mockin.dsl.RestDocsUtils.toBody
+import com.knu.mockin.dsl.RestDocsUtils.toPairs
 import com.knu.mockin.model.ARRAY
 import com.knu.mockin.model.OBJECT
 import com.knu.mockin.model.STRING
 import com.knu.mockin.model.dto.kisresponse.basic.*
+import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.request.basic.*
+import com.knu.mockin.model.dto.request.trading.BalanceRequestParameterDto
 import com.knu.mockin.service.BasicRealService
 import com.knu.mockin.service.BasicService
 import com.ninjasquad.springmockk.MockkBean
@@ -43,37 +47,17 @@ class BasicRealControllerTest (
 
     "GET /basic/countries-holiday" {
         val uri = "${baseUri}/countries-holiday"
-        val requestParams = CountriesHolidayRequestParameterDto(
-                tradDt = "20221227",
-                ctxAreaNk = "",
-                ctxAreaFk = "",
-                email = "test@naver.com"
-        )
-        val expectedDto = KISCountriesHolidayResponseDto(
-                successFailureStatus = "0",
-                responseCode = "KIOK0460",
-                responseMessage = "조회 되었습니다. (마지막 자료)",
-                output = listOf()
-        )
+        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto CountriesHolidayRequestParameterDto::class.java
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISCountriesHolidayResponseDto::class.java
+
         coEvery { basicRealService.getCountriesHoliday(any()) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
-                uri,
-                parameters(
-                        "tradDt" means "기준 일자",
-                        "ctxAreaNk" means "연속조회키",
-                        "ctxAreaFk" means "연속조회검색조건",
-                        "email" means "사용자 이메일"
-                ),
-
-                responseBody(
-                        "rt_cd" type STRING means "결과 코드",
-                        "msg_cd" type STRING means "메시지 코드",
-                        "msg1" type STRING means "메시지",
-                        "output" type ARRAY isOptional true means "처리 결과"
-                )
+            uri,
+            parametersTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
