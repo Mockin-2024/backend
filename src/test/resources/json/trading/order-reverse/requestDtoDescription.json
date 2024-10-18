@@ -1,0 +1,10 @@
+{
+  "email": "이메일",
+  "transactionId": "거래ID",
+  "overseasExchangeCode": "해외거래소코드",
+  "productNumber": "상품번호",
+  "originalOrderNumber": "원주문번호",
+  "cancelOrReviseCode": "정정취소구분코드 01: 정정, 02: 취소",
+  "orderQuantity": "주문수량",
+  "overseasOrderPrice": "해외주문단가"
+}
