@@ -1,0 +1,17 @@
+{
+  "rt_cd": "성공 실패 여부",
+  "msg_cd": "응답코드",
+  "msg1": "응답메세지",
+  "output": [
+    {
+      "prdt_type_cd": "상품유형코드",
+      "tr_natn_cd": "거래국가코드",
+      "tr_natn_name": "거래국가명",
+      "natn_eng_abrv_cd": "국가영문약어코드",
+      "tr_mket_cd": "거래시장코드",
+      "tr_mket_name": "거래시장명",
+      "acpl_sttl_dt": "현지결제일자",
+      "dmst_sttl_dt": "국내결제일자"
+    }
+  ]
+}
