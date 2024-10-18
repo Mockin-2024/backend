@@ -1,5 +1,6 @@
 package com.knu.mockin.controller
 
+import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
@@ -46,8 +47,8 @@ class TradingControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -62,8 +63,8 @@ class TradingControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -78,8 +79,8 @@ class TradingControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -94,8 +95,8 @@ class TradingControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -110,8 +111,8 @@ class TradingControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -126,8 +127,8 @@ class TradingControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 })

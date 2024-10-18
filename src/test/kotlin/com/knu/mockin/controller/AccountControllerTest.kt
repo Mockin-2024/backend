@@ -1,5 +1,6 @@
 package com.knu.mockin.controller
 
+import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
@@ -47,8 +48,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -63,8 +64,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uriPatch,
-            requestBodyTemp(readJsonFile(uriPatch, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uriPatch, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uriPatch, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uriPatch, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -78,8 +79,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -93,8 +94,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -108,8 +109,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -123,8 +124,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -138,8 +139,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -153,8 +154,8 @@ class AccountControllerTest(
 
         response.makeDocument(
             uri,
-            requestBodyTemp(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 

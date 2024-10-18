@@ -1,22 +1,18 @@
 package com.knu.mockin.controller
 
+import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
-import com.knu.mockin.model.ARRAY
-import com.knu.mockin.model.OBJECT
-import com.knu.mockin.model.STRING
 import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.request.basic.CurrentPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.DailyChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.SearchRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.TermPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
 import com.knu.mockin.service.BasicService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
@@ -24,11 +20,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.ManualRestDocumentation
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
-import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
 @WebMvcTest(BasicController::class)
@@ -62,8 +54,8 @@ class BasicControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -78,8 +70,8 @@ class BasicControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -94,8 +86,8 @@ class BasicControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -110,8 +102,8 @@ class BasicControllerTest(
 
         response.makeDocument(
             uri,
-            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 

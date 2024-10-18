@@ -1,4 +1,4 @@
-package com.knu.mockin.dsl
+package com.knu.mockin.controller.util
 
 import com.knu.mockin.logging.utils.LogUtil.toJson
 import org.springframework.http.MediaType.APPLICATION_JSON

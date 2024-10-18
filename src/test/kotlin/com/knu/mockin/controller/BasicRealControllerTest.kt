@@ -1,28 +1,19 @@
 package com.knu.mockin.controller
 
+import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
-import com.knu.mockin.model.ARRAY
-import com.knu.mockin.model.OBJECT
-import com.knu.mockin.model.STRING
 import com.knu.mockin.model.dto.kisresponse.basic.*
-import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.request.basic.*
-import com.knu.mockin.model.dto.request.trading.BalanceRequestParameterDto
 import com.knu.mockin.service.BasicRealService
-import com.knu.mockin.service.BasicService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.ManualRestDocumentation
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
-import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
 @WebMvcTest(BasicRealController::class)
@@ -56,8 +47,8 @@ class BasicRealControllerTest (
 
         response.makeDocument(
             uri,
-            parametersTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -72,8 +63,8 @@ class BasicRealControllerTest (
 
         response.makeDocument(
             uri,
-            parametersTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -88,8 +79,8 @@ class BasicRealControllerTest (
 
         response.makeDocument(
             uri,
-            parametersTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
@@ -105,8 +96,8 @@ class BasicRealControllerTest (
 
         response.makeDocument(
             uri,
-            parametersTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
+            parameters(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 })
