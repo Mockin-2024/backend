@@ -63,37 +63,17 @@ class BasicRealControllerTest (
 
     "GET /basic/price-detail" {
         val uri = "${baseUri}/price-detail"
-        val requestParams = PriceDetailRequestParameterDto(
-                AUTH = "",
-                EXCD = "NAS",
-                SYMB = "TSLA",
-                email = "test@naver.com"
-        )
-        val expectedDto = KISPriceDetailResponseDto(
-                successFailureStatus = "0",
-                responseCode = "MCA00000",
-                responseMessage = "정상처리 되었습니다.",
-                output = null
-        )
+        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto PriceDetailRequestParameterDto::class.java
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISPriceDetailResponseDto::class.java
+
         coEvery { basicRealService.getPriceDetail(any()) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
-                uri,
-                parameters(
-                        "AUTH" means "사용자 권한정보",
-                        "EXCD" means "거래소명",
-                        "SYMB" means "종목코드",
-                        "email" means "사용자 이메일"
-                ),
-
-                responseBody(
-                        "rt_cd" type STRING means "결과 코드",
-                        "msg_cd" type STRING means "메시지 코드",
-                        "msg1" type STRING means "메시지",
-                        "output" type OBJECT isOptional true means "처리 결과"
-                )
+            uri,
+            parametersTemp(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
