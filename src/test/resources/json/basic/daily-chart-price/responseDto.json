@@ -1,0 +1,30 @@
+{
+  "rt_cd": "성공 실패 여부",
+  "msg_cd": "응답코드",
+  "msg1": "응답메세지",
+  "output1": {
+    "ovrs_nmix_prdy_vrss": "-253.88",
+    "prdy_vrss_sign": "5",
+    "prdy_ctrt": "-0.82",
+    "ovrs_nmix_prdy_clpr": "31029.31",
+    "acml_vol": "397268510",
+    "hts_kor_isnm": "다우존스 산업지수",
+    "ovrs_nmix_prpr": "30775.43",
+    "stck_shrn_iscd": ".DJI",
+    "prdy_vol": "",
+    "ovrs_prod_oprc": "30790.00",
+    "ovrs_prod_hgpr": "30979.85",
+    "ovrs_prod_lwpr": "30431.87"
+  },
+  "output2": [
+    {
+      "stck_bsop_date": "20220613",
+      "ovrs_nmix_prpr": "30516.74",
+      "ovrs_nmix_oprc": "31144.91",
+      "ovrs_nmix_hgpr": "31144.91",
+      "ovrs_nmix_lwpr": "30373.72",
+      "acml_vol": "480501460",
+      "mod_yn": "N"
+    }
+  ]
+}
