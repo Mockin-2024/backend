@@ -85,43 +85,17 @@ class BasicControllerTest(
 
     "GET /basic/daily-chart-price" {
         val uri = "${baseUri}/daily-chart-price"
-        val requestParams = DailyChartPriceRequestParameterDto(
-                fidCondMrktDivCode = "N",
-                fidInputDate1 = "20220401",
-                fidInputDate2 = "20220613",
-                fidInputIscd = ".DJI",
-                fidPeriodDivCode = "D",
-                email = "test@naver.com"
-        )
-        val expectedDto = KISDailyChartPriceResponseDto(
-                successFailureStatus = "0",
-                responseCode = "MCA00000",
-                responseMessage = "Test success",
-                output1 = null,
-                output2 = listOf()
-        )
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto DailyChartPriceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISDailyChartPriceResponseDto::class.java
+
         coEvery { basicService.getDailyChartPrice(any()) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
-                uri,
-                parameters(
-                        "fidCondMrktDivCode" means "시장 구분 코드",
-                        "fidInputDate1" means "시작 날짜",
-                        "fidInputDate2" means "종료 날짜",
-                        "fidInputIscd" means "입력 코드",
-                        "fidPeriodDivCode" means "기간 구분 코드",
-                        "email" means "사용자 이메일"
-                ),
-
-                responseBody(
-                        "rt_cd" type STRING means "결과 코드",
-                        "msg_cd" type STRING means "메시지 코드",
-                        "msg1" type STRING means "메시지",
-                        "output1" type OBJECT isOptional true means "처리 결과1",
-                        "output2" type ARRAY isOptional true means "처리 결과2"
-                )
+            uri,
+            parametersTemp(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBodyTemp(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
