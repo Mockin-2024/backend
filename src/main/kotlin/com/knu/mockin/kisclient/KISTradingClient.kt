@@ -7,8 +7,6 @@ import com.knu.mockin.util.HttpUtils.addHeaders
 import com.knu.mockin.util.HttpUtils.buildUri
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToMono
-import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Mono
 
 @Component
@@ -27,6 +25,18 @@ class KISTradingClient(
             .bodyValue(kisOrderRequestBodyDto)
             .retrieve()
             .bodyToMono(KISOrderResponseDto::class.java)
+    }
+
+    fun postOrderReverse(
+        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
+        kisOrderReverseRequestBodyDto: KISOrderReverseRequestBodyDto
+    ): Mono<KISOrderReverseResponseDto> {
+        return webClientMock.post()
+            .uri("${tradingUrl}/order-rvsecncl")
+            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
+            .bodyValue(kisOrderReverseRequestBodyDto)
+            .retrieve()
+            .bodyToMono(KISOrderReverseResponseDto::class.java)
     }
 
     fun getNCCS(
