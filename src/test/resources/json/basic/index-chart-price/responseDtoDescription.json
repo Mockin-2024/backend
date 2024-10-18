@@ -1,0 +1,29 @@
+{
+  "output1": {
+    "ovrs_nmix_prdy_vrss": "해외 지수 전일 대비",
+    "prdy_vrss_sign": "전일 대비 부호",
+    "prdy_ctrt": "전일 대비율",
+    "ovrs_nmix_prdy_clpr": "해외 지수 전일 종가",
+    "acml_vol": "누적 거래량",
+    "hts_kor_isnm": "HTS 한글 종목명",
+    "ovrs_nmix_prpr": "해외 지수 현재가",
+    "stck_shrn_iscd": "주식 단축 종목코드",
+    "ovrs_prod_oprc": "해외 상품 시가",
+    "ovrs_prod_hgpr": "해외 상품 최고가",
+    "ovrs_prod_lwpr": "해외 상품 최저가"
+  },
+  "output2": [
+    {
+      "stck_bsop_date": "주식 영업 일자",
+      "stck_cntg_hour": "주식 체결 시간",
+      "optn_prpr": "옵션 현재가",
+      "optn_oprc": "옵션 시가",
+      "optn_hgpr": "옵션 최고가",
+      "optn_lwpr": "옵션 최저가",
+      "cntg_vol": "체결 거래량"
+    }
+  ],
+  "rt_cd": "성공 실패 여부",
+  "msg_cd": "응답코드",
+  "msg1": "응답메세지"
+}
