@@ -25,6 +25,15 @@ class TradingController(
         return ResponseEntity.ok(result)
     }
 
+    @PostMapping("/order-reverse")
+    suspend fun postOrderReverse(
+        @RequestBody orderReverseRequestBodyDto: OrderReverseRequestBodyDto
+    ): ResponseEntity<KISOrderReverseResponseDto> {
+        val result = tradingService.postOrderReverse(orderReverseRequestBodyDto)
+
+        return ResponseEntity.ok(result)
+    }
+
     @GetMapping("/nccs")
     suspend fun getNCCS(
         @ModelAttribute nccsRequestParameterDto: NCCSRequestParameterDto
