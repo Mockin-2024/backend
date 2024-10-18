@@ -1,0 +1,6 @@
+{
+  "overseasExchangeCode": "해외거래소코드",
+  "itemCode": "상품번호",
+  "overseasOrderUnitPrice": "해외주문단가",
+  "email": "이메일"
+}

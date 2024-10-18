@@ -1,0 +1,18 @@
+{
+  "rt_cd": "0",
+  "msg_cd": "APBK0013 -> 다른 값일 것",
+  "msg1": "조회 성공하였습니다. -> 다른 값일 것",
+  "output": {
+    "echm_af_ord_psbl_amt": "0.00",
+    "echm_af_ord_psbl_qty": "0",
+    "exrt": "165.5400000000",
+    "frcr_ord_psbl_amt1": "955**.12",
+    "max_ord_psbl_qty": "744**",
+    "ord_psbl_frcr_amt": "999**.52",
+    "ord_psbl_qty": "744**",
+    "ovrs_max_ord_psbl_qty": "717**",
+    "ovrs_ord_psbl_amt": "992**.35",
+    "sll_ruse_psbl_amt": "0.00",
+    "tr_crcy_cd": "HKD"
+  }
+}

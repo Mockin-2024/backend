@@ -1,4 +1,4 @@
-package com.knu.mockin.dsl
+package com.knu.mockin.controller.util
 
 import com.knu.mockin.logging.utils.LogUtil.toJson
 import org.springframework.http.MediaType.APPLICATION_JSON
@@ -49,7 +49,7 @@ fun <T> MockMvc.getWithParams(uri: String, requestParams: T, expectedDto: T): Re
 fun <T> MockMvc.postWithBody(uri: String, requestBody: T, expectedDto: T): ResultActionsDsl{
     return this.post(uri){
         contentType = APPLICATION_JSON
-        content = toJson(requestBody)
+        content = requestBody
     }.asyncDispatch().andExpect {
         status { isOk() }
         content {
@@ -61,7 +61,7 @@ fun <T> MockMvc.postWithBody(uri: String, requestBody: T, expectedDto: T): Resul
 fun <T> MockMvc.patchWithBody(uri: String, requestBody: T, expectedDto: T): ResultActionsDsl {
     return this.patch(uri) {
         contentType = APPLICATION_JSON
-        content = toJson(requestBody)
+        content = requestBody
     }.asyncDispatch().andExpect {
         status { isOk() }
         content {

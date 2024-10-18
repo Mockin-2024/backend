@@ -1,0 +1,97 @@
+{
+  "output": [
+    {
+      "prdt_type_cd": "507",
+      "tr_natn_cd": "704",
+      "tr_natn_name": "베트남",
+      "natn_eng_abrv_cd": "VN",
+      "tr_mket_cd": "01",
+      "tr_mket_name": "하노이거래소",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221229"
+    },
+    {
+      "prdt_type_cd": "508",
+      "tr_natn_cd": "704",
+      "tr_natn_name": "베트남",
+      "natn_eng_abrv_cd": "VN",
+      "tr_mket_cd": "02",
+      "tr_mket_name": "호치민거래소",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221229"
+    },
+    {
+      "prdt_type_cd": "512",
+      "tr_natn_cd": "840",
+      "tr_natn_name": "미국",
+      "natn_eng_abrv_cd": "US",
+      "tr_mket_cd": "01",
+      "tr_mket_name": "나스닥",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221230"
+    },
+    {
+      "prdt_type_cd": "513",
+      "tr_natn_cd": "840",
+      "tr_natn_name": "미국",
+      "natn_eng_abrv_cd": "US",
+      "tr_mket_cd": "02",
+      "tr_mket_name": "뉴욕거래소",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221230"
+    },
+    {
+      "prdt_type_cd": "515",
+      "tr_natn_cd": "392",
+      "tr_natn_name": "일본",
+      "natn_eng_abrv_cd": "JP",
+      "tr_mket_cd": "01",
+      "tr_mket_name": "일본",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221229"
+    },
+    {
+      "prdt_type_cd": "527",
+      "tr_natn_cd": "840",
+      "tr_natn_name": "미국",
+      "natn_eng_abrv_cd": "US",
+      "tr_mket_cd": "03",
+      "tr_mket_name": "미국",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221230"
+    },
+    {
+      "prdt_type_cd": "528",
+      "tr_natn_cd": "840",
+      "tr_natn_name": "미국",
+      "natn_eng_abrv_cd": "US",
+      "tr_mket_cd": "04",
+      "tr_mket_name": "미국",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221230"
+    },
+    {
+      "prdt_type_cd": "529",
+      "tr_natn_cd": "840",
+      "tr_natn_name": "미국",
+      "natn_eng_abrv_cd": "US",
+      "tr_mket_cd": "05",
+      "tr_mket_name": "아멕스",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221230"
+    },
+    {
+      "prdt_type_cd": "556",
+      "tr_natn_cd": "704",
+      "tr_natn_name": "베트남",
+      "natn_eng_abrv_cd": "VN",
+      "tr_mket_cd": "03",
+      "tr_mket_name": "업콤거래소",
+      "acpl_sttl_dt": "20221229",
+      "dmst_sttl_dt": "20221229"
+    }
+  ],
+  "rt_cd": "0",
+  "msg_cd": "KIOK0460",
+  "msg1": "조회 되었습니다. (마지막 자료)                                                  "
+}

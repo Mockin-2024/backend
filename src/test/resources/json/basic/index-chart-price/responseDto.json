@@ -1,0 +1,37 @@
+{
+  "output1": {
+    "ovrs_nmix_prdy_vrss": "105.23",
+    "prdy_vrss_sign": "2",
+    "prdy_ctrt": "2.11",
+    "ovrs_nmix_prdy_clpr": "4981.80",
+    "acml_vol": "0",
+    "hts_kor_isnm": "S&P500",
+    "ovrs_nmix_prpr": "5087.03",
+    "stck_shrn_iscd": "SPX",
+    "ovrs_prod_oprc": "5038.83",
+    "ovrs_prod_hgpr": "5094.39",
+    "ovrs_prod_lwpr": "5038.83"
+  },
+  "output2": [
+    {
+      "stck_bsop_date": "20240222",
+      "stck_cntg_hour": "170600",
+      "optn_prpr": "5087.03",
+      "optn_oprc": "5087.03",
+      "optn_hgpr": "5087.03",
+      "optn_lwpr": "5087.03",
+      "cntg_vol": "0"
+    },
+    {
+      "stck_bsop_date": "20240222",
+      "stck_cntg_hour": "162000",
+      "optn_prpr": "5087.03",
+      "optn_oprc": "5087.03",
+      "optn_hgpr": "5087.03",
+      "optn_lwpr": "5087.03",
+      "cntg_vol": "0"
+    }],
+  "rt_cd": "0",
+  "msg_cd": "MCA00000",
+  "msg1": "정상처리 되었습니다."
+}

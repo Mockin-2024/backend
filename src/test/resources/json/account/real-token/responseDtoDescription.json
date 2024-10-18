@@ -1,0 +1,6 @@
+{
+  "access_token" : "실전 액세스 토큰",
+  "access_token_token_expired" : "유효기간(년:월:일 시:분:초)",
+  "expire_in" : "유효기간(초)",
+  "token_type" : "접근토큰유형"
+}

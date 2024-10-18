@@ -1,0 +1,7 @@
+{
+  "currencyDivisionCode": "원화외화구분코드",
+  "countryCode": "국가코드",
+  "marketCode": "거래시장코드",
+  "inquiryDivisionCode": "조회구분코드",
+  "email": "이메일"
+}

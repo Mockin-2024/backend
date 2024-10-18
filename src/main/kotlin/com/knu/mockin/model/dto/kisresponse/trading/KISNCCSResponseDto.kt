@@ -8,7 +8,7 @@ data class KISNCCSResponseDto(
     @JsonProperty("msg1") val responseMessage: String,       // 응답메세지
     @JsonProperty("ctx_area_fk200") val continuousSearchCondition200: String, // 연속조회검색조건200
     @JsonProperty("ctx_area_nk200") val continuousSearchKey200: String, // 연속조회키200
-    @JsonProperty("output") val output: List<OrderDetailDto> // 응답상세
+    @JsonProperty("output") val output: List<OrderDetailDto>? // 응답상세
 
 )
 
@@ -40,5 +40,5 @@ data class OrderDetailDto(
     @JsonProperty("prcs_stat_name") val processingStatusName: String,   // 처리상태명
     @JsonProperty("loan_type_cd") val loanTypeCode: String,             // 대출유형코드
     @JsonProperty("loan_dt") val loanDate: String,                      // 대출일자
-    @JsonProperty("usa_amk_exts_rqst_yn") val usAfterMarketExtensionRequest: String, // 미국애프터마켓연장신청여부
+    @JsonProperty("usa_amk_exts_rqst_yn") val usAfterMarketExtensionRequest: String? = "N", // 미국애프터마켓연장신청여부
 )

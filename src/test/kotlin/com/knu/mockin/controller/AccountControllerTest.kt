@@ -1,12 +1,9 @@
 package com.knu.mockin.controller
 
+import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.*
-import com.knu.mockin.model.NUMBER
-import com.knu.mockin.model.STRING
-import com.knu.mockin.model.dto.request.account.AccountRequestDto
-import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
-import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
-import com.knu.mockin.model.dto.request.account.UserRequestDto
+import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
+import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
@@ -43,193 +40,122 @@ class AccountControllerTest(
 
     "POST /account/user" {
         val uri = "${baseUri}/user"
-        val requestDto = UserRequestDto(
-            email = "test@naver.com",
-            name = "test"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postUser(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.postUser(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-            identifier = "/account/user",
-            requestBody = requestBody(
-                "email" type STRING means "사용자 이메일",
-                "name" type STRING means "사용자 이름",
-            ),
-            responseBody =  responseBody(
-                "message" type STRING means "응답 메세지",
-            )
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
     "PATCH /account/user" {
         val uri = "${baseUri}/user"
-        val requestDto = UserAccountNumberRequestDto(
-                email = "test@naver.com",
-                accountNumber = "123456789"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.patchUser(requestDto) } returns expectedDto
+        val uriPatch = "${uri}Patch"
+        val requestDto = readJsonFile(uriPatch, "requestDto.json")
+        val expectedDto = readJsonFile(uriPatch, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.patchUser(any()) } returns expectedDto
 
         val response = mockMvc.patchWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/user-patch",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일",
-                        "accountNumber" type STRING means "사용자 계좌 번호"
-                ),
-                responseBody = responseBody(
-                        "message" type STRING means "응답 메세지"
-                )
+            uriPatch,
+            requestBody(readJsonFile(uriPatch, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uriPatch, "responseDtoDescription.json").toBody())
         )
     }
 
     "POST /account/mock-key" {
         val uri = "${baseUri}/mock-key"
-        val requestDto = KeyPairRequestDto(
-                email = "test@naver.com",
-                appKey = "mockAppKey",
-                appSecret = "mockAppSecret"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postMockKeyPair(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.postMockKeyPair(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/mock-key",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일",
-                        "appKey" type STRING means "모의 앱 키",
-                        "appSecret" type STRING means "모의 앱 비밀 키"
-                ),
-                responseBody = responseBody(
-                        "message" type STRING means "응답 메세지"
-                )
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
     "POST /account/real-key" {
         val uri = "${baseUri}/real-key"
-        val requestDto = KeyPairRequestDto(
-                email = "test@naver.com",
-                appKey = "realAppKey",
-                appSecret = "realAppSecret"
-        )
-        val expectedDto = SimpleMessageResponseDto("Register Complete")
-        coEvery { accountService.postRealKeyPair(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+        coEvery { accountService.postRealKeyPair(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/real-key",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일",
-                        "appKey" type STRING means "실제 앱 키",
-                        "appSecret" type STRING means "실제 앱 비밀 키"
-                ),
-                responseBody = responseBody(
-                        "message" type STRING means "응답 메세지"
-                )
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
     "POST /account/mock-approval-key" {
         val uri = "${baseUri}/mock-approval-key"
-        val requestDto = AccountRequestDto(email = "test@naver.com")
-        val expectedDto = ApprovalKeyResponseDto(
-                approvalKey = "Mock Approval Key"
-        )
-        coEvery { accountService.getMockApprovalKey(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto ApprovalKeyResponseDto::class.java
+        coEvery { accountService.getMockApprovalKey(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/mock-approval-key",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일"
-                ),
-                responseBody = responseBody(
-                        "approval_key" type STRING means "모의 승인 키"
-                )
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
     "POST /account/real-approval-key" {
         val uri = "${baseUri}/real-approval-key"
-        val requestDto = AccountRequestDto(email = "test@naver.com")
-        val expectedDto = ApprovalKeyResponseDto(
-                approvalKey = "Real Approval Key"
-        )
-        coEvery { accountService.getRealApprovalKey(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto ApprovalKeyResponseDto::class.java
+        coEvery { accountService.getRealApprovalKey(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/real-approval-key",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일"
-                ),
-                responseBody = responseBody(
-                        "approval_key" type STRING means "실제 승인 키"
-                )
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
     "POST /account/mock-token" {
         val uri = "${baseUri}/mock-token"
-        val requestDto = AccountRequestDto(email = "test@naver.com")
-        val expectedDto = AccessTokenAPIResponseDto(
-                accessToken = "MockAccessToken",
-                accessTokenTokenExpired = "2023-12-22 08:16:59",
-                expiresIn = 86400,
-                tokenType = "Bearer"
-        )
-        coEvery { accountService.getMockAccessToken(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto AccessTokenAPIResponseDto::class.java
+        coEvery { accountService.getMockAccessToken(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/mock-token",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일"
-                ),
-                responseBody = responseBody(
-                        "access_token" type STRING means "모의 액세스 토큰",
-                        "token_type" type STRING means "접근토큰유형",
-                        "expire_in" type NUMBER means "유효기간(초)",
-                        "access_token_token_expired" type STRING means "유효기간(년:월:일 시:분:초)"
-                )
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
     "POST /account/real-token" {
         val uri = "${baseUri}/real-token"
-        val requestDto = AccountRequestDto(email = "test@naver.com")
-        val expectedDto = AccessTokenAPIResponseDto(
-                accessToken = "RealAccessToken",
-                accessTokenTokenExpired = "2023-12-22 08:16:59",
-                expiresIn = 86400,
-                tokenType = "Bearer"
-        )
-        coEvery { accountService.getRealAccessToken(requestDto) } returns expectedDto
+        val requestDto = readJsonFile(uri, "requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto AccessTokenAPIResponseDto::class.java
+        coEvery { accountService.getRealAccessToken(any()) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
         response.makeDocument(
-                identifier = "/account/real-token",
-                requestBody = requestBody(
-                        "email" type STRING means "사용자 이메일"
-                ),
-                responseBody = responseBody(
-                        "access_token" type STRING means "실제 액세스 토큰",
-                        "token_type" type STRING means "접근토큰유형",
-                        "expire_in" type NUMBER means "유효기간(초)",
-                        "access_token_token_expired" type STRING means "유효기간(년:월:일 시:분:초)"
-                )
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
 
