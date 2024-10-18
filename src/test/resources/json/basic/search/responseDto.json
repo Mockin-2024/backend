@@ -1,0 +1,58 @@
+{
+  "output1": {
+    "zdiv": "4",
+    "stat": "무료실시간",
+    "crec": "2",
+    "trec": "2",
+    "nrec": "2"
+  },
+  "output2": [
+    {
+      "rsym": "DNASTSLA",
+      "excd": "NAS",
+      "symb": "TSLA",
+      "name": "테슬라",
+      "last": "160.9500",
+      "sign": "5",
+      "diff": "6.8700",
+      "rate": "-4.09",
+      "tvol": "175862722",
+      "popen": "174.8700",
+      "phigh": "175.0500",
+      "plow": "156.9100",
+      "valx": "508239862",
+      "shar": "3157750000",
+      "avol": "28842552711",
+      "eps": "3.24",
+      "per": "49.73",
+      "rank": "1",
+      "ename": "TESLA INC",
+      "e_ordyn": "○"
+    },
+    {
+      "rsym": "DNASPANW",
+      "excd": "NAS",
+      "symb": "PANW",
+      "name": "팔로 알토 네트웍스",
+      "last": "160.7500",
+      "sign": "5",
+      "diff": "1.0300",
+      "rate": "-0.64",
+      "tvol": "3570070",
+      "popen": "168.2200",
+      "phigh": "168.9900",
+      "plow": "159.7700",
+      "valx": "48603888",
+      "shar": "302357000",
+      "avol": "580983313",
+      "eps": "0.50",
+      "per": "324.62",
+      "rank": "2",
+      "ename": "PALO ALTO NETWORKS INC",
+      "e_ordyn": "○"
+    }
+  ],
+  "rt_cd": "0",
+  "msg_cd": "MCA00000",
+  "msg1": "정상처리 되었습니다."
+}

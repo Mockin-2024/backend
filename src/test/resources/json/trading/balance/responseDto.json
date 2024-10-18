@@ -1,0 +1,40 @@
+{
+  "ctx_area_fk200": "                                                                                                                                                                                                        ",
+  "ctx_area_nk200": "                                                                                                                                                                                                        ",
+  "output1": [
+    {
+      "cano": "810XXXXX",
+      "acnt_prdt_cd": "01",
+      "prdt_type_cd": "512",
+      "ovrs_pdno": "TSLA",
+      "ovrs_item_name": "테슬라",
+      "frcr_evlu_pfls_amt": "-3547254.185235",
+      "evlu_pfls_rt": "-81.75",
+      "pchs_avg_pric": "5832.2148",
+      "ovrs_cblc_qty": "744",
+      "ord_psbl_qty": "744",
+      "frcr_pchs_amt1": "4339167.78523",
+      "ovrs_stck_evlu_amt": "791913.60000000",
+      "now_pric2": "1064.400000",
+      "tr_crcy_cd": "USD",
+      "ovrs_excg_cd": "NASD",
+      "loan_type_cd": "10",
+      "loan_dt": "",
+      "expd_dt": ""
+    }
+  ],
+  "output2": {
+    "frcr_pchs_amt1": "4339167.78523",
+    "ovrs_rlzt_pfls_amt": "-4836.71476",
+    "ovrs_tot_pfls": "-3547254.18524",
+    "rlzt_erng_rt": "-82.93101266",
+    "tot_evlu_pfls_amt": "791913.60000000",
+    "tot_pftrt": "-81.74964327",
+    "frcr_buy_amt_smtl1": "5832.214765",
+    "ovrs_rlzt_pfls_amt2": "-5780841.48713",
+    "frcr_buy_amt_smtl2": "6970663.087128"
+  },
+  "rt_cd": "0",
+  "msg_cd": "KIOK0510",
+  "msg1": "조회가 완료되었습니다                                                           "
+}

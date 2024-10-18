@@ -1,0 +1,6 @@
+{
+  "AUTH" : "사용자권한정보",
+  "EXCD" :"거래소코드",
+  "SYMB" : "종목코드",
+  "email" : "test@naver.com"
+}
