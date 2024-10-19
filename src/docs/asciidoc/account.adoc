@@ -5,7 +5,6 @@
 == 목차
 
 * xref:/docs/index.html[메인으로 돌아가기]
-* <<user-post, 사용자 등록>>
 * <<user-patch, 계좌번호 등록>>
 * <<mock-key, 모의 앱 키, 앱 시크릿 저장>>
 * <<real-key, 실전 앱 키, 앱 시크릿 저장>>
@@ -14,36 +13,21 @@
 * <<mock-token, 모의 토큰 요청>>
 * <<real-token, 실전 토큰 요청>>
 
-[#user-post]
-== 사용자 등록
-
-=== Request
-include::{snippets}/account/user/http-request.adoc[]
-
-=== Request-Field
-include::{snippets}/account/user/request-fields.adoc[]
-
-=== Response
-include::{snippets}/account/user/http-response.adoc[]
-
-=== Response-Field
-include::{snippets}/account/user/response-fields.adoc[]
-
 /*
 [#user-patch]
 == 계좌번호 등록
 
 === Request
-include::{snippets}/account/user-patch/http-request.adoc[]
+include::{snippets}/account/userPatch/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/account/user-patch/request-fields.adoc[]
+include::{snippets}/account/userPatch/request-fields.adoc[]
 
 === Response
-include::{snippets}/account/user-patch/http-response.adoc[]
+include::{snippets}/account/userPatch/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/account/user-patch/response-fields.adoc[]
+include::{snippets}/account/userPatch/response-fields.adoc[]
 */
 
 [#mock-key]
