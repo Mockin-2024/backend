@@ -1,0 +1,57 @@
+:snippets: ./build/generated-snippets
+
+= Auth
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<signup, 회원가입>>
+* <<login, 로그인>>
+* <<check, 이메일 인증>>
+
+
+[#signup]
+== 회원가입
+
+=== Request
+include::{snippets}/auth/signup/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/auth/signup//request-fields.adoc[]
+
+=== Response
+include::{snippets}/auth/signup//http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/auth/signup//response-fields.adoc[]
+
+
+[#login]
+== 로그인
+
+=== Request
+include::{snippets}/auth/login/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/auth/login/request-fields.adoc[]
+
+=== Response
+include::{snippets}/auth/login/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/auth/login/response-fields.adoc[]
+
+[#check]
+== 이메일 인증
+
+=== Request
+include::{snippets}/auth/check/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/auth/check/request-fields.adoc[]
+
+=== Response
+include::{snippets}/auth/check/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/auth/check/response-fields.adoc[]
