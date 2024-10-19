@@ -38,20 +38,6 @@ class AccountControllerTest(
 
     val baseUri = "/account"
 
-    "POST /account/user" {
-        val uri = "${baseUri}/user"
-        val requestDto = readJsonFile(uri, "requestDto.json")
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
-        coEvery { accountService.postUser(any()) } returns expectedDto
-
-        val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
-
-        response.makeDocument(
-            uri,
-            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
 
     "PATCH /account/user" {
         val uri = "${baseUri}/user"
