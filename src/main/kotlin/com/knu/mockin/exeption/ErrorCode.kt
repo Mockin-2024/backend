@@ -12,5 +12,6 @@ enum class ErrorCode(val status: Int, val httpStatus: HttpStatus, val message: S
     TOKEN_EXPIRED(401, HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     KIS_API_FAILED(502, HttpStatus.BAD_GATEWAY, "KIS API 서버로부터 적절한 응답을 받아오지 못했습니다."),
     INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버에 알 수 없는 문제가 생겼습니다. 개발자에게 문의하세요"),
-    FORBIDDEN(403, HttpStatus.FORBIDDEN, "요청이 KIS 서버에 도달했으나, 잘못된 요청이 담겨 거부당했습니다.")
+    FORBIDDEN(403, HttpStatus.FORBIDDEN, "요청이 KIS 서버에 도달했으나, 잘못된 요청이 담겨 거부당했습니다."),
+    UNAUTHORIZED(401, HttpStatus.UNAUTHORIZED, "적절한 토큰이 없어 접근이 거부당했습니다.")
 }

@@ -1,6 +1,8 @@
 package com.knu.mockin.security
 
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.security.handler.JwtAccessDeniedHandler
+import com.knu.mockin.security.handler.JwtAuthenticationEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -19,7 +21,10 @@ import org.springframework.security.web.server.authentication.AuthenticationWebF
 @EnableReactiveMethodSecurity
 @Configuration
 @Order(1)
-class SecurityConfig {
+class SecurityConfig(
+    val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
+    val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
+) {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -43,6 +48,10 @@ class SecurityConfig {
             .httpBasic { it.disable() }
             .formLogin { it.disable() }
             .csrf { it.disable() }
+            .exceptionHandling { exception ->
+                exception.accessDeniedHandler(jwtAccessDeniedHandler)
+                exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            }
 
         return http.build()
     }
