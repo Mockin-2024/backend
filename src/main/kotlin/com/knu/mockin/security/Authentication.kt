@@ -43,7 +43,7 @@ class JwtAuthenticationManager(
         val user = users.findByUsername(username).awaitSingleOrNull()
 
         if (jwtSupport.isValid(token, user)) {
-            return UsernamePasswordAuthenticationToken(user!!.username, user.password, user.authorities)
+            return UsernamePasswordAuthenticationToken(user!!.username, user.authorities)
         }
 
         throw IllegalArgumentException("유효하지 않은 토큰입니다!!")
