@@ -38,24 +38,24 @@ class SecurityConfig {
 
 
         http
-            .exceptionHandling()
-            .authenticationEntryPoint { exchange, _ ->
-                Mono.fromRunnable {
-                    exchange.response.statusCode = HttpStatus.UNAUTHORIZED
-                    exchange.response.headers.set(HttpHeaders.WWW_AUTHENTICATE, "Bearer")
+            .exceptionHandling { exceptions ->
+                exceptions.authenticationEntryPoint { exchange, _ ->
+                    Mono.fromRunnable {
+                        exchange.response.statusCode = HttpStatus.UNAUTHORIZED
+                        exchange.response.headers.set(HttpHeaders.WWW_AUTHENTICATE, "Bearer")
+                    }
                 }
             }
-            .and()
-            .authorizeExchange()
-            .pathMatchers(HttpMethod.POST, "/auth/**").permitAll()
-            .pathMatchers("/docs/**").permitAll()
-            .anyExchange().authenticated()
-            .and()
+            .authorizeExchange { authorize ->
+                authorize
+                    .pathMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                    .pathMatchers("/docs/**").permitAll()
+                    .anyExchange().authenticated()
+            }
             .addFilterAt(filter, SecurityWebFiltersOrder.AUTHENTICATION)
-            .httpBasic().disable()
-            .formLogin().disable()
-            .csrf().disable()
-
+            .httpBasic { it.disable() }
+            .formLogin { it.disable() }
+            .csrf { it.disable() }
 
         return http.build()
     }
