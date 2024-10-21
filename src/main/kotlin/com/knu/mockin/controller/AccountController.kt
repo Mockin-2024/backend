@@ -26,11 +26,6 @@ class AccountController(
     private val accountService: AccountService,
 ) {
 
-    @GetMapping("test")
-    suspend fun test(): String {
-        return "성공"
-    }
-
     @PatchMapping("/user")
     suspend fun patchUser(
         @RequestBody userAccountNumberRequestDto: UserAccountNumberRequestDto
