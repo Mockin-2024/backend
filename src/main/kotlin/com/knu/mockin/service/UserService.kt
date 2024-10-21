@@ -32,13 +32,15 @@ class UserService(
 
         val encodedPassword = encoder.encode(signupRequestDto.password)
 
-        val result = emailService.joinEmail(
-            signupRequestDto.email,
-            encodedPassword,
-            signupRequestDto.name
-        )
+        userRepository.save(
+            User(
+                email= signupRequestDto.email,
+                password = encodedPassword,
+                name = signupRequestDto.name,
+            )
+        ).awaitSingleOrNull()
 
-        return SimpleMessageResponseDto("이메일 인증을 완료해주세요!")
+        return SimpleMessageResponseDto("회원가입이 완료되었습니다!")
     }
 
     suspend fun loginUser(loginRequestDto: LoginRequestDto): Jwt {

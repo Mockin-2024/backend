@@ -1,5 +1,6 @@
 package com.knu.mockin.controller
 
+import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.request.login.EmailCheckRequestDto
 import com.knu.mockin.model.dto.request.login.Jwt
 import com.knu.mockin.model.dto.request.login.LoginRequestDto
@@ -34,6 +35,15 @@ class LoginController (
         @RequestBody loginRequestDto: LoginRequestDto
     ): ResponseEntity<Jwt> {
         val result = userService.loginUser(loginRequestDto)
+
+        return ResponseEntity.ok(result)
+    }
+
+    @PostMapping("/send")
+    suspend fun sendUser(
+        @RequestBody accountRequestBody: AccountRequestDto
+    ): ResponseEntity<SimpleMessageResponseDto> {
+        val result = emailService.joinEmail(accountRequestBody.email)
 
         return ResponseEntity.ok(result)
     }
