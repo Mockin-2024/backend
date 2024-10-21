@@ -18,7 +18,7 @@ class BearerToken(val value: String) : AbstractAuthenticationToken(AuthorityUtil
 }
 
 @Component
-class JwtSupport {
+class JwtUtil {
 
     private val key = Keys.hmacShaKeyFor("HzA9XwnQLwwPt2Qjn06LirX3zXCYsKXqOuNXm63Ex9o=".toByteArray())
     private val parser = Jwts.parserBuilder().setSigningKey(key).build()
