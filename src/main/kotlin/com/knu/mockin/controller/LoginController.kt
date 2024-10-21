@@ -40,16 +40,16 @@ class LoginController (
     }
 
     @PostMapping("/send")
-    suspend fun sendUser(
+    suspend fun sendEmailToUser(
         @RequestBody accountRequestBody: AccountRequestDto
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = emailService.joinEmail(accountRequestBody.email)
+        val result = emailService.sendEmail(accountRequestBody.email)
 
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/check")
-    suspend fun checkUser(
+    suspend fun checkEmail(
         @RequestBody emailCheckRequestDto: EmailCheckRequestDto
     ): ResponseEntity<SimpleMessageResponseDto> {
         val result = emailService.checkAuthNum(emailCheckRequestDto)
