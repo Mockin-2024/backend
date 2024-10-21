@@ -4,7 +4,6 @@ package com.knu.mockin.controller
 import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
-import com.knu.mockin.model.dto.request.account.UserRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
@@ -15,15 +14,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/account")
 class AccountController(
-    private val accountService: AccountService
+    private val accountService: AccountService,
 ) {
-    @PostMapping("/user")
-    suspend fun postUser(
-        @RequestBody userRequestDto: UserRequestDto
-    ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = accountService.postUser(userRequestDto)
-        return ResponseEntity.ok(result)
-    }
 
     @PatchMapping("/user")
     suspend fun patchUser(

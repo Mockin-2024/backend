@@ -40,7 +40,7 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
     // Spring Web with FLux
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    //implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     // Spring logging
@@ -63,7 +63,18 @@ dependencies {
     // Spring AOP
     implementation("org.springframework.boot:spring-boot-starter-aop")
 
+    // Redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+
+    // Email
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
+    // Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
 }
 
 val snippetsDir = file("./build/generated-snippets")
@@ -91,6 +102,9 @@ tasks.register<Copy>("copySnippets"){
     }
     from(file("../basic")) {
         into("basic")
+    }
+    from(file("../auth")) {
+        into("auth")
     }
     into(file("./build/generated-snippets"))
 }

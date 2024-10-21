@@ -21,6 +21,14 @@ object RedisUtil{
         return redisTemplate.opsForValue().get(email)
     }
 
+    fun saveEmailCode(email: String,
+                      token: String,
+                      timeout: Long,
+                      unit: java.util.concurrent.TimeUnit) {
+        return redisTemplate.opsForValue().set(email, token, timeout, unit)
+    }
+
+
     fun removeToken(email: String) {
         redisTemplate.delete(email)
     }

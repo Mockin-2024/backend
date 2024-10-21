@@ -35,20 +35,6 @@ class AccountService(
     private val mockKeyRepository: MockKeyRepository,
     private val realKeyRepository: RealKeyRepository
 ) {
-    suspend fun postUser(
-        userRequestDto: UserRequestDto
-    ): SimpleMessageResponseDto {
-        val user = userRepository.findByEmail(userRequestDto.email).awaitSingleOrNull()
-        if(user != null) throw CustomException(ErrorCode.ALREADY_REGISTERED)
-
-        userRepository.save(User(
-            email = userRequestDto.email,
-            name = userRequestDto.name
-        )).awaitSingleOrNull()
-
-        return SimpleMessageResponseDto("Register Complete")
-    }
-
     suspend fun patchUser(
         userAccountNumberRequestDto: UserAccountNumberRequestDto
     ): SimpleMessageResponseDto {
