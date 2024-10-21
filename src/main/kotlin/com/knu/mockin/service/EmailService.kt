@@ -5,12 +5,10 @@ import com.knu.mockin.exeption.CustomException
 import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.model.dto.request.login.EmailCheckRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
-import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.RedisUtil
 import jakarta.mail.MessagingException
 import jakarta.mail.internet.MimeMessage
-import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
@@ -49,12 +47,11 @@ class EmailService(
             e.printStackTrace() // 에러 출력
         }
         // redis에 3분 동안 이메일과 인증 코드 저장
-        val valOperations: ValueOperations<String, String> = redisConfig.redisTemplate().opsForValue()
-        valOperations.set(toMail, authNumber.toString(), 180, TimeUnit.SECONDS)
+        RedisUtil.saveEmailCode(toMail, authNumber.toString(), 180, TimeUnit.SECONDS)
     }
 
     /* 이메일 작성 */
-    suspend fun joinEmail(email: String): SimpleMessageResponseDto {
+    suspend fun sendEmail(email: String): SimpleMessageResponseDto {
         makeRandomNum()
         val customerMail = email
         val title = "회원 가입을 위한 이메일입니다!"
@@ -68,8 +65,8 @@ class EmailService(
     }
 
     suspend fun checkAuthNum(emailCheckRequestDto: EmailCheckRequestDto): SimpleMessageResponseDto {
-        val valOperations: ValueOperations<String, String> = redisConfig.redisTemplate().opsForValue()
-        val code = valOperations.get(emailCheckRequestDto.email)
+
+        val code = RedisUtil.getToken(emailCheckRequestDto.email)
 
         if (code == emailCheckRequestDto.authNum) {
             // 이메일 인증 성공
