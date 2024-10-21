@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono
 
 @Service
 class UserService(
-    private val emailService: EmailService,
     private val encoder: PasswordEncoder,
     private val jwtUtil: JwtUtil,
     private val userRepository: UserRepository

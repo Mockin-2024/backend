@@ -1,6 +1,5 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.request.login.*
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.service.EmailService
