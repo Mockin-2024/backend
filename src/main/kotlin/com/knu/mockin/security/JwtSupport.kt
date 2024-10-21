@@ -27,7 +27,7 @@ class JwtSupport {
         val builder = Jwts.builder()
             .setSubject(username)
             .setIssuedAt(Date.from(Instant.now()))
-            .setExpiration(Date.from(Instant.now().plus(15, ChronoUnit.MINUTES)))
+            .setExpiration(Date.from(Instant.now().plus(60, ChronoUnit.MINUTES)))
             .signWith(key)
 
         val token = builder.compact()
