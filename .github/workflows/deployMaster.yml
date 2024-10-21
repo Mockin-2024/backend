@@ -32,6 +32,7 @@ jobs:
         echo "${{ secrets.APPLICATION_LOGGING }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_SQL }}" >> ./application.properties
         echo "${{ secrets.APPLICATION_REDIS }}" >> ./application.properties
+        echo "${{ secrets.APPLICATION_EMAIL }}" >> ./application.properties
 
     # login dockerhub
     - name: login to dockerHub
