@@ -59,6 +59,21 @@
             )
         }
 
+        "POST /auth/send" {
+            val uri = "${baseUri}/send"
+            val requestDto = readJsonFile(uri, "requestDto.json")
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+            coEvery { emailService.sendEmail(any()) } returns expectedDto
+
+            val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
+
+            response.makeDocument(
+                uri,
+                requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+                responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            )
+        }
+
         "POST /auth/login" {
             val uri = "${baseUri}/login"
             val requestDto = readJsonFile(uri, "requestDto.json")
