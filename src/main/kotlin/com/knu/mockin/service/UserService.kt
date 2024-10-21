@@ -1,5 +1,7 @@
 package com.knu.mockin.service
 
+import com.knu.mockin.exeption.CustomException
+import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.model.dto.request.login.Jwt
 import com.knu.mockin.model.dto.request.login.LoginRequestDto
 import com.knu.mockin.model.dto.request.login.SignupRequestDto
@@ -27,7 +29,7 @@ class UserService(
         val existingUser = userRepository.findByEmail(signupRequestDto.email).awaitSingleOrNull()
 
         if (existingUser != null) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 사용자입니다.")
+            throw CustomException(ErrorCode.ALREADY_REGISTERED)
         }
 
         val encodedPassword = encoder.encode(signupRequestDto.password)
@@ -53,7 +55,7 @@ class UserService(
             }
         }
 
-        throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다.")
+        throw CustomException(ErrorCode.INVALID_LOGIN)
     }
 
     // 이메일로 유저 찾기
