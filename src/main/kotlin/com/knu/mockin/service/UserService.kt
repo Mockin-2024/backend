@@ -49,10 +49,6 @@ class UserService(
         // 사용자 검증 및 비밀번호 비교
         user?.let {
             if (encoder.matches(loginRequestDto.password, it.password)) {
-                // 이메일 인증 여부 확인
-                if (!it.verified) {
-                    throw ResponseStatusException(HttpStatus.FORBIDDEN, "이메일 인증이 완료되지 않았습니다.")
-                }
                 return Jwt(jwtSupport.generate(it.email).value) // JWT 발급
             }
         }
