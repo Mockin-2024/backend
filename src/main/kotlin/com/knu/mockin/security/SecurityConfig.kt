@@ -38,14 +38,6 @@ class SecurityConfig {
 
 
         http
-            .exceptionHandling { exceptions ->
-                exceptions.authenticationEntryPoint { exchange, _ ->
-                    Mono.fromRunnable {
-                        exchange.response.statusCode = HttpStatus.UNAUTHORIZED
-                        exchange.response.headers.set(HttpHeaders.WWW_AUTHENTICATE, "Bearer")
-                    }
-                }
-            }
             .authorizeExchange { authorize ->
                 authorize
                     .pathMatchers(HttpMethod.POST, "/auth/**").permitAll()
