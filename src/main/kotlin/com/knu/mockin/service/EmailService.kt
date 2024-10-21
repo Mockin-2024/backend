@@ -70,6 +70,7 @@ class EmailService(
 
         if (code == emailCheckRequestDto.authNum) {
             // 이메일 인증 성공
+            RedisUtil.removeToken(emailCheckRequestDto.email)
             return SimpleMessageResponseDto("이메일 인증이 완료되었습니다.")
         } else {
             // 이메일 인증 실패
