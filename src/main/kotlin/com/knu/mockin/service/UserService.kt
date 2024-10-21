@@ -55,9 +55,4 @@ class UserService(
         throw CustomException(ErrorCode.INVALID_LOGIN)
     }
 
-    // 이메일로 유저 찾기
-    suspend fun findByEmail(email: String): Mono<User> {
-        return userRepository.findByEmail(email)
-    }
-
 }
