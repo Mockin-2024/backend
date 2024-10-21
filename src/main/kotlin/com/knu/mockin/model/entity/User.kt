@@ -9,6 +9,5 @@ data class User(
     val name: String,
     val password: String,
     val accountNumber: String = "",
-    val verified: Boolean = false,
     val role: String = "USER"
 )
