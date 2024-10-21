@@ -1,10 +1,7 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.request.account.AccountRequestDto
-import com.knu.mockin.model.dto.request.login.EmailCheckRequestDto
-import com.knu.mockin.model.dto.request.login.Jwt
-import com.knu.mockin.model.dto.request.login.LoginRequestDto
-import com.knu.mockin.model.dto.request.login.SignupRequestDto
+import com.knu.mockin.model.dto.request.login.*
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.service.EmailService
 import com.knu.mockin.service.UserService
@@ -41,9 +38,9 @@ class LoginController (
 
     @PostMapping("/send")
     suspend fun sendEmailToUser(
-        @RequestBody accountRequestBody: AccountRequestDto
+        @RequestBody emailRequestBody: EmailRequestDto
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = emailService.sendEmail(accountRequestBody.email)
+        val result = emailService.sendEmail(emailRequestBody.email)
 
         return ResponseEntity.ok(result)
     }
