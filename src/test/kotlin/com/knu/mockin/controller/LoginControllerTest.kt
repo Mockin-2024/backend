@@ -6,8 +6,6 @@
     import com.knu.mockin.dsl.toDto
     import com.knu.mockin.model.dto.request.login.Jwt
     import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
-    import com.knu.mockin.model.entity.User
-    import com.knu.mockin.security.JwtSupport
     import com.knu.mockin.service.EmailService
     import com.knu.mockin.service.UserService
     import com.ninjasquad.springmockk.MockkBean
@@ -17,10 +15,8 @@
     import io.mockk.mockk
     import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
     import org.springframework.restdocs.ManualRestDocumentation
-    import org.springframework.security.crypto.password.PasswordEncoder
     import org.springframework.test.web.servlet.MockMvc
     import org.springframework.web.context.WebApplicationContext
-    import reactor.core.publisher.Mono
 
     @WebMvcTest(LoginController::class)
     class LoginControllerTest(

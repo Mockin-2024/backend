@@ -10,15 +10,12 @@ import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.JwtSupport
 import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
 
 @Service
 class UserService(
-    private val emailService: EmailService,
     private val encoder: PasswordEncoder,
     private val jwtSupport: JwtSupport,
     private val userRepository: UserRepository

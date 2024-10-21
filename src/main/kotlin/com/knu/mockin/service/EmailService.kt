@@ -1,26 +1,21 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.config.RedisConfig
 import com.knu.mockin.exeption.CustomException
 import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.model.dto.request.login.EmailCheckRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
-import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.RedisUtil
 import jakarta.mail.MessagingException
 import jakarta.mail.internet.MimeMessage
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.data.redis.core.ValueOperations
 import java.util.concurrent.TimeUnit
 
 @Service
 class EmailService(
-    private val javaMailSender: JavaMailSender,
-    private val redisConfig: RedisConfig,
-    private val userRepository: UserRepository
+    private val javaMailSender: JavaMailSender
 ) {
 
     private var authNumber: Int = 0

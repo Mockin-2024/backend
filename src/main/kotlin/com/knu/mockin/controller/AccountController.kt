@@ -1,24 +1,15 @@
 package com.knu.mockin.controller
 
 
-import com.knu.mockin.model.dto.request.account.*
+import com.knu.mockin.model.dto.request.account.AccountRequestDto
+import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
+import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
-import com.knu.mockin.security.JwtSupport
 import com.knu.mockin.service.AccountService
-import com.knu.mockin.service.EmailService
-import com.knu.mockin.service.UserService
-import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
-import java.security.Principal
 
 @RestController
 @RequestMapping("/account")
