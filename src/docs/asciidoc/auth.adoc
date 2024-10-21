@@ -6,6 +6,7 @@
 
 * xref:/docs/index.html[메인으로 돌아가기]
 * <<signup, 회원가입>>
+* <<send, 이메일 전송>>
 * <<login, 로그인>>
 * <<check, 이메일 인증>>
 
@@ -24,6 +25,21 @@ include::{snippets}/auth/signup//http-response.adoc[]
 
 === Response-Field
 include::{snippets}/auth/signup//response-fields.adoc[]
+
+[#send]
+== 이메일 전송
+
+=== Request
+include::{snippets}/auth/send/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/auth/send//request-fields.adoc[]
+
+=== Response
+include::{snippets}/auth/send//http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/auth/send//response-fields.adoc[]
 
 
 [#login]
