@@ -2,13 +2,11 @@ package com.knu.mockin.security
 
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.reactor.mono
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
@@ -26,7 +24,7 @@ class JwtServerAuthenticationConverter: ServerAuthenticationConverter {
 
 @Component
 class JwtAuthenticationManager(
-    private val jwtSupport: JwtSupport,
+    private val jwtUtil: JwtUtil,
     private val users: CustomUserDetailsService
 ): ReactiveAuthenticationManager {
     override fun authenticate(authentication: Authentication?): Mono<Authentication> {
@@ -39,10 +37,10 @@ class JwtAuthenticationManager(
     }
 
     private suspend fun validate(token: BearerToken): Authentication {
-        val username = jwtSupport.getUsername(token)
+        val username = jwtUtil.getUsername(token)
         val user = users.findByUsername(username).awaitSingleOrNull()
 
-        if (jwtSupport.isValid(token, user)) {
+        if (jwtUtil.isValid(token, user)) {
             return UsernamePasswordAuthenticationToken(user!!.username, user.authorities)
         }
 

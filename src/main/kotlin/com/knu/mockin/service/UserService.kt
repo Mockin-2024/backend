@@ -8,19 +8,17 @@ import com.knu.mockin.model.dto.request.login.SignupRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
-import com.knu.mockin.security.JwtSupport
+import com.knu.mockin.security.JwtUtil
 import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
 
 @Service
 class UserService(
     private val emailService: EmailService,
     private val encoder: PasswordEncoder,
-    private val jwtSupport: JwtSupport,
+    private val jwtUtil: JwtUtil,
     private val userRepository: UserRepository
 ) {
 
@@ -51,7 +49,7 @@ class UserService(
         // 사용자 검증 및 비밀번호 비교
         user?.let {
             if (encoder.matches(loginRequestDto.password, it.password)) {
-                return Jwt(jwtSupport.generate(it.email).value) // JWT 발급
+                return Jwt(jwtUtil.generate(it.email).value) // JWT 발급
             }
         }
 
