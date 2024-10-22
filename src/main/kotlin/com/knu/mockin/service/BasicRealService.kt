@@ -1,22 +1,15 @@
 package com.knu.mockin.service
 
+import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.kisclient.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISCountriesHolidayRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISIndexChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISItemChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISPriceDetailRequestParameterDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISIndexChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
-import com.knu.mockin.model.dto.request.basic.CountriesHolidayRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.IndexChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.ItemChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.PriceDetailRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.*
+import com.knu.mockin.model.dto.kisresponse.basic.*
+import com.knu.mockin.model.dto.request.basic.*
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.StringUtil
 import kotlinx.coroutines.reactive.awaitFirst
@@ -111,7 +104,7 @@ class BasicRealService (
                 authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
-                transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE) // 거래 ID를 INDEX_CHART_PRICE로 변경
+                transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE)
         )
 
         val requestParameter = KISIndexChartPriceRequestParameterDto(
@@ -124,4 +117,24 @@ class BasicRealService (
         return kisBasicRealClient.getIndexChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
 
+    suspend fun getNewsTitle(
+        newsTitleRequestParameterDto: NewsTitleRequestParameterDto
+    ): KISNewsTitleResponseDto {
+        val userWithKey =  userRepository.findByEmailWithRealKey(newsTitleRequestParameterDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+            authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(userWithKey.email))}",
+            appKey = userWithKey.appKey,
+            appSecret = userWithKey.appSecret,
+            transactionId = TradeId.getTradeIdByEnum(TradeId.NEWS_TITLE)
+        )
+
+        val requestParameter = KISNewsTitleRequestParameterDto(
+            queryDate = newsTitleRequestParameterDto.queryDate,
+            queryTime = newsTitleRequestParameterDto.queryTime
+        )
+
+        return kisBasicRealClient.getNewsTitle(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+    }
 }
