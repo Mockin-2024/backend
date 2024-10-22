@@ -3,7 +3,6 @@ package com.knu.mockin.kisclient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
-import com.knu.mockin.util.HttpUtils.addHeaders
 import com.knu.mockin.util.HttpUtils.buildUri
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -16,91 +15,95 @@ class KISTradingClient(
     private val tradingUrl = "/uapi/overseas-stock/v1/trading"
 
     fun postOrder(
-        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisOrderRequestBodyDto: KISOrderRequestBodyDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        bodyDto: KISOrderRequestBodyDto
     ): Mono<KISOrderResponseDto> {
-        return webClientMock.post()
-            .uri("${tradingUrl}/order")
-            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .bodyValue(kisOrderRequestBodyDto)
-            .retrieve()
-            .bodyToMono(KISOrderResponseDto::class.java)
+        val uri = "${tradingUrl}/order"
+
+        return webClientMock.postWithBody(
+            uri = uri,
+            headerDto = headerDto,
+            bodyDto = bodyDto,
+            responseType = KISOrderResponseDto::class.java
+        )
     }
 
     fun postOrderReverse(
-        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisOrderReverseRequestBodyDto: KISOrderReverseRequestBodyDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        bodyDto: KISOrderReverseRequestBodyDto
     ): Mono<KISOrderReverseResponseDto> {
-        return webClientMock.post()
-            .uri("${tradingUrl}/order-rvsecncl")
-            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .bodyValue(kisOrderReverseRequestBodyDto)
-            .retrieve()
-            .bodyToMono(KISOrderReverseResponseDto::class.java)
+        val uri = "${tradingUrl}/order-rvsecncl"
+
+        return webClientMock.postWithBody(
+            uri = uri,
+            headerDto = headerDto,
+            bodyDto = bodyDto,
+            responseType = KISOrderReverseResponseDto::class.java
+        )
     }
 
     fun getNCCS(
-        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisnccsRequestParameterDto: KISNCCSRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISNCCSRequestParameterDto
     ): Mono<KISNCCSResponseDto>{
-        val targetUri = buildUri("${tradingUrl}/inquire-nccs", kisnccsRequestParameterDto)
+        val targetUri = buildUri("${tradingUrl}/inquire-nccs", parameterDto)
 
-        return webClientMock.get()
-            .uri(targetUri)
-            .headers{ addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .retrieve()
-            .bodyToMono(KISNCCSResponseDto::class.java)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISNCCSResponseDto::class.java
+        )
     }
 
     fun getBalance(
-        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisBalanceRequestParameterDto: KISBalanceRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISBalanceRequestParameterDto
     ): Mono<KISBalanceResponseDto>{
-        val targetUri = buildUri("${tradingUrl}/inquire-balance", kisBalanceRequestParameterDto)
+        val targetUri = buildUri("${tradingUrl}/inquire-balance", parameterDto)
 
-        return webClientMock.get()
-            .uri(targetUri)
-            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .retrieve()
-            .bodyToMono(KISBalanceResponseDto::class.java)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISBalanceResponseDto::class.java
+        )
     }
 
     fun getPsAmount(
-        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisPsAmountRequestParameterDto: KISPsAmountRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISPsAmountRequestParameterDto
     ): Mono<KISPsAmountResponseDto>{
-        val targetUri = buildUri("${tradingUrl}/inquire-psamount", kisPsAmountRequestParameterDto)
+        val targetUri = buildUri("${tradingUrl}/inquire-psamount", parameterDto)
 
-        return webClientMock.get()
-            .uri(targetUri)
-            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .retrieve()
-            .bodyToMono(KISPsAmountResponseDto::class.java)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISPsAmountResponseDto::class.java
+        )
     }
 
     fun getPresentBalance(
-        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisPresentBalanceRequestParameterDto: KISPresentBalanceRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISPresentBalanceRequestParameterDto
     ): Mono<KISPresentBalanceResponseDto>{
-        val targetUri = buildUri("${tradingUrl}/inquire-psamount", kisPresentBalanceRequestParameterDto)
+        val targetUri = buildUri("${tradingUrl}/inquire-psamount", parameterDto)
 
-        return webClientMock.get()
-            .uri(targetUri)
-            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .retrieve()
-            .bodyToMono(KISPresentBalanceResponseDto::class.java)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISPresentBalanceResponseDto::class.java
+        )
     }
 
     fun getCCNL(
-        kisOverSeaRequestHeaderDto: KISOverSeaRequestHeaderDto,
-        kisccnlRequestParameterDto: KISCCNLRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISCCNLRequestParameterDto
     ): Mono<KISCCNLResponseDto>{
-        val targetUri = buildUri("${tradingUrl}/inquire-ccnl", kisccnlRequestParameterDto)
+        val targetUri = buildUri("${tradingUrl}/inquire-ccnl", parameterDto)
 
-        return webClientMock.get()
-            .uri(targetUri)
-            .headers { addHeaders(it, kisOverSeaRequestHeaderDto) }
-            .retrieve()
-            .bodyToMono(KISCCNLResponseDto::class.java)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISCCNLResponseDto::class.java
+        )
     }
 }
