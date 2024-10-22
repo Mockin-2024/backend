@@ -13,6 +13,7 @@
 * <<price-detail, 현재가상세>>
 * <<item-chart-price, 주식분봉조회>>
 * <<index-chart-price, 지수분봉조회>>
+* <<news-title, 해외뉴스종합>>
 
 [#current]
 == 현재체결가
@@ -140,4 +141,17 @@ include::{snippets}/basic/index-chart-price/http-response.adoc[]
 include::{snippets}/basic/index-chart-price/response-fields.adoc[]
 
 
+[#news-title]
+== 해외뉴스종합
 
+=== Request
+include::{snippets}/basic/news-title/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/news-title/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/news-title/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/news-title/response-fields.adoc[]

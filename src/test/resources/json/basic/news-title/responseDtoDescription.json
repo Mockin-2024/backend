@@ -1,0 +1,21 @@
+{
+  "rt_cd": "성공 여부",
+  "msg_cd": "응답코드",
+  "msg1": "응답 메세지",
+  "outblock1": [
+    {
+      "info_gb": "뉴스",
+      "news_key": "뉴스키",
+      "data_dt": "조회일자",
+      "data_tm": "조회시간",
+      "class_cd": "중분류",
+      "class_name": "중분류명",
+      "source": "연합미국",
+      "nation_cd": "국가코드",
+      "exchange_cd": "거래소코드",
+      "symb": "종목코드",
+      "symb_name": "종목명",
+      "title": "제목"
+    }
+  ]
+}

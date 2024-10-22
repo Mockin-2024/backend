@@ -1,6 +1,6 @@
 package com.knu.mockin.model.entity
 
-data class UserWithMockKey(
+data class UserWithKeyPair(
     val email: String,
     val accountNumber: String,
     val appKey: String,
