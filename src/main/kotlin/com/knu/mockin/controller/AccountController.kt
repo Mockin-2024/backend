@@ -52,7 +52,7 @@ class AccountController(
 
     @PostMapping("/real-approval-key")
     suspend fun getRealApprovalKey(
-            @RequestBody accountRequestDto: AccountRequestDto
+        @RequestBody accountRequestDto: AccountRequestDto
     ): ResponseEntity<ApprovalKeyResponseDto> {
         val result = accountService.getRealApprovalKey(accountRequestDto)
 
@@ -69,8 +69,8 @@ class AccountController(
     }
 
     @PostMapping("/real-token")
-    suspend fun getRealMockAccessToken(
-            @RequestBody accountRequestDto: AccountRequestDto
+    suspend fun getRealAccessToken(
+        @RequestBody accountRequestDto: AccountRequestDto
     ): ResponseEntity<AccessTokenAPIResponseDto> {
         val result = accountService.getRealAccessToken(accountRequestDto)
 
