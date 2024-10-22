@@ -38,7 +38,7 @@ object RestDocsUtils {
         val fieldDescriptions = mutableListOf<Pair<Field, String>>()
 
         jsonNode.fieldNames().forEach { fieldName ->
-            if (fieldName.contains("output")) {
+            if (fieldName.contains("output") || fieldName.contains("outblock")) {
                 fieldDescriptions.addAll(jsonNode[fieldName].processOutput(fieldName))
             }else{
                 if(fieldName in listOf("expire_in")){
