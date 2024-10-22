@@ -13,6 +13,7 @@
 * <<price-detail, 현재가상세>>
 * <<item-chart-price, 주식분봉조회>>
 * <<index-chart-price, 지수분봉조회>>
+* <<search-info, 상품기본정보>>
 
 [#current]
 == 현재체결가
@@ -139,5 +140,19 @@ include::{snippets}/basic/index-chart-price/http-response.adoc[]
 === Response-Field
 include::{snippets}/basic/index-chart-price/response-fields.adoc[]
 
+[#search-info]
+== 상품기본정보
+
+=== Request
+include::{snippets}/basic/search-info/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/basic/search-info/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/basic/search-info/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/basic/search-info/response-fields.adoc[]
 
 
