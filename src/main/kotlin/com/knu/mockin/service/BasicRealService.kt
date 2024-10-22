@@ -2,18 +2,9 @@ package com.knu.mockin.service
 
 import com.knu.mockin.kisclient.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISCountriesHolidayRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISIndexChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISItemChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISPriceDetailRequestParameterDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISIndexChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
-import com.knu.mockin.model.dto.request.basic.CountriesHolidayRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.IndexChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.ItemChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.PriceDetailRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.basic.*
+import com.knu.mockin.model.dto.kisresponse.basic.*
+import com.knu.mockin.model.dto.request.basic.*
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
@@ -122,6 +113,26 @@ class BasicRealService (
         )
 
         return kisBasicRealClient.getIndexChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+    }
+
+    suspend fun getSearchInfo(
+        searchInfoRequestParameterDto: SearchInfoRequestParameterDto
+    ): KISSearchInfoResponseDto {
+        val mockKey = realKeyRepository.findByEmail(searchInfoRequestParameterDto.email).awaitFirst()
+        val user = userRepository.findByEmail(searchInfoRequestParameterDto.email).awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+            authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
+            appKey = mockKey.appKey,
+            appSecret = mockKey.appSecret,
+            transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO)
+        )
+
+        val requestParameter = KISSearchInfoRequestParameterDto(
+            prdtTypeCd = searchInfoRequestParameterDto.prdtTypeCd,
+            pdno = searchInfoRequestParameterDto.pdno
+        )
+
+        return kisBasicRealClient.getSearchInfo(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
 
 }

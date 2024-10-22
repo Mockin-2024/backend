@@ -1,14 +1,8 @@
 package com.knu.mockin.kisclient
 
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISCountriesHolidayRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISIndexChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISItemChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.basic.KISPriceDetailRequestParameterDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISIndexChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
+import com.knu.mockin.model.dto.kisrequest.basic.*
+import com.knu.mockin.model.dto.kisresponse.basic.*
 import com.knu.mockin.util.HttpUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -67,6 +61,18 @@ class KISBasicRealClient (
                 .headers { HttpUtils.addHeaders(it, header) }
                 .retrieve()
                 .bodyToMono(KISIndexChartPriceResponseDto::class.java)
+    }
+
+    fun getSearchInfo(
+        header: KISOverSeaRequestHeaderDto,
+        requestParameter: KISSearchInfoRequestParameterDto
+    ): Mono<KISSearchInfoResponseDto> {
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/search-info", requestParameter)
+        return webClientReal.get()
+            .uri(targetUri)
+            .headers { HttpUtils.addHeaders(it, header) }
+            .retrieve()
+            .bodyToMono(KISSearchInfoResponseDto::class.java)
     }
 
 }

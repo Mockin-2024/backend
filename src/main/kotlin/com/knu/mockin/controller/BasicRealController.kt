@@ -1,13 +1,7 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.model.dto.kisresponse.basic.KISCountriesHolidayResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISIndexChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISItemChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISPriceDetailResponseDto
-import com.knu.mockin.model.dto.request.basic.CountriesHolidayRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.IndexChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.ItemChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.PriceDetailRequestParameterDto
+import com.knu.mockin.model.dto.kisresponse.basic.*
+import com.knu.mockin.model.dto.request.basic.*
 import com.knu.mockin.service.BasicRealService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -53,6 +47,15 @@ class BasicRealController (
             @ModelAttribute indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto
     ): ResponseEntity<KISIndexChartPriceResponseDto> {
         val result = basicRealService.getIndexChartPrice(indexChartPriceRequestParameterDto)
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/search-info")
+    suspend fun getSearchInfo(
+        @ModelAttribute searchInfoRequestParameterDto: SearchInfoRequestParameterDto
+    ): ResponseEntity<KISSearchInfoResponseDto> {
+        val result = basicRealService.getSearchInfo(searchInfoRequestParameterDto)
 
         return ResponseEntity.ok(result)
     }
