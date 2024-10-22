@@ -1,0 +1,35 @@
+{
+  "rt_cd": "0",
+  "msg_cd": "MCA00000",
+  "msg1": "정상처리 되었습니다.",
+  "outblock1": [
+    {
+      "info_gb": "t",
+      "news_key": "AKR20241022126800016",
+      "data_dt": "20241022",
+      "data_tm": "163221",
+      "class_cd": "01",
+      "class_name": "시황",
+      "source": "연합미국",
+      "nation_cd": "US",
+      "exchange_cd": "",
+      "symb": "",
+      "symb_name": "",
+      "title": "[서환-마감] 美대선 변동성에 1,380원대…4.90원↑"
+    },
+    {
+      "info_gb": "t",
+      "news_key": "ICH727079",
+      "data_dt": "20241022",
+      "data_tm": "162303",
+      "class_cd": "05",
+      "class_name": "종목리포트",
+      "source": "연합미국",
+      "nation_cd": "US",
+      "exchange_cd": "NYS",
+      "symb": "SLB",
+      "symb_name": "슐럼버거",
+      "title": "SLB, 해외 부문 성장 둔화 지속 예상 서스퀘하나"
+    }
+  ]
+}
