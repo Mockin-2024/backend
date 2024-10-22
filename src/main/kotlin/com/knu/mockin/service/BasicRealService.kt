@@ -1,5 +1,6 @@
 package com.knu.mockin.service
 
+import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.kisclient.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.*
@@ -8,6 +9,7 @@ import com.knu.mockin.model.dto.request.basic.*
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.StringUtil
 import kotlinx.coroutines.reactive.awaitFirst
@@ -102,7 +104,7 @@ class BasicRealService (
                 authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
-                transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE) // 거래 ID를 INDEX_CHART_PRICE로 변경
+                transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE)
         )
 
         val requestParameter = KISIndexChartPriceRequestParameterDto(
@@ -114,6 +116,7 @@ class BasicRealService (
 
         return kisBasicRealClient.getIndexChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
+
 
     suspend fun getSearchInfo(
         searchInfoRequestParameterDto: SearchInfoRequestParameterDto
@@ -133,6 +136,28 @@ class BasicRealService (
         )
 
         return kisBasicRealClient.getSearchInfo(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+    }
+
+
+    suspend fun getNewsTitle(
+        newsTitleRequestParameterDto: NewsTitleRequestParameterDto
+    ): KISNewsTitleResponseDto {
+        val userWithKey =  userRepository.findByEmailWithRealKey(newsTitleRequestParameterDto.email)
+            .orThrow(ErrorCode.USER_NOT_FOUND)
+            .awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+            authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(userWithKey.email))}",
+            appKey = userWithKey.appKey,
+            appSecret = userWithKey.appSecret,
+            transactionId = TradeId.getTradeIdByEnum(TradeId.NEWS_TITLE)
+        )
+
+        val requestParameter = KISNewsTitleRequestParameterDto(
+            queryDate = newsTitleRequestParameterDto.queryDate,
+            queryTime = newsTitleRequestParameterDto.queryTime
+        )
+
+        return kisBasicRealClient.getNewsTitle(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
 
 }

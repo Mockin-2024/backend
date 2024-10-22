@@ -1,0 +1,5 @@
+{
+  "queryDate": "조회일자, 공백 또는 YYYYMMDD",
+  "queryTime": "조회시간, 공백 또는 HHMMSS",
+  "email": "이메일"
+}

@@ -74,5 +74,16 @@ class KISBasicRealClient (
             .retrieve()
             .bodyToMono(KISSearchInfoResponseDto::class.java)
     }
-
+    
+    fun getNewsTitle(
+        header: KISOverSeaRequestHeaderDto,
+        requestParameter: KISNewsTitleRequestParameterDto
+    ): Mono<KISNewsTitleResponseDto> {
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/news-title", requestParameter)
+        return webClientReal.get()
+            .uri(targetUri)
+            .headers { HttpUtils.addHeaders(it, header) }
+            .retrieve()
+            .bodyToMono(KISNewsTitleResponseDto::class.java)
+    }
 }

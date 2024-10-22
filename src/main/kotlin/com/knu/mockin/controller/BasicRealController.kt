@@ -51,6 +51,7 @@ class BasicRealController (
         return ResponseEntity.ok(result)
     }
 
+
     @GetMapping("/search-info")
     suspend fun getSearchInfo(
         @ModelAttribute searchInfoRequestParameterDto: SearchInfoRequestParameterDto
@@ -61,4 +62,12 @@ class BasicRealController (
     }
 
 
+    @GetMapping("/news-title")
+    suspend fun getNewsTitle(
+        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto
+    ): ResponseEntity<KISNewsTitleResponseDto> {
+        val result = basicRealService.getNewsTitle(newsTitleRequestParameterDto)
+
+        return ResponseEntity.ok(result)
+    }
 }
