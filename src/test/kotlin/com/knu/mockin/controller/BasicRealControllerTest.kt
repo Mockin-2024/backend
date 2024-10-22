@@ -101,13 +101,27 @@ class BasicRealControllerTest (
         )
     }
 
+    "GET /basic/search-info" {
+        val uri = "${baseUri}/search-info"
+        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto SearchInfoRequestParameterDto::class.java
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISSearchInfoResponseDto::class.java
+
+        coEvery { basicRealService.getSearchInfo(any()) } returns expectedDto
+        val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
+
+        response.makeDocument(
+            uri,
+            parameters(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
+        )
+    }
+
     "GET /basic/news-title" {
         val uri = "${baseUri}/news-title"
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto NewsTitleRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISNewsTitleResponseDto::class.java
 
         coEvery { basicRealService.getNewsTitle(any()) } returns expectedDto
-
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(

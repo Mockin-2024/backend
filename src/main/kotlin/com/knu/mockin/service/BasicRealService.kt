@@ -117,6 +117,28 @@ class BasicRealService (
         return kisBasicRealClient.getIndexChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
 
+
+    suspend fun getSearchInfo(
+        searchInfoRequestParameterDto: SearchInfoRequestParameterDto
+    ): KISSearchInfoResponseDto {
+        val mockKey = realKeyRepository.findByEmail(searchInfoRequestParameterDto.email).awaitFirst()
+        val user = userRepository.findByEmail(searchInfoRequestParameterDto.email).awaitFirst()
+        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+            authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
+            appKey = mockKey.appKey,
+            appSecret = mockKey.appSecret,
+            transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO)
+        )
+
+        val requestParameter = KISSearchInfoRequestParameterDto(
+            prdtTypeCd = searchInfoRequestParameterDto.prdtTypeCd,
+            pdno = searchInfoRequestParameterDto.pdno
+        )
+
+        return kisBasicRealClient.getSearchInfo(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+    }
+
+
     suspend fun getNewsTitle(
         newsTitleRequestParameterDto: NewsTitleRequestParameterDto
     ): KISNewsTitleResponseDto {
@@ -137,4 +159,5 @@ class BasicRealService (
 
         return kisBasicRealClient.getNewsTitle(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
+
 }
