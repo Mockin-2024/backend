@@ -16,74 +16,80 @@ class KISBasicRealClient (
     private val stockQuotationUrl = "/uapi/overseas-stock/v1/quotations"
 
     fun getCountriesHoliday(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISCountriesHolidayRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISCountriesHolidayRequestParameterDto
     ) :Mono<KISCountriesHolidayResponseDto> {
-        val targetUri = HttpUtils.buildUri("${stockQuotationUrl}/countries-holiday", requestParameter)
-        return webClientReal.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISCountriesHolidayResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${stockQuotationUrl}/countries-holiday", parameterDto)
+
+        return webClientReal.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISCountriesHolidayResponseDto::class.java
+        )
     }
 
     fun getPriceDetail(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISPriceDetailRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISPriceDetailRequestParameterDto
     ): Mono<KISPriceDetailResponseDto> {
-        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/price-detail", requestParameter)
-        return webClientReal.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISPriceDetailResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/price-detail", parameterDto)
+
+        return webClientReal.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISPriceDetailResponseDto::class.java
+        )
     }
 
     fun getItemChartPrice(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISItemChartPriceRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISItemChartPriceRequestParameterDto
     ): Mono<KISItemChartPriceResponseDto> {
-        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-time-itemchartprice", requestParameter)
-        return webClientReal.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISItemChartPriceResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-time-itemchartprice", parameterDto)
+
+        return webClientReal.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISItemChartPriceResponseDto::class.java
+        )
     }
 
     fun getIndexChartPrice(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISIndexChartPriceRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISIndexChartPriceRequestParameterDto
     ): Mono<KISIndexChartPriceResponseDto> {
-        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-time-indexchartprice", requestParameter)
-        return webClientReal.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISIndexChartPriceResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-time-indexchartprice", parameterDto)
+
+        return webClientReal.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISIndexChartPriceResponseDto::class.java
+        )
     }
 
     fun getSearchInfo(
-        header: KISOverSeaRequestHeaderDto,
-        requestParameter: KISSearchInfoRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISSearchInfoRequestParameterDto
     ): Mono<KISSearchInfoResponseDto> {
-        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/search-info", requestParameter)
-        return webClientReal.get()
-            .uri(targetUri)
-            .headers { HttpUtils.addHeaders(it, header) }
-            .retrieve()
-            .bodyToMono(KISSearchInfoResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/search-info", parameterDto)
+
+        return webClientReal.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISSearchInfoResponseDto::class.java
+        )
     }
     
     fun getNewsTitle(
-        header: KISOverSeaRequestHeaderDto,
-        requestParameter: KISNewsTitleRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISNewsTitleRequestParameterDto
     ): Mono<KISNewsTitleResponseDto> {
-        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/news-title", requestParameter)
-        return webClientReal.get()
-            .uri(targetUri)
-            .headers { HttpUtils.addHeaders(it, header) }
-            .retrieve()
-            .bodyToMono(KISNewsTitleResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/news-title", parameterDto)
+
+        return webClientReal.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISNewsTitleResponseDto::class.java
+        )
     }
 }
