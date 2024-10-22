@@ -12,23 +12,26 @@ import reactor.core.publisher.Mono
 class KISOauth2RealClient (
         private val webClientReal: WebClient
 ) {
-    fun postApproval(kisApprovalRequestDto: KISApprovalRequestDto): Mono<ApprovalKeyResponseDto> {
-        return webClientReal
-                .post()
-                .uri("/oauth2/Approval")
-                .header("Content-Type", "application/json;charset=UTF-8")
-                .bodyValue(kisApprovalRequestDto)
-                .retrieve()
-                .bodyToMono(ApprovalKeyResponseDto::class.java)
+    val oauthUri = "/oauth2"
+    fun postApproval(
+        bodyDto: KISApprovalRequestDto
+    ): Mono<ApprovalKeyResponseDto> {
+        val uri = "$oauthUri/Approval"
+        return webClientReal.postWithBody(
+            uri = uri,
+            bodyDto = bodyDto,
+            responseType = ApprovalKeyResponseDto::class.java
+        )
     }
 
-    fun postTokenP(kisTokenRequestDto: KISTokenRequestDto): Mono<AccessTokenAPIResponseDto> {
-        return webClientReal
-                .post()
-                .uri("/oauth2/tokenP")
-                .header("Content-Type", "application/json;charset=UTF-8")
-                .bodyValue(kisTokenRequestDto)
-                .retrieve()
-                .bodyToMono(AccessTokenAPIResponseDto::class.java)
+    fun postTokenP(
+        bodyDto: KISTokenRequestDto
+    ): Mono<AccessTokenAPIResponseDto> {
+        val uri = "$oauthUri/tokenP"
+        return webClientReal.postWithBody(
+            uri = uri,
+            bodyDto = bodyDto,
+            responseType = AccessTokenAPIResponseDto::class.java
+        )
     }
 }
