@@ -21,51 +21,51 @@ class KISBasicClient (
     private val quotationUrl = "/uapi/overseas-price/v1/quotations"
 
     fun getCurrentPrice(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISCurrentPriceRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISCurrentPriceRequestParameterDto
     ) : Mono<KISCurrentPriceResponseDto> {
-        val targetUri = HttpUtils.buildUri("${quotationUrl}/price", requestParameter)
-        return webClientMock.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISCurrentPriceResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${quotationUrl}/price", parameterDto)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISCurrentPriceResponseDto::class.java
+        )
     }
 
     fun getTermPrice(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISTermPriceRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISTermPriceRequestParameterDto
     ) : Mono<KISTermPriceResponseDto> {
-        val targetUri = HttpUtils.buildUri("${quotationUrl}/dailyprice", requestParameter)
-        return webClientMock.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISTermPriceResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${quotationUrl}/dailyprice", parameterDto)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISTermPriceResponseDto::class.java
+        )
     }
 
     fun getDailyChartPrice(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISDailyChartPriceRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISDailyChartPriceRequestParameterDto
     ) : Mono<KISDailyChartPriceResponseDto> {
-        val targetUri = HttpUtils.buildUri("${quotationUrl}/inquire-daily-chartprice", requestParameter)
-        return webClientMock.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISDailyChartPriceResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${quotationUrl}/inquire-daily-chartprice", parameterDto)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISDailyChartPriceResponseDto::class.java
+        )
     }
 
     fun getSearch(
-            header: KISOverSeaRequestHeaderDto,
-            requestParameter: KISSearchRequestParameterDto
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISSearchRequestParameterDto
     ) : Mono<KISSearchResponseDto> {
-        val targetUri = HttpUtils.buildUri("${quotationUrl}/inquire-search", requestParameter)
-        return webClientMock.get()
-                .uri(targetUri)
-                .headers { HttpUtils.addHeaders(it, header) }
-                .retrieve()
-                .bodyToMono(KISSearchResponseDto::class.java)
+        val targetUri = HttpUtils.buildUri("${quotationUrl}/inquire-search", parameterDto)
+        return webClientMock.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISSearchResponseDto::class.java
+        )
     }
 
 }
