@@ -1,12 +1,12 @@
-package com.knu.mockin.model.dto.kisresponse.basic
+package com.knu.mockin.model.dto.kisresponse.quotations.basic.real
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class KISCountriesHolidayResponseDto (
-        @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부
-        @JsonProperty("msg_cd") val responseCode: String,           // 응답코드
-        @JsonProperty("msg1") val responseMessage: String,          // 응답메세지
-        @JsonProperty("output") val output: List<CountriesHolidayOutput>?,        // 응답상세
+    @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부
+    @JsonProperty("msg_cd") val responseCode: String,           // 응답코드
+    @JsonProperty("msg1") val responseMessage: String,          // 응답메세지
+    @JsonProperty("output") val output: List<CountriesHolidayOutput>?,        // 응답상세
 )
 
 data class CountriesHolidayOutput (
