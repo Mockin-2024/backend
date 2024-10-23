@@ -8,11 +8,13 @@ import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.entity.MockKey
+import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.AccountService
 import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -72,7 +74,7 @@ class AccountServiceTest: BehaviorSpec({
 
         every { kisOauth2Client.postTokenP(requestDto) } returns Mono.just(expectedDto)
         every { mockKeyRepository.findById("test")} returns Mono.just(mockKey)
-        every { RedisUtil.saveToken(accountRequestDto.email, expectedDto.accessToken) } returns Unit
+        every { RedisUtil.saveToken(accountRequestDto.email tag MOCK, expectedDto.accessToken) } returns Unit
 
         When("서비스 계층에 요청을 보내면:"){
             val result = accountService.getMockAccessToken(accountRequestDto)
