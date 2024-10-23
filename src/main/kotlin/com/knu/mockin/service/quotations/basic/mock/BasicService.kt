@@ -1,4 +1,4 @@
-package com.knu.mockin.service
+package com.knu.mockin.service.quotations.basic.mock
 
 import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.kisclient.KISBasicClient
