@@ -21,7 +21,7 @@ class BasicRealController (
             @ModelAttribute countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISCountriesHolidayResponseDto> {
-        val result = basicRealService.getCountriesHoliday(countriesHolidayRequestParameterDto)
+        val result = basicRealService.getCountriesHoliday(countriesHolidayRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -31,7 +31,7 @@ class BasicRealController (
             @ModelAttribute priceDetailRequestParameterDto: PriceDetailRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISPriceDetailResponseDto> {
-        val result = basicRealService.getPriceDetail(priceDetailRequestParameterDto)
+        val result = basicRealService.getPriceDetail(priceDetailRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -41,7 +41,7 @@ class BasicRealController (
             @ModelAttribute itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISItemChartPriceResponseDto> {
-        val result = basicRealService.getItemChartPrice(itemChartPriceRequestParameterDto)
+        val result = basicRealService.getItemChartPrice(itemChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -51,7 +51,7 @@ class BasicRealController (
             @ModelAttribute indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISIndexChartPriceResponseDto> {
-        val result = basicRealService.getIndexChartPrice(indexChartPriceRequestParameterDto)
+        val result = basicRealService.getIndexChartPrice(indexChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -62,7 +62,7 @@ class BasicRealController (
         @ModelAttribute searchInfoRequestParameterDto: SearchInfoRequestParameterDto,
         authentication: Authentication
     ): ResponseEntity<KISSearchInfoResponseDto> {
-        val result = basicRealService.getSearchInfo(searchInfoRequestParameterDto)
+        val result = basicRealService.getSearchInfo(searchInfoRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -73,7 +73,7 @@ class BasicRealController (
         @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto,
         authentication: Authentication
     ): ResponseEntity<KISNewsTitleResponseDto> {
-        val result = basicRealService.getNewsTitle(newsTitleRequestParameterDto)
+        val result = basicRealService.getNewsTitle(newsTitleRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
