@@ -40,10 +40,9 @@ class SecurityConfig(
         http
             .authorizeExchange { authorize ->
                 authorize
-                    .pathMatchers("/**").permitAll()
-//                    .pathMatchers(HttpMethod.POST, "/auth/**").permitAll()
-//                    .pathMatchers("/docs/**", "/health").permitAll()
-//                    .anyExchange().authenticated()
+                    .pathMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                    .pathMatchers("/docs/**", "/health").permitAll()
+                    .anyExchange().authenticated()
             }
             .addFilterAt(filter, SecurityWebFiltersOrder.AUTHENTICATION)
             .httpBasic { it.disable() }
