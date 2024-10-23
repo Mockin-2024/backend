@@ -6,12 +6,13 @@ import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.basic.*
 import com.knu.mockin.model.dto.kisresponse.basic.*
 import com.knu.mockin.model.dto.request.basic.*
+import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
-import com.knu.mockin.util.StringUtil
+import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.stereotype.Service
@@ -31,7 +32,7 @@ class BasicRealService (
         val user = userRepository.findByEmail(
                 countriesHolidayRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag REAL)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.COUNTRIES_HOLIDAY)
@@ -53,7 +54,7 @@ class BasicRealService (
         val mockKey = realKeyRepository.findByEmail(priceDetailRequestParameterDto.email).awaitFirst()
         val user = userRepository.findByEmail(priceDetailRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag REAL)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.PRICE_DETAIL)
@@ -74,7 +75,7 @@ class BasicRealService (
         val mockKey = realKeyRepository.findByEmail(itemChartPriceRequestParameterDto.email).awaitFirst()
         val user = userRepository.findByEmail(itemChartPriceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag REAL)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.ITEM_CHART_PRICE)
@@ -101,7 +102,7 @@ class BasicRealService (
         val mockKey = realKeyRepository.findByEmail(indexChartPriceRequestParameterDto.email).awaitFirst()
         val user = userRepository.findByEmail(indexChartPriceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag REAL)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE)
@@ -124,7 +125,7 @@ class BasicRealService (
         val mockKey = realKeyRepository.findByEmail(searchInfoRequestParameterDto.email).awaitFirst()
         val user = userRepository.findByEmail(searchInfoRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(user.email))}",
+            authorization = "Bearer ${RedisUtil.getToken(user.email tag REAL)}",
             appKey = mockKey.appKey,
             appSecret = mockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO)
@@ -146,7 +147,7 @@ class BasicRealService (
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(StringUtil.appendRealSuffix(userWithKey.email))}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
             appKey = userWithKey.appKey,
             appSecret = userWithKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.NEWS_TITLE)

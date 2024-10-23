@@ -9,19 +9,19 @@ import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
-import com.knu.mockin.model.dto.request.account.UserRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.MockKey
 import com.knu.mockin.model.entity.RealKey
-import com.knu.mockin.model.entity.User
+import com.knu.mockin.model.enum.Constant.MOCK
+import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
-import com.knu.mockin.util.StringUtil
+import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -121,7 +121,7 @@ class AccountService(
             appSecret = user.appSecret)
         val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle()
 
-        RedisUtil.saveToken(user.email, dto.accessToken)
+        RedisUtil.saveToken(user.email tag MOCK, dto.accessToken)
 
         return dto
     }
@@ -139,7 +139,7 @@ class AccountService(
                 appSecret = user.appSecret)
         val dto = kisOauth2RealClient.postTokenP(requestDto).awaitSingle()
 
-        RedisUtil.saveToken(StringUtil.appendRealSuffix(user.email), dto.accessToken)
+        RedisUtil.saveToken(user.email tag REAL, dto.accessToken)
 
         return dto
     }
