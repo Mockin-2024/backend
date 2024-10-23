@@ -5,5 +5,4 @@ data class IndexChartPriceRequestParameterDto (
         val fidInputIscd: String = "",       // 입력 종목코드
         val fidHourClsCode: String = "",     // 시간 구분 코드
         val fidPwDataIncuYn: String = "",    // 과거 데이터 포함 여부
-        val email: String = ""                // 이메일
 )

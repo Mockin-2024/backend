@@ -12,5 +12,4 @@ data class ItemChartPriceRequestParameterDto (
         @JsonProperty("NREC") val NREC: String = "",              // 요청갯수
         @JsonProperty("FILL") val FILL: String = "",              // 미체결채움구분
         @JsonProperty("KEYB") val KEYB: String = "",              // NEXT KEY BUFF
-        @JsonProperty("email") val email : String
 )
