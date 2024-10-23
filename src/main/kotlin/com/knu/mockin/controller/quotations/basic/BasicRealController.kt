@@ -1,7 +1,7 @@
-package com.knu.mockin.controller
+package com.knu.mockin.controller.quotations.basic
 
-import com.knu.mockin.model.dto.kisresponse.basic.*
-import com.knu.mockin.model.dto.request.basic.*
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
+import com.knu.mockin.model.dto.request.quotations.basic.real.*
 import com.knu.mockin.service.BasicRealService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/basic")
+@RequestMapping("/quotations/basic")
 class BasicRealController (
         private val basicRealService: BasicRealService
 ) {
@@ -67,14 +67,4 @@ class BasicRealController (
         return ResponseEntity.ok(result)
     }
 
-
-    @GetMapping("/news-title")
-    suspend fun getNewsTitle(
-        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto,
-        authentication: Authentication
-    ): ResponseEntity<KISNewsTitleResponseDto> {
-        val result = basicRealService.getNewsTitle(newsTitleRequestParameterDto, authentication.name)
-
-        return ResponseEntity.ok(result)
-    }
 }
