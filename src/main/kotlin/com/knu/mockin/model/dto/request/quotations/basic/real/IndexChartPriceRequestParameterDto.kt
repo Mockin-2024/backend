@@ -1,4 +1,4 @@
-package com.knu.mockin.model.dto.request.basic
+package com.knu.mockin.model.dto.request.quotations.basic.real
 
 data class IndexChartPriceRequestParameterDto (
         val fidCondMrktDivCode: String = "", // 조건 시장 분류 코드

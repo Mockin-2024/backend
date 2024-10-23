@@ -1,4 +1,4 @@
-package com.knu.mockin.model.dto.request.basic
+package com.knu.mockin.model.dto.request.quotations.basic.real
 
 data class CountriesHolidayRequestParameterDto (
         val tradDt: String = "",                       // 기준일자
