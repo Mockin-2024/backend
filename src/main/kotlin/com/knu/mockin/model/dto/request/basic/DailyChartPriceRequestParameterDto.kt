@@ -6,5 +6,4 @@ data class DailyChartPriceRequestParameterDto (
         val fidInputDate1: String = "", // 시작일자 (YYYYMMDD)
         val fidInputDate2: String = "", // 종료일자 (YYYYMMDD)
         val fidPeriodDivCode: String = "", // 기간 분류 코드
-        val email: String = "" // 이메일
 )
