@@ -7,13 +7,12 @@ import java.time.Duration
 @Component
 object RedisUtil{
     private lateinit var  redisTemplate: RedisTemplate<String, String>
-    private val expiration = Duration.ofDays(1)
 
     fun init(template: RedisTemplate<String, String>) {
         redisTemplate = template
     }
 
-    fun saveToken(email: String, token: String) {
+    fun saveToken(email: String, token: String, expiration: Duration = Duration.ofDays(1)) {
         redisTemplate.opsForValue().set(email, token, expiration)
     }
 
