@@ -24,7 +24,7 @@ class BasicController (
             @ModelAttribute currentPriceRequestParameterDto: CurrentPriceRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISCurrentPriceResponseDto> {
-        val result = basicService.getCurrentPrice(currentPriceRequestParameterDto)
+        val result = basicService.getCurrentPrice(currentPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -34,7 +34,7 @@ class BasicController (
             @ModelAttribute termPriceRequestParameterDto: TermPriceRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISTermPriceResponseDto> {
-        val result = basicService.getTermPrice(termPriceRequestParameterDto)
+        val result = basicService.getTermPrice(termPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -44,7 +44,7 @@ class BasicController (
             @ModelAttribute dailyChartPriceRequestParameterDto: DailyChartPriceRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISDailyChartPriceResponseDto> {
-        val result = basicService.getDailyChartPrice(dailyChartPriceRequestParameterDto)
+        val result = basicService.getDailyChartPrice(dailyChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -54,7 +54,7 @@ class BasicController (
             @ModelAttribute searchRequestParameterDto: SearchRequestParameterDto,
             authentication: Authentication
     ): ResponseEntity<KISSearchResponseDto> {
-        val result = basicService.getSearch(searchRequestParameterDto)
+        val result = basicService.getSearch(searchRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
