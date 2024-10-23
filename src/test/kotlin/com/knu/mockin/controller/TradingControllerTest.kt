@@ -41,7 +41,8 @@ class TradingControllerTest(
         val uri = "${baseUri}/order"
         val requestDto = readJsonFile(uri,"requestDto.json")
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderResponseDto::class.java
-        coEvery { tradingService.postOrder(any()) } returns expectedDto
+        val email = "test.naver.com"
+        coEvery { tradingService.postOrder(any(), email) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
@@ -56,7 +57,9 @@ class TradingControllerTest(
         val uri = "${baseUri}/order-reverse"
         val requestDto = readJsonFile(uri,"requestDto.json")
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderReverseResponseDto::class.java
-        coEvery { tradingService.postOrderReverse(any()) } returns expectedDto
+        val email = "test.naver.com"
+
+        coEvery { tradingService.postOrderReverse(any(), email) } returns expectedDto
 
         val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
 
@@ -71,8 +74,8 @@ class TradingControllerTest(
         val uri = "${baseUri}/nccs"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISNCCSResponseDto::class.java
-
-        coEvery { tradingService.getNCCS(any()) } returns expectedDto
+        val email = "test.naver.com"
+        coEvery { tradingService.getNCCS(any(), email) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
@@ -87,8 +90,8 @@ class TradingControllerTest(
         val uri = "${baseUri}/balance"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISBalanceResponseDto::class.java
-
-        coEvery { tradingService.getBalance(any()) } returns expectedDto
+        val email = "test.naver.com"
+        coEvery { tradingService.getBalance(any(), email) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
@@ -103,8 +106,8 @@ class TradingControllerTest(
         val uri = "${baseUri}/psamount"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto PsAmountRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPsAmountResponseDto::class.java
-
-        coEvery { tradingService.getPsAmount(any()) } returns expectedDto
+        val email = "test.naver.com"
+        coEvery { tradingService.getPsAmount(any(), email) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
@@ -119,8 +122,8 @@ class TradingControllerTest(
         val uri = "${baseUri}/present-balance"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto PresentBalanceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPresentBalanceResponseDto::class.java
-
-        coEvery { tradingService.getPresentBalance(any()) } returns expectedDto
+        val email = "test.naver.com"
+        coEvery { tradingService.getPresentBalance(any(), email) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
@@ -135,8 +138,8 @@ class TradingControllerTest(
         val uri = "${baseUri}/ccnl"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCCNLResponseDto::class.java
-
-        coEvery { tradingService.getCCNL(any()) } returns expectedDto
+        val email = "test.naver.com"
+        coEvery { tradingService.getCCNL(any(), email) } returns expectedDto
 
         val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
 
