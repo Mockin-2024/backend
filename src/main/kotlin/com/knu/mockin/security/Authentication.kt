@@ -1,5 +1,7 @@
 package com.knu.mockin.security
 
+import com.knu.mockin.exeption.CustomException
+import com.knu.mockin.exeption.ErrorCode
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.reactor.mono
 import org.springframework.http.HttpHeaders
@@ -41,10 +43,10 @@ class JwtAuthenticationManager(
         val user = users.findByUsername(username).awaitSingleOrNull()
 
         if (jwtUtil.isValid(token, user)) {
-            return UsernamePasswordAuthenticationToken(user!!.username, user.authorities)
+            return UsernamePasswordAuthenticationToken(user!!.username, user.password, user.authorities)
         }
 
-        throw IllegalArgumentException("유효하지 않은 토큰입니다!!")
+        throw CustomException(ErrorCode.UNAUTHORIZED)
     }
 
 }
