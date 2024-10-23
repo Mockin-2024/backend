@@ -2,7 +2,7 @@ package com.knu.mockin.controller.quotations.basic
 
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
 import com.knu.mockin.model.dto.request.quotations.basic.real.*
-import com.knu.mockin.service.BasicRealService
+import com.knu.mockin.service.quotations.basic.real.BasicRealService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping

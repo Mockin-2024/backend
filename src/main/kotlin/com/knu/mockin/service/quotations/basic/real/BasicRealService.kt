@@ -1,4 +1,4 @@
-package com.knu.mockin.service
+package com.knu.mockin.service.quotations.basic.real
 
 import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.kisclient.KISBasicRealClient
@@ -147,29 +147,6 @@ class BasicRealService (
         )
 
         return kisBasicRealClient.getSearchInfo(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
-    }
-
-
-    suspend fun getNewsTitle(
-        newsTitleRequestParameterDto: NewsTitleRequestParameterDto,
-        email: String
-    ): KISNewsTitleResponseDto {
-        val userWithKey =  userRepository.findByEmailWithRealKey(email)
-            .orThrow(ErrorCode.USER_NOT_FOUND)
-            .awaitFirst()
-        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
-            appKey = userWithKey.appKey,
-            appSecret = userWithKey.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(TradeId.NEWS_TITLE)
-        )
-
-        val requestParameter = KISNewsTitleRequestParameterDto(
-            queryDate = newsTitleRequestParameterDto.queryDate,
-            queryTime = newsTitleRequestParameterDto.queryTime
-        )
-
-        return kisBasicRealClient.getNewsTitle(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
     }
 
 }
