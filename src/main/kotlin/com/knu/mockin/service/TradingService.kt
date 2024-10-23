@@ -6,10 +6,12 @@ import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
+import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
@@ -27,7 +29,7 @@ class TradingService(
             .awaitFirst()
 
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email tag MOCK)}",
             appKey = userWithMockKey.appKey,
             appSecret = userWithMockKey.appSecret,
             transactionId = orderRequestBodyDto.transactionId
@@ -53,7 +55,7 @@ class TradingService(
             .awaitFirst()
 
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email tag MOCK)}",
             appKey = userWithMockKey.appKey,
             appSecret = userWithMockKey.appSecret,
             transactionId = orderReverseRequestBodyDto.transactionId
@@ -82,7 +84,7 @@ class TradingService(
             .awaitFirst()
 
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email tag MOCK)}",
             appKey = userWithMockKey.appKey,
             appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_NCCS)
@@ -107,7 +109,7 @@ class TradingService(
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email tag MOCK)}",
             appKey = userWithMockKey.appKey,
             appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE)
@@ -132,7 +134,7 @@ class TradingService(
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email tag MOCK)}",
             appKey = userWithMockKey.appKey,
             appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_PSAMOUNT)
@@ -156,7 +158,7 @@ class TradingService(
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email tag MOCK)}",
             appKey = userWithMockKey.appKey,
             appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_PRESENT_BALANCE)
@@ -181,7 +183,7 @@ class TradingService(
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithMockKey.email tag MOCK)}",
             appKey = userWithMockKey.appKey,
             appSecret = userWithMockKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL)
