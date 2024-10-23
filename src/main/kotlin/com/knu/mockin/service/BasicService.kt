@@ -14,10 +14,12 @@ import com.knu.mockin.model.dto.request.basic.CurrentPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.DailyChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.SearchRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.TermPriceRequestParameterDto
+import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.stereotype.Service
@@ -36,7 +38,7 @@ class BasicService (
         val user = userRepository.findByEmail(
                 currentPriceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag MOCK)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.CURRENT_PRICE) 
@@ -62,7 +64,7 @@ class BasicService (
         val user = userRepository.findByEmail(
                 termPriceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag MOCK)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.TERM_PRICE) 
@@ -92,7 +94,7 @@ class BasicService (
         val user = userRepository.findByEmail(
                 dailyChartPriceRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag MOCK)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.DAILY_CHART_PRICE)
@@ -119,7 +121,7 @@ class BasicService (
         val user = userRepository.findByEmail(
                 searchRequestParameterDto.email).awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-                authorization = "Bearer ${RedisUtil.getToken(user.email)}",
+                authorization = "Bearer ${RedisUtil.getToken(user.email tag MOCK)}",
                 appKey = mockKey.appKey,
                 appSecret = mockKey.appSecret,
                 transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH)
