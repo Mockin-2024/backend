@@ -3,6 +3,5 @@
   "fidInputDate1" : "FID 입력 날짜1",
   "fidInputDate2" : "FID 입력 날짜2",
   "fidInputIscd" : ".FID 입력 종목코드",
-  "fidPeriodDivCode" : "FID 기간 분류 코드",
-  "email" : "이메일"
+  "fidPeriodDivCode" : "FID 기간 분류 코드"
 }
