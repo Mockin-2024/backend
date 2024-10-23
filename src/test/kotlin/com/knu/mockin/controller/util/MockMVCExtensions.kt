@@ -10,6 +10,7 @@ import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.request.ParameterDescriptor
 import org.springframework.restdocs.request.RequestDocumentation.queryParameters
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.web.servlet.*
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -27,6 +28,7 @@ fun buildMockMvc(
             .operationPreprocessors()
             .withRequestDefaults(Preprocessors.prettyPrint())
             .withResponseDefaults(Preprocessors.prettyPrint()))
+        .apply<DefaultMockMvcBuilder>(springSecurity())
         .build()
 }
 
@@ -35,6 +37,7 @@ fun <T> MockMvc.getWithParams(uri: String, requestParams: T, expectedDto: T): Re
         .associate { it.name to it.call(requestParams)?.toString() }
 
     return this.get(uri) {
+        with(authUser())
         params.forEach { (key, value) ->
             if (value != null) param(key, value.toString())
         }
@@ -48,8 +51,10 @@ fun <T> MockMvc.getWithParams(uri: String, requestParams: T, expectedDto: T): Re
 
 fun <T> MockMvc.postWithBody(uri: String, requestBody: T, expectedDto: T): ResultActionsDsl{
     return this.post(uri){
+        with(authUser())
         contentType = APPLICATION_JSON
         content = requestBody
+
     }.asyncDispatch().andExpect {
         status { isOk() }
         content {
@@ -60,6 +65,7 @@ fun <T> MockMvc.postWithBody(uri: String, requestBody: T, expectedDto: T): Resul
 
 fun <T> MockMvc.patchWithBody(uri: String, requestBody: T, expectedDto: T): ResultActionsDsl {
     return this.patch(uri) {
+        with(authUser())
         contentType = APPLICATION_JSON
         content = requestBody
     }.asyncDispatch().andExpect {
