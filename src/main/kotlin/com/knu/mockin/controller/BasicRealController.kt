@@ -4,6 +4,7 @@ import com.knu.mockin.model.dto.kisresponse.basic.*
 import com.knu.mockin.model.dto.request.basic.*
 import com.knu.mockin.service.BasicRealService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,7 +18,8 @@ class BasicRealController (
 
     @GetMapping("/countries-holiday")
     suspend fun getCountriesHoliday(
-            @ModelAttribute countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto
+            @ModelAttribute countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISCountriesHolidayResponseDto> {
         val result = basicRealService.getCountriesHoliday(countriesHolidayRequestParameterDto)
 
@@ -26,7 +28,8 @@ class BasicRealController (
 
     @GetMapping("/price-detail")
     suspend fun getPriceDetail(
-            @ModelAttribute priceDetailRequestParameterDto: PriceDetailRequestParameterDto
+            @ModelAttribute priceDetailRequestParameterDto: PriceDetailRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISPriceDetailResponseDto> {
         val result = basicRealService.getPriceDetail(priceDetailRequestParameterDto)
 
@@ -35,7 +38,8 @@ class BasicRealController (
 
     @GetMapping("/item-chart-price")
     suspend fun getItemChartPrice(
-            @ModelAttribute itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto
+            @ModelAttribute itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISItemChartPriceResponseDto> {
         val result = basicRealService.getItemChartPrice(itemChartPriceRequestParameterDto)
 
@@ -44,7 +48,8 @@ class BasicRealController (
 
     @GetMapping("/index-chart-price")
     suspend fun getIndexChartPrice(
-            @ModelAttribute indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto
+            @ModelAttribute indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISIndexChartPriceResponseDto> {
         val result = basicRealService.getIndexChartPrice(indexChartPriceRequestParameterDto)
 
@@ -54,7 +59,8 @@ class BasicRealController (
 
     @GetMapping("/search-info")
     suspend fun getSearchInfo(
-        @ModelAttribute searchInfoRequestParameterDto: SearchInfoRequestParameterDto
+        @ModelAttribute searchInfoRequestParameterDto: SearchInfoRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISSearchInfoResponseDto> {
         val result = basicRealService.getSearchInfo(searchInfoRequestParameterDto)
 
@@ -64,7 +70,8 @@ class BasicRealController (
 
     @GetMapping("/news-title")
     suspend fun getNewsTitle(
-        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto
+        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISNewsTitleResponseDto> {
         val result = basicRealService.getNewsTitle(newsTitleRequestParameterDto)
 
