@@ -1,4 +1,4 @@
-package com.knu.mockin.model.dto.kisresponse.basic
+package com.knu.mockin.model.dto.kisresponse.quotations.analysis
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
