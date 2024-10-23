@@ -1,6 +1,5 @@
 {
   "tradDt" : "기준일자",
   "ctxAreaNk" : "연속조회키",
-  "ctxAreaFk" : "연속조회검색조건",
-  "email" : "이메일"
+  "ctxAreaFk" : "연속조회검색조건"
 }
