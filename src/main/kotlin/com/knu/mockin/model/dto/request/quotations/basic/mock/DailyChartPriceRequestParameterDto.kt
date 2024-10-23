@@ -1,4 +1,4 @@
-package com.knu.mockin.model.dto.request.basic
+package com.knu.mockin.model.dto.request.quotations.basic.mock
 
 data class DailyChartPriceRequestParameterDto (
         val fidCondMrktDivCode: String = "", // 조건 시장 분류 코드
