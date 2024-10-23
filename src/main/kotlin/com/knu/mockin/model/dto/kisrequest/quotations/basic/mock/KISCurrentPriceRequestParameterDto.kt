@@ -1,4 +1,4 @@
-package com.knu.mockin.model.dto.kisrequest.basic
+package com.knu.mockin.model.dto.kisrequest.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
