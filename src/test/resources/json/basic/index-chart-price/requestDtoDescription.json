@@ -2,6 +2,5 @@
   "fidCondMrktDivCode" : "조건 시장 분류 코드",
   "fidInputIscd" : "입력 종목코드",
   "fidHourClsCode" : "시간 구분 코드",
-  "fidPwDataIncuYn" : "과거 데이터 포함 여부",
-  "email" : "이메일"
+  "fidPwDataIncuYn" : "과거 데이터 포함 여부"
 }
