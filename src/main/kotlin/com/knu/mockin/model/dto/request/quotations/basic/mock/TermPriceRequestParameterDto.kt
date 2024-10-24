@@ -1,6 +1,7 @@
 package com.knu.mockin.model.dto.request.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISTermPriceRequestParameterDto
 
 data class TermPriceRequestParameterDto (
         @JsonProperty("AUTH") val AUTH: String = "",
@@ -11,3 +12,15 @@ data class TermPriceRequestParameterDto (
         @JsonProperty("MODP") val MODP: String = "",  // 수정주가반영여부(0:미반영, 1:반영)
         @JsonProperty("KEYB") val KEYB: String = "",   // NEXT KEY BUFF
 )
+
+fun TermPriceRequestParameterDto.asDomain(): KISTermPriceRequestParameterDto {
+        return KISTermPriceRequestParameterDto(
+                AUTH = this.AUTH,
+                EXCD = this.EXCD,
+                SYMB = this.SYMB,
+                GUBN = this.GUBN,
+                BYMD = this.BYMD,
+                MODP = this.MODP,
+                KEYB = this.KEYB
+        )
+}
