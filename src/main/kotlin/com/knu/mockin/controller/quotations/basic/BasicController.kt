@@ -8,7 +8,7 @@ import com.knu.mockin.model.dto.request.quotations.basic.mock.CurrentPriceReques
 import com.knu.mockin.model.dto.request.quotations.basic.mock.DailyChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.quotations.basic.mock.SearchRequestParameterDto
 import com.knu.mockin.model.dto.request.quotations.basic.mock.TermPriceRequestParameterDto
-import com.knu.mockin.service.BasicService
+import com.knu.mockin.service.quotations.basic.mock.BasicService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/quotations//basic")
 class BasicController (
-        private val basicService : BasicService,
+    private val basicService : BasicService,
 ) {
 
     @GetMapping("/current")
