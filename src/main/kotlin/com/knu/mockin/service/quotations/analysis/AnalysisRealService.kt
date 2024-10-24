@@ -8,6 +8,7 @@ import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResp
 import com.knu.mockin.model.dto.request.quotations.analysis.real.NewsTitleRequestParameterDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.asDomain
 import com.knu.mockin.model.enum.Constant
+import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
@@ -30,7 +31,7 @@ class AnalysisRealService (
     private suspend fun createHeader(email: String, tradeId: TradeId): KISOverSeaRequestHeaderDto {
         val userWithKey = getUserWithKey(email)
         return KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag Constant.REAL)}",
+            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
             appKey = userWithKey.appKey,
             appSecret = userWithKey.appSecret,
             transactionId = TradeId.getTradeIdByEnum(tradeId)
