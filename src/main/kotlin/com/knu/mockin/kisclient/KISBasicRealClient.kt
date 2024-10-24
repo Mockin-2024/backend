@@ -1,8 +1,10 @@
 package com.knu.mockin.kisclient
 
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.basic.*
-import com.knu.mockin.model.dto.kisresponse.basic.*
+import com.knu.mockin.model.dto.kisrequest.quotations.analysis.KISNewsTitleRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.real.*
+import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
 import com.knu.mockin.util.HttpUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient

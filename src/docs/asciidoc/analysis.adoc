@@ -1,0 +1,24 @@
+:snippets: ./build/generated-snippets
+
+= quotations/analysis
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<news-title, 해외뉴스종합>>
+
+
+[#news-title]
+== 해외뉴스종합
+
+=== Request
+include::{snippets}/quotations/analysis/news-title/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/quotations/analysis/news-title/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/quotations/analysis/news-title/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/quotations/analysis/news-title/response-fields.adoc[]
