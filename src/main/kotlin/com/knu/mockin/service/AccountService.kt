@@ -43,7 +43,7 @@ class AccountService(
             .awaitFirst()
 
         userRepository.updateByEmail(userAccountNumberRequestDto.email, userAccountNumberRequestDto.accountNumber)
-            .awaitSingleOrNull() ?: throw CustomException(ErrorCode.INTERNAL_SERVER_ERROR)
+            .awaitSingleOrNull()
 
         return SimpleMessageResponseDto("Register Complete")
     }

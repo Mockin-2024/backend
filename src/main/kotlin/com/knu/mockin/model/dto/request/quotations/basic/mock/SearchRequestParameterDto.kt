@@ -1,6 +1,7 @@
 package com.knu.mockin.model.dto.request.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISSearchRequestParameterDto
 
 data class SearchRequestParameterDto(
         @JsonProperty("AUTH") val AUTH: String = "",                       // 사용자권한정보
@@ -31,3 +32,35 @@ data class SearchRequestParameterDto(
         @JsonProperty("coEnPer") val coEnPer: String = "",               // PER끝
         @JsonProperty("KEYB") val KEYB: String = "",                     // NEXT KEY BUFF
 )
+
+fun SearchRequestParameterDto.asDomain(): KISSearchRequestParameterDto {
+        return KISSearchRequestParameterDto(
+                AUTH = this.AUTH,
+                EXCD = this.EXCD,
+                coYnPricecur = this.coYnPricecur,
+                coStPricecur = this.coStPricecur,
+                coEnPricecur = this.coEnPricecur,
+                coYnRate = this.coYnRate,
+                coStRate = this.coStRate,
+                coEnRate = this.coEnRate,
+                coYnValx = this.coYnValx,
+                coStValx = this.coStValx,
+                coEnValx = this.coEnValx,
+                coYnShar = this.coYnShar,
+                coStShar = this.coStShar,
+                coEnShar = this.coEnShar,
+                coYnVolume = this.coYnVolume,
+                coStVolume = this.coStVolume,
+                coEnVolume = this.coEnVolume,
+                coYnAmt = this.coYnAmt,
+                coStAmt = this.coStAmt,
+                coEnAmt = this.coEnAmt,
+                coYnEps = this.coYnEps,
+                coStEps = this.coStEps,
+                coEnEps = this.coEnEps,
+                coYnPer = this.coYnPer,
+                coStPer = this.coStPer,
+                coEnPer = this.coEnPer,
+                KEYB = this.KEYB
+        )
+}
