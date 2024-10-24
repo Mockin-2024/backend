@@ -2,7 +2,7 @@ package com.knu.mockin.model.dto.kisrequest.quotations.basic.real
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISIndexChartPriceRequestParameterDto (
+data class KISInquireTimeIndexChartPriceRequestParameterDto (
         @JsonProperty("FID_COND_MRKT_DIV_CODE") val fidCondMrktDivCode: String, // 조건 시장 분류 코드
         @JsonProperty("FID_INPUT_ISCD") val fidInputIscd: String,                // 입력 종목코드
         @JsonProperty("FID_HOUR_CLS_CODE") val fidHourClsCode: String,          // 시간 구분 코드
