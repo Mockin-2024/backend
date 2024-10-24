@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/quotations//basic")
+@RequestMapping("/quotations/basic")
 class BasicController (
     private val basicService : BasicService,
 ) {
