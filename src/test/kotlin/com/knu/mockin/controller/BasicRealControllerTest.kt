@@ -58,7 +58,7 @@ class BasicRealControllerTest (
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto CountriesHolidayRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISCountriesHolidayResponseDto::class.java
 
-        coEvery { basicRealService.getCountriesHoliday(any()) } returns expectedDto
+        coEvery { basicRealService.getCountriesHoliday(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -74,7 +74,7 @@ class BasicRealControllerTest (
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto PriceDetailRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISPriceDetailResponseDto::class.java
 
-        coEvery { basicRealService.getPriceDetail(any()) } returns expectedDto
+        coEvery { basicRealService.getPriceDetail(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -90,7 +90,7 @@ class BasicRealControllerTest (
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto ItemChartPriceRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISItemChartPriceResponseDto::class.java
 
-        coEvery { basicRealService.getItemChartPrice(any()) } returns expectedDto
+        coEvery { basicRealService.getItemChartPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -107,7 +107,7 @@ class BasicRealControllerTest (
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto IndexChartPriceRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISIndexChartPriceResponseDto::class.java
 
-        coEvery { basicRealService.getIndexChartPrice(any()) } returns expectedDto
+        coEvery { basicRealService.getIndexChartPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -123,7 +123,7 @@ class BasicRealControllerTest (
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto SearchInfoRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISSearchInfoResponseDto::class.java
 
-        coEvery { basicRealService.getSearchInfo(any()) } returns expectedDto
+        coEvery { basicRealService.getSearchInfo(any(), any()) } returns expectedDto
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
@@ -138,7 +138,7 @@ class BasicRealControllerTest (
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto NewsTitleRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISNewsTitleResponseDto::class.java
 
-        coEvery { basicRealService.getNewsTitle(any()) } returns expectedDto
+        coEvery { basicRealService.getNewsTitle(any(), any()) } returns expectedDto
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
