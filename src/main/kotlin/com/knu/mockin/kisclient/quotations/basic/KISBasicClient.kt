@@ -1,5 +1,6 @@
-package com.knu.mockin.kisclient
+package com.knu.mockin.kisclient.quotations.basic
 
+import com.knu.mockin.kisclient.getWithParams
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISCurrentPriceRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISDailyChartPriceRequestParameterDto
