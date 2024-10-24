@@ -39,15 +39,14 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
-    // Spring Web with FLux
-    //implementation("org.springframework.boot:spring-boot-starter-web")
+    // Spring WebFLux
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     // Spring logging
     implementation("org.springframework.boot:spring-boot-starter-logging")
 
     // Spring Rest Docs
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    implementation("org.springframework.restdocs:spring-restdocs-webtestclient:3.0.2")
 
     // Spring R2DBC with MySQL
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
