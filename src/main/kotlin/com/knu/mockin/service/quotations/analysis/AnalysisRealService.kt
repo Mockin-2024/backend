@@ -1,15 +1,14 @@
 package com.knu.mockin.service.quotations.analysis
 
 import com.knu.mockin.exeption.ErrorCode
-import com.knu.mockin.kisclient.KISBasicRealClient
+import com.knu.mockin.kisclient.quotations.analysis.KISAnalysisRealClient
+import com.knu.mockin.kisclient.quotations.basic.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.quotations.analysis.KISNewsTitleRequestParameterDto
 import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResponseDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.NewsTitleRequestParameterDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.asDomain
 import com.knu.mockin.model.enum.Constant
 import com.knu.mockin.model.enum.TradeId
-import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class AnalysisRealService (
-    private val kisBasicRealClient: KISBasicRealClient,
+    private val kisAnalysisRealClient: KISAnalysisRealClient,
     private val userRepository: UserRepository
 ) {
 
@@ -44,6 +43,6 @@ class AnalysisRealService (
     ): KISNewsTitleResponseDto {
         val header = createHeader(email, TradeId.NEWS_TITLE)
         val requestParameter = newsTitleRequestParameterDto.asDomain()
-        return kisBasicRealClient.getNewsTitle(header, requestParameter).awaitSingle()
+        return kisAnalysisRealClient.getNewsTitle(header, requestParameter).awaitSingle()
     }
 }

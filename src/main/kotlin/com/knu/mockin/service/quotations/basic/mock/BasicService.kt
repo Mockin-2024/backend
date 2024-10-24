@@ -1,12 +1,10 @@
 package com.knu.mockin.service.quotations.basic.mock
 
 import com.knu.mockin.exeption.ErrorCode
-import com.knu.mockin.kisclient.KISBasicClient
+import com.knu.mockin.kisclient.quotations.basic.KISBasicClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.*
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.*
 import com.knu.mockin.model.dto.request.quotations.basic.mock.*
-import com.knu.mockin.model.enum.Constant
 import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
