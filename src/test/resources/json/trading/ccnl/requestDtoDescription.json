@@ -1,5 +1,4 @@
 {
   "orderStartDate": "주문시작일자",
-  "orderEndDate": "주문종료일자",
-  "email": "이메일"
+  "orderEndDate": "주문종료일자"
 }

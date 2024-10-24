@@ -6,5 +6,4 @@ data class OrderRequestBodyDto(
     val productNumber: String,          // 상품번호
     val orderQuantity: String,          // 주문수량
     val overseasOrderUnitPrice: String, // 해외주문단가
-    val email: String                   // 이메일, JWT 추가 후 삭제 예정
 )

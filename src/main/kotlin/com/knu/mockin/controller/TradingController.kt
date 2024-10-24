@@ -4,6 +4,7 @@ import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.service.TradingService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,63 +19,70 @@ class TradingController(
 ) {
     @PostMapping("/order")
     suspend fun postOrder(
-        @RequestBody orderRequestBodyDto: OrderRequestBodyDto
+        @RequestBody orderRequestBodyDto: OrderRequestBodyDto,
+        authentication: Authentication
     ): ResponseEntity<KISOrderResponseDto>{
-        val result = tradingService.postOrder(orderRequestBodyDto)
+        val result = tradingService.postOrder(orderRequestBodyDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/order-reverse")
     suspend fun postOrderReverse(
-        @RequestBody orderReverseRequestBodyDto: OrderReverseRequestBodyDto
+        @RequestBody orderReverseRequestBodyDto: OrderReverseRequestBodyDto,
+        authentication: Authentication
     ): ResponseEntity<KISOrderReverseResponseDto> {
-        val result = tradingService.postOrderReverse(orderReverseRequestBodyDto)
+        val result = tradingService.postOrderReverse(orderReverseRequestBodyDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/nccs")
     suspend fun getNCCS(
-        @ModelAttribute nccsRequestParameterDto: NCCSRequestParameterDto
+        @ModelAttribute nccsRequestParameterDto: NCCSRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISNCCSResponseDto>{
-        val result = tradingService.getNCCS(nccsRequestParameterDto)
+        val result = tradingService.getNCCS(nccsRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/balance")
     suspend fun getBalance(
-        @ModelAttribute balanceRequestParameterDto: BalanceRequestParameterDto
+        @ModelAttribute balanceRequestParameterDto: BalanceRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISBalanceResponseDto> {
-        val result = tradingService.getBalance(balanceRequestParameterDto)
+        val result = tradingService.getBalance(balanceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/psamount")
     suspend fun getPsAmount(
-        @ModelAttribute psAmountRequestParameterDto: PsAmountRequestParameterDto
+        @ModelAttribute psAmountRequestParameterDto: PsAmountRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISPsAmountResponseDto> {
-        val result = tradingService.getPsAmount(psAmountRequestParameterDto)
+        val result = tradingService.getPsAmount(psAmountRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/present-balance")
     suspend fun getPresentBalance(
-        @ModelAttribute presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto
+        @ModelAttribute presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISPresentBalanceResponseDto> {
-        val result = tradingService.getPresentBalance(presentBalanceRequestParameterDto)
+        val result = tradingService.getPresentBalance(presentBalanceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/ccnl")
     suspend fun getCCNL(
-        @ModelAttribute ccnlRequestParameterDto: CCNLRequestParameterDto
+        @ModelAttribute ccnlRequestParameterDto: CCNLRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISCCNLResponseDto> {
-        val result = tradingService.getCCNL(ccnlRequestParameterDto)
+        val result = tradingService.getCCNL(ccnlRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }

@@ -3,6 +3,5 @@
   "overseasExchangeCode": "NASD",
   "productNumber": "AAPL",
   "orderQuantity": "1",
-  "overseasOrderUnitPrice": "145.00",
-  "email": "test@naver.com"
+  "overseasOrderUnitPrice": "145.00"
 }

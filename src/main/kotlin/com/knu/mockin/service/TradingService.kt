@@ -22,9 +22,10 @@ class TradingService(
     private val userRepository: UserRepository,
 ) {
     suspend fun postOrder(
-        orderRequestBodyDto: OrderRequestBodyDto
+        orderRequestBodyDto: OrderRequestBodyDto,
+        email: String
     ):KISOrderResponseDto {
-        val userWithMockKey = userRepository.findByEmailWithMockKey(orderRequestBodyDto.email)
+        val userWithMockKey = userRepository.findByEmailWithMockKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
 
@@ -48,9 +49,10 @@ class TradingService(
     }
 
     suspend fun postOrderReverse(
-        orderReverseRequestBodyDto: OrderReverseRequestBodyDto
+        orderReverseRequestBodyDto: OrderReverseRequestBodyDto,
+        email: String
     ): KISOrderReverseResponseDto {
-        val userWithMockKey = userRepository.findByEmailWithMockKey(orderReverseRequestBodyDto.email)
+        val userWithMockKey = userRepository.findByEmailWithMockKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
 
@@ -77,9 +79,10 @@ class TradingService(
     }
 
     suspend fun getNCCS(
-        nccsRequestParameterDto: NCCSRequestParameterDto
+        nccsRequestParameterDto: NCCSRequestParameterDto,
+        email: String
     ): KISNCCSResponseDto{
-        val userWithMockKey = userRepository.findByEmailWithMockKey(nccsRequestParameterDto.email)
+        val userWithMockKey = userRepository.findByEmailWithMockKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
 
@@ -103,9 +106,10 @@ class TradingService(
             .awaitSingle()
     }
     suspend fun getBalance(
-        balanceRequestParameterDto: BalanceRequestParameterDto
+        balanceRequestParameterDto: BalanceRequestParameterDto,
+        email: String
     ): KISBalanceResponseDto{
-        val userWithMockKey = userRepository.findByEmailWithMockKey(balanceRequestParameterDto.email)
+        val userWithMockKey = userRepository.findByEmailWithMockKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
@@ -128,9 +132,10 @@ class TradingService(
     }
 
     suspend fun getPsAmount(
-        psAmountRequestParameterDto: PsAmountRequestParameterDto
+        psAmountRequestParameterDto: PsAmountRequestParameterDto,
+        email: String
     ): KISPsAmountResponseDto{
-        val userWithMockKey = userRepository.findByEmailWithMockKey(psAmountRequestParameterDto.email)
+        val userWithMockKey = userRepository.findByEmailWithMockKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
@@ -152,9 +157,10 @@ class TradingService(
     }
 
     suspend fun getPresentBalance(
-        presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto
+        presentBalanceRequestParameterDto: PresentBalanceRequestParameterDto,
+        email: String
     ): KISPresentBalanceResponseDto{
-        val userWithMockKey = userRepository.findByEmailWithMockKey(presentBalanceRequestParameterDto.email)
+        val userWithMockKey = userRepository.findByEmailWithMockKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
@@ -177,9 +183,10 @@ class TradingService(
     }
 
     suspend fun getCCNL(
-        ccnlRequestParameterDto: CCNLRequestParameterDto
+        ccnlRequestParameterDto: CCNLRequestParameterDto,
+        email: String
     ): KISCCNLResponseDto{
-        val userWithMockKey = userRepository.findByEmailWithMockKey(ccnlRequestParameterDto.email)
+        val userWithMockKey = userRepository.findByEmailWithMockKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(

@@ -6,6 +6,10 @@
     import com.knu.mockin.dsl.toDto
     import com.knu.mockin.model.dto.request.login.Jwt
     import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
+    import com.knu.mockin.model.entity.User
+    import com.knu.mockin.repository.UserRepository
+    import com.knu.mockin.security.JwtUtil
+    import com.knu.mockin.security.SecurityTestConfig
     import com.knu.mockin.service.EmailService
     import com.knu.mockin.service.UserService
     import com.ninjasquad.springmockk.MockkBean
@@ -13,25 +17,37 @@
     import io.kotest.extensions.spring.SpringExtension
     import io.mockk.coEvery
     import io.mockk.mockk
-    import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+    import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+    import org.springframework.context.ApplicationContext
+    import org.springframework.context.annotation.Import
     import org.springframework.restdocs.ManualRestDocumentation
-    import org.springframework.test.web.servlet.MockMvc
-    import org.springframework.web.context.WebApplicationContext
+    import org.springframework.test.web.reactive.server.WebTestClient
+    import reactor.core.publisher.Mono
 
-    @WebMvcTest(LoginController::class)
+    @WebFluxTest(controllers = [LoginController::class])
+    @Import(SecurityTestConfig::class)
     class LoginControllerTest(
         @MockkBean
         val emailService: EmailService = mockk(),
         @MockkBean
         val userService: UserService = mockk(),
-        private val webApplicationContext: WebApplicationContext
+        @MockkBean
+        val userRepository: UserRepository = mockk(),
+        @MockkBean
+        val jwtUtil: JwtUtil = mockk<JwtUtil>(),
+        private val context: ApplicationContext,
     ): StringSpec({
         val restDocumentation = ManualRestDocumentation()
-        lateinit var mockMvc: MockMvc
+        lateinit var webTestClient: WebTestClient
 
         beforeTest {
-            mockMvc = buildMockMvc(webApplicationContext, restDocumentation)
-            restDocumentation.beforeTest(LoginControllerTest::class.java, it.name.testName)
+            webTestClient = buildWebTestClient(context, restDocumentation)
+            restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
+
+            val user = readJsonFile("setting", "user.json") toDto User::class.java
+            coEvery { userRepository.findByEmail(user.email) } returns Mono.just(user)
+            coEvery { jwtUtil.getUsername(any()) } returns user.email
+            coEvery { jwtUtil.isValid(any(), any()) } returns true
         }
 
         afterTest {
@@ -46,7 +62,7 @@
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
             coEvery { userService.createUser(any()) } returns expectedDto
 
-            val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
+            val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
             response.makeDocument(
                 uri,
@@ -61,7 +77,7 @@
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
             coEvery { emailService.sendEmail(any()) } returns expectedDto
 
-            val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
+            val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
             response.makeDocument(
                 uri,
@@ -77,7 +93,7 @@
             coEvery { userService.loginUser(any()) } returns expectedDto
 
 
-            val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
+            val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
             response.makeDocument(
                 uri,
@@ -92,7 +108,7 @@
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
             coEvery { emailService.checkAuthNum(any()) } returns expectedDto
 
-            val response = mockMvc.postWithBody(uri, requestDto, expectedDto)
+            val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
             response.makeDocument(
                 uri,

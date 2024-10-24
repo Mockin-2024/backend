@@ -39,15 +39,14 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
-    // Spring Web with FLux
-    //implementation("org.springframework.boot:spring-boot-starter-web")
+    // Spring WebFLux
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     // Spring logging
     implementation("org.springframework.boot:spring-boot-starter-logging")
 
     // Spring Rest Docs
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    implementation("org.springframework.restdocs:spring-restdocs-webtestclient:3.0.2")
 
     // Spring R2DBC with MySQL
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
@@ -74,7 +73,7 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 val snippetsDir = file("./build/generated-snippets")
