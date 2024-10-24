@@ -26,127 +26,63 @@ class BasicRealService (
         private val userRepository: UserRepository
 ) {
 
-    suspend fun getCountriesHoliday(
-            countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto,
-            email: String
-    ) : KISCountriesHolidayResponseDto {
-        val userWithKey =  userRepository.findByEmailWithRealKey(email)
-            .orThrow(ErrorCode.USER_NOT_FOUND)
-            .awaitFirst()
-        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
+    private suspend fun getUserWithKey(email: String) = userRepository.findByEmailWithRealKey(email)
+        .orThrow(ErrorCode.USER_NOT_FOUND)
+        .awaitFirst()
+
+    private suspend fun createHeader(email: String, tradeId: TradeId): KISOverSeaRequestHeaderDto {
+        val userWithKey = getUserWithKey(email)
+        return KISOverSeaRequestHeaderDto(
             authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
             appKey = userWithKey.appKey,
             appSecret = userWithKey.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(TradeId.COUNTRIES_HOLIDAY)
+            transactionId = TradeId.getTradeIdByEnum(tradeId)
         )
+    }
 
-        val requestParameter = KISCountriesHolidayRequestParameterDto(
-                tradDt = countriesHolidayRequestParameterDto.tradDt,
-                ctxAreaNk = countriesHolidayRequestParameterDto.ctxAreaNk,
-                ctxAreaFk = countriesHolidayRequestParameterDto.ctxAreaFk
-        )
-
-        return kisBasicRealClient.getCountriesHoliday(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
-
+    suspend fun getCountriesHoliday(
+        countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto,
+        email: String
+    ): KISCountriesHolidayResponseDto {
+        val header = createHeader(email, TradeId.COUNTRIES_HOLIDAY)
+        val requestParameter = countriesHolidayRequestParameterDto.asDomain()
+        return kisBasicRealClient.getCountriesHoliday(header, requestParameter).awaitSingle()
     }
 
     suspend fun getPriceDetail(
-            priceDetailRequestParameterDto: PriceDetailRequestParameterDto,
-            email: String
+        priceDetailRequestParameterDto: PriceDetailRequestParameterDto,
+        email: String
     ): KISPriceDetailResponseDto {
-        val userWithKey =  userRepository.findByEmailWithRealKey(email)
-            .orThrow(ErrorCode.USER_NOT_FOUND)
-            .awaitFirst()
-        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
-            appKey = userWithKey.appKey,
-            appSecret = userWithKey.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(TradeId.PRICE_DETAIL)
-        )
-
-        val requestParameter = KISPriceDetailRequestParameterDto(
-                AUTH = priceDetailRequestParameterDto.AUTH,
-                EXCD = priceDetailRequestParameterDto.EXCD,
-                SYMB = priceDetailRequestParameterDto.SYMB
-        )
-
-        return kisBasicRealClient.getPriceDetail(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+        val header = createHeader(email, TradeId.PRICE_DETAIL)
+        val requestParameter = priceDetailRequestParameterDto.asDomain()
+        return kisBasicRealClient.getPriceDetail(header, requestParameter).awaitSingle()
     }
 
     suspend fun getItemChartPrice(
-            itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto,
-            email: String
+        itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto,
+        email: String
     ): KISItemChartPriceResponseDto {
-        val userWithKey =  userRepository.findByEmailWithRealKey(email)
-            .orThrow(ErrorCode.USER_NOT_FOUND)
-            .awaitFirst()
-        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
-            appKey = userWithKey.appKey,
-            appSecret = userWithKey.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(TradeId.ITEM_CHART_PRICE)
-        )
-
-        val requestParameter = KISItemChartPriceRequestParameterDto(
-                AUTH = itemChartPriceRequestParameterDto.AUTH,
-                EXCD = itemChartPriceRequestParameterDto.EXCD,
-                SYMB = itemChartPriceRequestParameterDto.SYMB,
-                NMIN = itemChartPriceRequestParameterDto.NMIN,
-                PINC = itemChartPriceRequestParameterDto.PINC,
-                NEXT = itemChartPriceRequestParameterDto.NEXT,
-                NREC = itemChartPriceRequestParameterDto.NREC,
-                FILL = itemChartPriceRequestParameterDto.FILL,
-                KEYB = itemChartPriceRequestParameterDto.KEYB
-        )
-
-        return kisBasicRealClient.getItemChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+        val header = createHeader(email, TradeId.ITEM_CHART_PRICE)
+        val requestParameter = itemChartPriceRequestParameterDto.asDomain()
+        return kisBasicRealClient.getItemChartPrice(header, requestParameter).awaitSingle()
     }
 
     suspend fun getIndexChartPrice(
-            indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto,
-            email: String
+        indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto,
+        email: String
     ): KISIndexChartPriceResponseDto {
-        val userWithKey =  userRepository.findByEmailWithRealKey(email)
-            .orThrow(ErrorCode.USER_NOT_FOUND)
-            .awaitFirst()
-        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
-            appKey = userWithKey.appKey,
-            appSecret = userWithKey.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(TradeId.INDEX_CHART_PRICE)
-        )
-
-        val requestParameter = KISIndexChartPriceRequestParameterDto(
-                fidCondMrktDivCode = indexChartPriceRequestParameterDto.fidCondMrktDivCode,
-                fidInputIscd = indexChartPriceRequestParameterDto.fidInputIscd,
-                fidHourClsCode = indexChartPriceRequestParameterDto.fidHourClsCode,
-                fidPwDataIncuYn = indexChartPriceRequestParameterDto.fidPwDataIncuYn
-        )
-
-        return kisBasicRealClient.getIndexChartPrice(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+        val header = createHeader(email, TradeId.INDEX_CHART_PRICE)
+        val requestParameter = indexChartPriceRequestParameterDto.asDomain()
+        return kisBasicRealClient.getIndexChartPrice(header, requestParameter).awaitSingle()
     }
-
 
     suspend fun getSearchInfo(
         searchInfoRequestParameterDto: SearchInfoRequestParameterDto,
         email: String
     ): KISSearchInfoResponseDto {
-        val userWithKey =  userRepository.findByEmailWithRealKey(email)
-            .orThrow(ErrorCode.USER_NOT_FOUND)
-            .awaitFirst()
-        val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag REAL)}",
-            appKey = userWithKey.appKey,
-            appSecret = userWithKey.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO)
-        )
-
-        val requestParameter = KISSearchInfoRequestParameterDto(
-            prdtTypeCd = searchInfoRequestParameterDto.prdtTypeCd,
-            pdno = searchInfoRequestParameterDto.pdno
-        )
-
-        return kisBasicRealClient.getSearchInfo(kisOverSeaRequestHeaderDto, requestParameter).awaitSingle()
+        val header = createHeader(email, TradeId.SEARCH_INFO)
+        val requestParameter = searchInfoRequestParameterDto.asDomain()
+        return kisBasicRealClient.getSearchInfo(header, requestParameter).awaitSingle()
     }
 
 }
