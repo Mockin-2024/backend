@@ -10,6 +10,7 @@ import com.knu.mockin.model.dto.request.basic.SearchRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.TermPriceRequestParameterDto
 import com.knu.mockin.service.BasicService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -20,36 +21,40 @@ class BasicController (
 
     @GetMapping("/current")
     suspend fun getCurrentPrice(
-            @ModelAttribute currentPriceRequestParameterDto: CurrentPriceRequestParameterDto
+            @ModelAttribute currentPriceRequestParameterDto: CurrentPriceRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISCurrentPriceResponseDto> {
-        val result = basicService.getCurrentPrice(currentPriceRequestParameterDto)
+        val result = basicService.getCurrentPrice(currentPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/term")
     suspend fun getTermPrice(
-            @ModelAttribute termPriceRequestParameterDto: TermPriceRequestParameterDto
+            @ModelAttribute termPriceRequestParameterDto: TermPriceRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISTermPriceResponseDto> {
-        val result = basicService.getTermPrice(termPriceRequestParameterDto)
+        val result = basicService.getTermPrice(termPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/daily-chart-price")
     suspend fun getDailyChartPrice(
-            @ModelAttribute dailyChartPriceRequestParameterDto: DailyChartPriceRequestParameterDto
+            @ModelAttribute dailyChartPriceRequestParameterDto: DailyChartPriceRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISDailyChartPriceResponseDto> {
-        val result = basicService.getDailyChartPrice(dailyChartPriceRequestParameterDto)
+        val result = basicService.getDailyChartPrice(dailyChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/search")
     suspend fun getSearch(
-            @ModelAttribute searchRequestParameterDto: SearchRequestParameterDto
+            @ModelAttribute searchRequestParameterDto: SearchRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISSearchResponseDto> {
-        val result = basicService.getSearch(searchRequestParameterDto)
+        val result = basicService.getSearch(searchRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }

@@ -64,7 +64,7 @@ class BasicControllerTest(
         val requestParams = readJsonFile(uri, "requestDto.json") toDto CurrentPriceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCurrentPriceResponseDto::class.java
 
-        coEvery { basicService.getCurrentPrice(any()) } returns expectedDto
+        coEvery { basicService.getCurrentPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -80,7 +80,7 @@ class BasicControllerTest(
         val requestParams = readJsonFile(uri, "requestDto.json") toDto TermPriceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISTermPriceResponseDto::class.java
 
-        coEvery { basicService.getTermPrice(any()) } returns expectedDto
+        coEvery { basicService.getTermPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -96,7 +96,7 @@ class BasicControllerTest(
         val requestParams = readJsonFile(uri, "requestDto.json") toDto DailyChartPriceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISDailyChartPriceResponseDto::class.java
 
-        coEvery { basicService.getDailyChartPrice(any()) } returns expectedDto
+        coEvery { basicService.getDailyChartPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -112,7 +112,7 @@ class BasicControllerTest(
         val requestParams = readJsonFile(uri, "requestDto.json") toDto SearchRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISSearchResponseDto::class.java
 
-        coEvery { basicService.getSearch(any()) } returns expectedDto
+        coEvery { basicService.getSearch(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 

@@ -30,5 +30,4 @@ data class SearchRequestParameterDto(
         @JsonProperty("coStPer") val coStPer: String = "",               // PER시작
         @JsonProperty("coEnPer") val coEnPer: String = "",               // PER끝
         @JsonProperty("KEYB") val KEYB: String = "",                     // NEXT KEY BUFF
-        @JsonProperty("email") val email: String = ""                    // 이메일
 )

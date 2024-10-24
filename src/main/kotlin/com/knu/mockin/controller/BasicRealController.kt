@@ -4,6 +4,7 @@ import com.knu.mockin.model.dto.kisresponse.basic.*
 import com.knu.mockin.model.dto.request.basic.*
 import com.knu.mockin.service.BasicRealService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,36 +18,40 @@ class BasicRealController (
 
     @GetMapping("/countries-holiday")
     suspend fun getCountriesHoliday(
-            @ModelAttribute countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto
+            @ModelAttribute countriesHolidayRequestParameterDto: CountriesHolidayRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISCountriesHolidayResponseDto> {
-        val result = basicRealService.getCountriesHoliday(countriesHolidayRequestParameterDto)
+        val result = basicRealService.getCountriesHoliday(countriesHolidayRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/price-detail")
     suspend fun getPriceDetail(
-            @ModelAttribute priceDetailRequestParameterDto: PriceDetailRequestParameterDto
+            @ModelAttribute priceDetailRequestParameterDto: PriceDetailRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISPriceDetailResponseDto> {
-        val result = basicRealService.getPriceDetail(priceDetailRequestParameterDto)
+        val result = basicRealService.getPriceDetail(priceDetailRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/item-chart-price")
     suspend fun getItemChartPrice(
-            @ModelAttribute itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto
+            @ModelAttribute itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISItemChartPriceResponseDto> {
-        val result = basicRealService.getItemChartPrice(itemChartPriceRequestParameterDto)
+        val result = basicRealService.getItemChartPrice(itemChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @GetMapping("/index-chart-price")
     suspend fun getIndexChartPrice(
-            @ModelAttribute indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto
+            @ModelAttribute indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto,
+            authentication: Authentication
     ): ResponseEntity<KISIndexChartPriceResponseDto> {
-        val result = basicRealService.getIndexChartPrice(indexChartPriceRequestParameterDto)
+        val result = basicRealService.getIndexChartPrice(indexChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -54,9 +59,10 @@ class BasicRealController (
 
     @GetMapping("/search-info")
     suspend fun getSearchInfo(
-        @ModelAttribute searchInfoRequestParameterDto: SearchInfoRequestParameterDto
+        @ModelAttribute searchInfoRequestParameterDto: SearchInfoRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISSearchInfoResponseDto> {
-        val result = basicRealService.getSearchInfo(searchInfoRequestParameterDto)
+        val result = basicRealService.getSearchInfo(searchInfoRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -64,9 +70,10 @@ class BasicRealController (
 
     @GetMapping("/news-title")
     suspend fun getNewsTitle(
-        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto
+        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISNewsTitleResponseDto> {
-        val result = basicRealService.getNewsTitle(newsTitleRequestParameterDto)
+        val result = basicRealService.getNewsTitle(newsTitleRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }

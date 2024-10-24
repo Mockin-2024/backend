@@ -10,5 +10,4 @@ data class TermPriceRequestParameterDto (
         @JsonProperty("BYMD") val BYMD: String = "",  // 조회기준일자(YYYYMMDD), 공란 시 현재날짜
         @JsonProperty("MODP") val MODP: String = "",  // 수정주가반영여부(0:미반영, 1:반영)
         @JsonProperty("KEYB") val KEYB: String = "",   // NEXT KEY BUFF
-        @JsonProperty("email") val email : String = ""
 )
