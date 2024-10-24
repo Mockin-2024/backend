@@ -1,10 +1,10 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.controller.util.*
-import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
+import com.knu.mockin.dsl.toDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
 import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
@@ -13,28 +13,44 @@ import com.knu.mockin.model.dto.request.basic.CurrentPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.DailyChartPriceRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.SearchRequestParameterDto
 import com.knu.mockin.model.dto.request.basic.TermPriceRequestParameterDto
+import com.knu.mockin.model.entity.User
+import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.security.JwtUtil
+import com.knu.mockin.security.SecurityTestConfig
 import com.knu.mockin.service.BasicService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockk
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Import
 import org.springframework.restdocs.ManualRestDocumentation
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.web.context.WebApplicationContext
+import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 
-@WebMvcTest(BasicController::class)
+@WebFluxTest(controllers = [BasicController::class])
+@Import(SecurityTestConfig::class)
 class BasicControllerTest(
-        @MockkBean
-        val basicService: BasicService = mockk<BasicService>(),
-        private val webApplicationContext: WebApplicationContext
+    @MockkBean
+    val basicService: BasicService = mockk<BasicService>(),
+    @MockkBean
+    val userRepository: UserRepository = mockk(),
+    @MockkBean
+    val jwtUtil: JwtUtil = mockk<JwtUtil>(),
+    private val context: ApplicationContext,
 ) : StringSpec({
     val restDocumentation = ManualRestDocumentation()
-    lateinit var mockMvc: MockMvc
+    lateinit var webTestClient: WebTestClient
 
     beforeTest {
-        mockMvc = buildMockMvc(webApplicationContext, restDocumentation)
-        restDocumentation.beforeTest(BasicControllerTest::class.java, it.name.testName)
+        webTestClient = buildWebTestClient(context, restDocumentation)
+        restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
+
+        val user = readJsonFile("setting", "user.json") toDto User::class.java
+        coEvery { userRepository.findByEmail(user.email) } returns Mono.just(user)
+        coEvery { jwtUtil.getUsername(any()) } returns user.email
+        coEvery { jwtUtil.isValid(any(), any()) } returns true
     }
 
     afterTest {
@@ -50,7 +66,7 @@ class BasicControllerTest(
 
         coEvery { basicService.getCurrentPrice(any()) } returns expectedDto
 
-        val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
+        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
@@ -66,7 +82,7 @@ class BasicControllerTest(
 
         coEvery { basicService.getTermPrice(any()) } returns expectedDto
 
-        val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
+        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
@@ -82,7 +98,7 @@ class BasicControllerTest(
 
         coEvery { basicService.getDailyChartPrice(any()) } returns expectedDto
 
-        val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
+        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
@@ -98,7 +114,7 @@ class BasicControllerTest(
 
         coEvery { basicService.getSearch(any()) } returns expectedDto
 
-        val response = mockMvc.getWithParams(uri, requestParams, expectedDto)
+        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
             uri,
