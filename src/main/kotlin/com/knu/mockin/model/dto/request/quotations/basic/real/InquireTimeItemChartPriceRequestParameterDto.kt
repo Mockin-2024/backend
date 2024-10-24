@@ -1,9 +1,9 @@
 package com.knu.mockin.model.dto.request.quotations.basic.real
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.real.KISItemChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.real.KISInquireTimeItemChartPriceRequestParameterDto
 
-data class ItemChartPriceRequestParameterDto (
+data class InquireTimeItemChartPriceRequestParameterDto (
         @JsonProperty("AUTH") val AUTH: String = "",              // 사용자권한정보
         @JsonProperty("EXCD") val EXCD: String = "",              // 거래소코드
         @JsonProperty("SYMB") val SYMB: String = "",              // 종목코드
@@ -15,8 +15,8 @@ data class ItemChartPriceRequestParameterDto (
         @JsonProperty("KEYB") val KEYB: String = "",              // NEXT KEY BUFF
 )
 
-fun ItemChartPriceRequestParameterDto.asDomain(): KISItemChartPriceRequestParameterDto {
-        return KISItemChartPriceRequestParameterDto(
+fun InquireTimeItemChartPriceRequestParameterDto.asDomain(): KISInquireTimeItemChartPriceRequestParameterDto {
+        return KISInquireTimeItemChartPriceRequestParameterDto(
                 AUTH = this.AUTH,
                 EXCD = this.EXCD,
                 SYMB = this.SYMB,
