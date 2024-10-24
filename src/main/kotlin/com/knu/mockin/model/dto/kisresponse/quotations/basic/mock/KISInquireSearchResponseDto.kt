@@ -2,15 +2,15 @@ package com.knu.mockin.model.dto.kisresponse.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISSearchResponseDto (
+data class KISInquireSearchResponseDto (
         @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부
         @JsonProperty("msg_cd") val responseCode: String,           // 응답코드
         @JsonProperty("msg1") val responseMessage: String,          // 응답메세지
-        @JsonProperty("output1") val output1: SearchOutput1?,        // 응답상세
-        @JsonProperty("output2") val output2: List<SearchOutput2>?,
+        @JsonProperty("output1") val output1: InquireSearchOutput1?,        // 응답상세
+        @JsonProperty("output2") val output2: List<InquireSearchOutput2>?,
 )
 
-data class SearchOutput1 (
+data class InquireSearchOutput1 (
         @JsonProperty("zdiv") val zdiv: String,                    // 소수점 자리수
         @JsonProperty("stat") val stat: String,                     // 거래상태정보
         @JsonProperty("crec") val crec: String,                     // 현재조회종목수
@@ -18,7 +18,7 @@ data class SearchOutput1 (
         @JsonProperty("nrec") val nrec: String                      // Record Count`
 )
 
-data class SearchOutput2 (
+data class InquireSearchOutput2 (
         @JsonProperty("rsym") val rsym: String,                     // 실시간조회심볼
         @JsonProperty("excd") val excd: String,                     // 거래소코드
         @JsonProperty("name") val name: String,                     // 종목명

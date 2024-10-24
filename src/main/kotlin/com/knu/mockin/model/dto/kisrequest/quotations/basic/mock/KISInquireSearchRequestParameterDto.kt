@@ -2,7 +2,7 @@ package com.knu.mockin.model.dto.kisrequest.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISSearchRequestParameterDto (
+data class KISInquireSearchRequestParameterDto (
         @JsonProperty("AUTH") val AUTH: String = "",                       // 사용자권한정보
         @JsonProperty("EXCD") val EXCD: String,                       // 거래소코드
         @JsonProperty("CO_YN_PRICECUR") val coYnPricecur: String,     // 현재가선택조건
