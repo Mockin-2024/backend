@@ -1,20 +1,20 @@
-package com.knu.mockin.controller
+package com.knu.mockin.controller.quotations.basic
 
-import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
-import com.knu.mockin.model.dto.request.basic.CurrentPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.DailyChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.SearchRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.TermPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISDailyChartPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISSearchResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.CurrentPriceRequestParameterDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.DailyChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.SearchRequestParameterDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.TermPriceRequestParameterDto
 import com.knu.mockin.service.BasicService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/basic")
+@RequestMapping("/quotations//basic")
 class BasicController (
         private val basicService : BasicService,
 ) {
