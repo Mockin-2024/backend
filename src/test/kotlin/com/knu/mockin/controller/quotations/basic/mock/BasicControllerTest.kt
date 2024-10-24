@@ -1,23 +1,25 @@
-package com.knu.mockin.controller
+package com.knu.mockin.controller.quotations.basic.mock
 
+import com.knu.mockin.controller.quotations.basic.BasicController
 import com.knu.mockin.controller.util.*
+import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
 import com.knu.mockin.dsl.toDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISCurrentPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISDailyChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.basic.KISTermPriceResponseDto
-import com.knu.mockin.model.dto.request.basic.CurrentPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.DailyChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.SearchRequestParameterDto
-import com.knu.mockin.model.dto.request.basic.TermPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISCurrentPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISDailyChartPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISSearchResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.CurrentPriceRequestParameterDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.DailyChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.SearchRequestParameterDto
+import com.knu.mockin.model.dto.request.quotations.basic.mock.TermPriceRequestParameterDto
+import com.knu.mockin.service.quotations.basic.mock.BasicService
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.JwtUtil
 import com.knu.mockin.security.SecurityTestConfig
-import com.knu.mockin.service.BasicService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery
@@ -45,7 +47,7 @@ class BasicControllerTest(
 
     beforeTest {
         webTestClient = buildWebTestClient(context, restDocumentation)
-        restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
+        restDocumentation.beforeTest(BasicControllerTest::class.java, it.name.testName)
 
         val user = readJsonFile("setting", "user.json") toDto User::class.java
         coEvery { userRepository.findByEmail(user.email) } returns Mono.just(user)
@@ -57,9 +59,9 @@ class BasicControllerTest(
         restDocumentation.afterTest()
     }
 
-    val baseUri = "/basic"
+    val baseUri = "/quotations/basic"
 
-    "GET /basic/current" {
+    "GET /quotations/basic/current" {
         val uri = "${baseUri}/current"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto CurrentPriceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCurrentPriceResponseDto::class.java
@@ -75,7 +77,7 @@ class BasicControllerTest(
         )
     }
 
-    "GET /basic/term" {
+    "GET /quotations/basic/term" {
         val uri = "${baseUri}/term"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto TermPriceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISTermPriceResponseDto::class.java
@@ -91,7 +93,7 @@ class BasicControllerTest(
         )
     }
 
-    "GET /basic/daily-chart-price" {
+    "GET /quotations/basic/daily-chart-price" {
         val uri = "${baseUri}/daily-chart-price"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto DailyChartPriceRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISDailyChartPriceResponseDto::class.java
@@ -107,7 +109,7 @@ class BasicControllerTest(
         )
     }
 
-    "GET /basic/search" {
+    "GET /quotations/basic/search" {
         val uri = "${baseUri}/search"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto SearchRequestParameterDto::class.java
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISSearchResponseDto::class.java

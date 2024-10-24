@@ -1,17 +1,19 @@
-package com.knu.mockin.controller
+package com.knu.mockin.controller.quotations.basic.real
 
+import com.knu.mockin.controller.quotations.basic.BasicRealController
+import com.knu.mockin.controller.quotations.basic.mock.BasicControllerTest
 import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
+import com.knu.mockin.model.dto.request.quotations.basic.real.*
+import com.knu.mockin.service.quotations.basic.real.BasicRealService
 import com.knu.mockin.dsl.toDto
-import com.knu.mockin.model.dto.kisresponse.basic.*
-import com.knu.mockin.model.dto.request.basic.*
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.JwtUtil
 import com.knu.mockin.security.SecurityTestConfig
-import com.knu.mockin.service.BasicRealService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery
@@ -39,7 +41,7 @@ class BasicRealControllerTest (
 
     beforeTest {
         webTestClient = buildWebTestClient(context, restDocumentation)
-        restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
+        restDocumentation.beforeTest(BasicRealControllerTest::class.java, it.name.testName)
 
         val user = RestDocsUtils.readJsonFile("setting", "user.json") toDto User::class.java
         coEvery { userRepository.findByEmail(user.email) } returns Mono.just(user)
@@ -51,9 +53,9 @@ class BasicRealControllerTest (
         restDocumentation.afterTest()
     }
 
-    val baseUri = "/basic"
+    val baseUri = "/quotations/basic"
 
-    "GET /basic/countries-holiday" {
+    "GET /quotations/basic/countries-holiday" {
         val uri = "${baseUri}/countries-holiday"
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto CountriesHolidayRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISCountriesHolidayResponseDto::class.java
@@ -69,7 +71,7 @@ class BasicRealControllerTest (
         )
     }
 
-    "GET /basic/price-detail" {
+    "GET /quotations/basic/price-detail" {
         val uri = "${baseUri}/price-detail"
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto PriceDetailRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISPriceDetailResponseDto::class.java
@@ -85,7 +87,7 @@ class BasicRealControllerTest (
         )
     }
 
-    "GET /basic/item-chart-price" {
+    "GET /quotations/basic/item-chart-price" {
         val uri = "${baseUri}/item-chart-price"
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto ItemChartPriceRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISItemChartPriceResponseDto::class.java
@@ -102,7 +104,7 @@ class BasicRealControllerTest (
     }
 
 
-    "GET /basic/index-chart-price" {
+    "GET /quotations/basic/index-chart-price" {
         val uri = "${baseUri}/index-chart-price"
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto IndexChartPriceRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISIndexChartPriceResponseDto::class.java
@@ -118,27 +120,12 @@ class BasicRealControllerTest (
         )
     }
 
-    "GET /basic/search-info" {
+    "GET /quotations/basic/search-info" {
         val uri = "${baseUri}/search-info"
         val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto SearchInfoRequestParameterDto::class.java
         val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISSearchInfoResponseDto::class.java
 
         coEvery { basicRealService.getSearchInfo(any(), any()) } returns expectedDto
-        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
-
-        response.makeDocument(
-            uri,
-            parameters(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
-
-    "GET /basic/news-title" {
-        val uri = "${baseUri}/news-title"
-        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto NewsTitleRequestParameterDto::class.java
-        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISNewsTitleResponseDto::class.java
-
-        coEvery { basicRealService.getNewsTitle(any(), any()) } returns expectedDto
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
         response.makeDocument(
