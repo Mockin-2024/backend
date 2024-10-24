@@ -1,6 +1,7 @@
 package com.knu.mockin.model.dto.request.quotations.basic.real
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.real.KISItemChartPriceRequestParameterDto
 
 data class ItemChartPriceRequestParameterDto (
         @JsonProperty("AUTH") val AUTH: String = "",              // 사용자권한정보
@@ -13,3 +14,17 @@ data class ItemChartPriceRequestParameterDto (
         @JsonProperty("FILL") val FILL: String = "",              // 미체결채움구분
         @JsonProperty("KEYB") val KEYB: String = "",              // NEXT KEY BUFF
 )
+
+fun ItemChartPriceRequestParameterDto.asDomain(): KISItemChartPriceRequestParameterDto {
+        return KISItemChartPriceRequestParameterDto(
+                AUTH = this.AUTH,
+                EXCD = this.EXCD,
+                SYMB = this.SYMB,
+                NMIN = this.NMIN,
+                PINC = this.PINC,
+                NEXT = this.NEXT,
+                NREC = this.NREC,
+                FILL = this.FILL,
+                KEYB = this.KEYB
+        )
+}
