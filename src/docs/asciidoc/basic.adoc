@@ -5,76 +5,76 @@
 == 목차
 
 * xref:/docs/index.html[메인으로 돌아가기]
-* <<current, 현재체결가>>
-* <<term, 기간별시세>>
-* <<daily-chart-price, 종목/지수/환율기간별시세>>
-* <<search, 조건검색>>
+* <<price, 현재체결가>>
+* <<daily-price, 기간별시세>>
+* <<inquire-daily-chartprice, 종목/지수/환율기간별시세>>
+* <<inquire-search, 조건검색>>
 * <<countries-holiday, 결제일자조회>>
 * <<price-detail, 현재가상세>>
-* <<item-chart-price, 주식분봉조회>>
-* <<index-chart-price, 지수분봉조회>>
+* <<inquire-time-itemchartprice, 주식분봉조회>>
+* <<inquire-time-indexchartprice, 지수분봉조회>>
 * <<search-info, 상품기본정보>>
 
 
-[#current]
+[#price]
 == 현재체결가
 
 === Request
-include::{snippets}/quotations/basic/current/http-request.adoc[]
+include::{snippets}/quotations/basic/price/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/current/query-parameters.adoc[]
+include::{snippets}/quotations/basic/price/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/current/http-response.adoc[]
+include::{snippets}/quotations/basic/price/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/current/response-fields.adoc[]
+include::{snippets}/quotations/basic/price/response-fields.adoc[]
 
-[#term]
+[#daily-price]
 == 기간별시세
 
 === Request
-include::{snippets}/quotations/basic/term/http-request.adoc[]
+include::{snippets}/quotations/basic/daily-price/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/term/query-parameters.adoc[]
+include::{snippets}/quotations/basic/daily-price/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/term/http-response.adoc[]
+include::{snippets}/quotations/basic/daily-price/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/term/response-fields.adoc[]
+include::{snippets}/quotations/basic/daily-price/response-fields.adoc[]
 
-[#daily-chart-price]
+[#inquire-daily-chartprice]
 == 종목/지수/환율기간별시세
 
 === Request
-include::{snippets}/quotations/basic/daily-chart-price/http-request.adoc[]
+include::{snippets}/quotations/basic/inquire-daily-chartprice/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/daily-chart-price/query-parameters.adoc[]
+include::{snippets}/quotations/basic/inquire-daily-chartprice/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/daily-chart-price/http-response.adoc[]
+include::{snippets}/quotations/basic/inquire-daily-chartprice/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/daily-chart-price/response-fields.adoc[]
+include::{snippets}/quotations/basic/inquire-daily-chartprice/response-fields.adoc[]
 
-[#search]
+[#inquire-search]
 == 조건검색
 
 === Request
-include::{snippets}/quotations/basic/search/http-request.adoc[]
+include::{snippets}/quotations/basic/inquire-search/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/search/query-parameters.adoc[]
+include::{snippets}/quotations/basic/inquire-search/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/search/http-response.adoc[]
+include::{snippets}/quotations/basic/inquire-search/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/search/response-fields.adoc[]
+include::{snippets}/quotations/basic/inquire-search/response-fields.adoc[]
 
 [#countries-holiday]
 == 결제일자조회
@@ -106,35 +106,35 @@ include::{snippets}/quotations/basic/price-detail/http-response.adoc[]
 === Response-Field
 include::{snippets}/quotations/basic/price-detail/response-fields.adoc[]
 
-[#item-chart-price]
+[#inquire-time-itemchartprice]
 == 주식분봉조회
 
 === Request
-include::{snippets}/quotations/basic/item-chart-price/http-request.adoc[]
+include::{snippets}/quotations/basic/inquire-time-itemchartprice/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/item-chart-price/query-parameters.adoc[]
+include::{snippets}/quotations/basic/inquire-time-itemchartprice/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/item-chart-price/http-response.adoc[]
+include::{snippets}/quotations/basic/inquire-time-itemchartprice/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/item-chart-price/response-fields.adoc[]
+include::{snippets}/quotations/basic/inquire-time-itemchartprice/response-fields.adoc[]
 
-[#index-chart-price]
+[#inquire-time-indexchartprice]
 == 지수분봉조회
 
 === Request
-include::{snippets}/quotations/basic/index-chart-price/http-request.adoc[]
+include::{snippets}/quotations/basic/inquire-time-indexchartprice/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/index-chart-price/query-parameters.adoc[]
+include::{snippets}/quotations/basic/inquire-time-indexchartprice/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/index-chart-price/http-response.adoc[]
+include::{snippets}/quotations/basic/inquire-time-indexchartprice/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/index-chart-price/response-fields.adoc[]
+include::{snippets}/quotations/basic/inquire-time-indexchartprice/response-fields.adoc[]
 
 [#search-info]
 == 상품기본정보
