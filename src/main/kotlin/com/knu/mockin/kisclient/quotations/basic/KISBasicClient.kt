@@ -2,14 +2,14 @@ package com.knu.mockin.kisclient.quotations.basic
 
 import com.knu.mockin.kisclient.getWithParams
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISCurrentPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISDailyChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISSearchRequestParameterDto
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISTermPriceRequestParameterDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISCurrentPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISDailyChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISTermPriceResponseDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISInquireSearchRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISDailyPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISInquireDailyChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISInquireDailyChartPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISDailyPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISPriceResponseDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISInquireSearchResponseDto
 import com.knu.mockin.util.HttpUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -21,51 +21,51 @@ class KISBasicClient (
 ) {
     private val quotationUrl = "/uapi/overseas-price/v1/quotations"
 
-    fun getCurrentPrice(
+    fun getPrice(
         headerDto: KISOverSeaRequestHeaderDto,
-        parameterDto: KISCurrentPriceRequestParameterDto
-    ) : Mono<KISCurrentPriceResponseDto> {
+        parameterDto: KISPriceRequestParameterDto
+    ) : Mono<KISPriceResponseDto> {
         val targetUri = HttpUtils.buildUri("${quotationUrl}/price", parameterDto)
         return webClientMock.getWithParams(
             uri = targetUri,
             headerDto = headerDto,
-            responseType = KISCurrentPriceResponseDto::class.java
+            responseType = KISPriceResponseDto::class.java
         )
     }
 
-    fun getTermPrice(
+    fun getDailyPrice(
         headerDto: KISOverSeaRequestHeaderDto,
-        parameterDto: KISTermPriceRequestParameterDto
-    ) : Mono<KISTermPriceResponseDto> {
+        parameterDto: KISDailyPriceRequestParameterDto
+    ) : Mono<KISDailyPriceResponseDto> {
         val targetUri = HttpUtils.buildUri("${quotationUrl}/dailyprice", parameterDto)
         return webClientMock.getWithParams(
             uri = targetUri,
             headerDto = headerDto,
-            responseType = KISTermPriceResponseDto::class.java
+            responseType = KISDailyPriceResponseDto::class.java
         )
     }
 
-    fun getDailyChartPrice(
+    fun getInquireDailyChartPrice(
         headerDto: KISOverSeaRequestHeaderDto,
-        parameterDto: KISDailyChartPriceRequestParameterDto
-    ) : Mono<KISDailyChartPriceResponseDto> {
+        parameterDto: KISInquireDailyChartPriceRequestParameterDto
+    ) : Mono<KISInquireDailyChartPriceResponseDto> {
         val targetUri = HttpUtils.buildUri("${quotationUrl}/inquire-daily-chartprice", parameterDto)
         return webClientMock.getWithParams(
             uri = targetUri,
             headerDto = headerDto,
-            responseType = KISDailyChartPriceResponseDto::class.java
+            responseType = KISInquireDailyChartPriceResponseDto::class.java
         )
     }
 
-    fun getSearch(
+    fun getInquireSearch(
         headerDto: KISOverSeaRequestHeaderDto,
-        parameterDto: KISSearchRequestParameterDto
-    ) : Mono<KISSearchResponseDto> {
+        parameterDto: KISInquireSearchRequestParameterDto
+    ) : Mono<KISInquireSearchResponseDto> {
         val targetUri = HttpUtils.buildUri("${quotationUrl}/inquire-search", parameterDto)
         return webClientMock.getWithParams(
             uri = targetUri,
             headerDto = headerDto,
-            responseType = KISSearchResponseDto::class.java
+            responseType = KISInquireSearchResponseDto::class.java
         )
     }
 

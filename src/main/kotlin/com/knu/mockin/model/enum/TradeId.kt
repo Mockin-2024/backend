@@ -24,14 +24,14 @@ enum class TradeId(val tradeId:String) {
     INQUIRE_PSAMOUNT("VTTS3007R"),        // 매수가능금액 조회
     INQUIRE_PRESENT_BALANCE("VTRP6504R"), // 체결기준현재잔고 조회
     INQUIRE_CCNL("VTTS3035R"),            // 주문체결내역 조회
-    CURRENT_PRICE("HHDFS00000300"),       // 해외주식 현재체결가
-    TERM_PRICE("HHDFS76240000"),          // 해외주식 기간별시세
-    DAILY_CHART_PRICE("FHKST03030100"),   // 해외주식 종목/지수/환율 기간별 시세
-    SEARCH("HHDFS76410000"),              // 해외주식 조건검색
+    PRICE("HHDFS00000300"),       // 해외주식 현재체결가
+    DAILY_PRICE("HHDFS76240000"),          // 해외주식 기간별시세
+    INQUIRE_DAILY_CHART_PRICE("FHKST03030100"),   // 해외주식 종목/지수/환율 기간별 시세
+    INQUIRE_SEARCH("HHDFS76410000"),              // 해외주식 조건검색
     COUNTRIES_HOLIDAY("CTOS5011R"),       // 해외결제일자조회
     PRICE_DETAIL("HHDFS76200200"),        // 해외주식 현재가상세
-    ITEM_CHART_PRICE("HHDFS76950200"),     // 해외주식 분봉조회
-    INDEX_CHART_PRICE("FHKST03030200"),     // 해외지수분봉조회
+    INQUIRE_TIME_ITEM_CHART_PRICE("HHDFS76950200"),     // 해외주식 분봉조회
+    INQUIRE_TIME_INDEX_CHART_PRICE("FHKST03030200"),     // 해외지수분봉조회
     SEARCH_INFO("CTPF1702R"),              // 해외주식 상품기본정보
     NEWS_TITLE("HHPSTH60100C1");          // 해외뉴스종합
 

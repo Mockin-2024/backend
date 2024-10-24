@@ -1,9 +1,9 @@
 package com.knu.mockin.model.dto.request.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISSearchRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISInquireSearchRequestParameterDto
 
-data class SearchRequestParameterDto(
+data class InquireSearchRequestParameterDto(
         @JsonProperty("AUTH") val AUTH: String = "",                       // 사용자권한정보
         @JsonProperty("EXCD") val EXCD: String = "",                       // 거래소코드
         @JsonProperty("coYnPricecur") val coYnPricecur: String = "",     // 현재가선택조건
@@ -33,8 +33,8 @@ data class SearchRequestParameterDto(
         @JsonProperty("KEYB") val KEYB: String = "",                     // NEXT KEY BUFF
 )
 
-fun SearchRequestParameterDto.asDomain(): KISSearchRequestParameterDto {
-        return KISSearchRequestParameterDto(
+fun InquireSearchRequestParameterDto.asDomain(): KISInquireSearchRequestParameterDto {
+        return KISInquireSearchRequestParameterDto(
                 AUTH = this.AUTH,
                 EXCD = this.EXCD,
                 coYnPricecur = this.coYnPricecur,

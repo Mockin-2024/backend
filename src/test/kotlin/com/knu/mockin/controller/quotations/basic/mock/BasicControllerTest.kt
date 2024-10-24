@@ -2,19 +2,12 @@ package com.knu.mockin.controller.quotations.basic.mock
 
 import com.knu.mockin.controller.quotations.basic.BasicController
 import com.knu.mockin.controller.util.*
-import com.knu.mockin.dsl.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
 import com.knu.mockin.dsl.toDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISCurrentPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISDailyChartPriceResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISSearchResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.KISTermPriceResponseDto
-import com.knu.mockin.model.dto.request.quotations.basic.mock.CurrentPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.quotations.basic.mock.DailyChartPriceRequestParameterDto
-import com.knu.mockin.model.dto.request.quotations.basic.mock.SearchRequestParameterDto
-import com.knu.mockin.model.dto.request.quotations.basic.mock.TermPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.*
+import com.knu.mockin.model.dto.request.quotations.basic.mock.*
 import com.knu.mockin.service.quotations.basic.mock.BasicService
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
@@ -61,28 +54,12 @@ class BasicControllerTest(
 
     val baseUri = "/quotations/basic"
 
-    "GET /quotations/basic/current" {
-        val uri = "${baseUri}/current"
-        val requestParams = readJsonFile(uri, "requestDto.json") toDto CurrentPriceRequestParameterDto::class.java
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCurrentPriceResponseDto::class.java
+    "GET /quotations/basic/price" {
+        val uri = "${baseUri}/price"
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto PriceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPriceResponseDto::class.java
 
-        coEvery { basicService.getCurrentPrice(any(), any()) } returns expectedDto
-
-        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
-
-        response.makeDocument(
-            uri,
-            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
-            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
-
-    "GET /quotations/basic/term" {
-        val uri = "${baseUri}/term"
-        val requestParams = readJsonFile(uri, "requestDto.json") toDto TermPriceRequestParameterDto::class.java
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISTermPriceResponseDto::class.java
-
-        coEvery { basicService.getTermPrice(any(), any()) } returns expectedDto
+        coEvery { basicService.getPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -93,12 +70,12 @@ class BasicControllerTest(
         )
     }
 
-    "GET /quotations/basic/daily-chart-price" {
-        val uri = "${baseUri}/daily-chart-price"
-        val requestParams = readJsonFile(uri, "requestDto.json") toDto DailyChartPriceRequestParameterDto::class.java
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISDailyChartPriceResponseDto::class.java
+    "GET /quotations/basic/daily-price" {
+        val uri = "${baseUri}/daily-price"
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto DailyPriceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISDailyPriceResponseDto::class.java
 
-        coEvery { basicService.getDailyChartPrice(any(), any()) } returns expectedDto
+        coEvery { basicService.getDailyPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -109,12 +86,28 @@ class BasicControllerTest(
         )
     }
 
-    "GET /quotations/basic/search" {
-        val uri = "${baseUri}/search"
-        val requestParams = readJsonFile(uri, "requestDto.json") toDto SearchRequestParameterDto::class.java
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISSearchResponseDto::class.java
+    "GET /quotations/basic/inquire-daily-chartprice" {
+        val uri = "${baseUri}/inquire-daily-chartprice"
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto InquireDailyChartPriceRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireDailyChartPriceResponseDto::class.java
 
-        coEvery { basicService.getSearch(any(), any()) } returns expectedDto
+        coEvery { basicService.getInquireDailyChartPrice(any(), any()) } returns expectedDto
+
+        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
+
+        response.makeDocument(
+            uri,
+            parameters(readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
+        )
+    }
+
+    "GET /quotations/basic/inquire-search" {
+        val uri = "${baseUri}/inquire-search"
+        val requestParams = readJsonFile(uri, "requestDto.json") toDto InquireSearchRequestParameterDto::class.java
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireSearchResponseDto::class.java
+
+        coEvery { basicService.getInquireSearch(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 

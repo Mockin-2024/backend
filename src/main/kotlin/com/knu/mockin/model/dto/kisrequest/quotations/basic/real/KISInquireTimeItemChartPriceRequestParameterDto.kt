@@ -2,7 +2,7 @@ package com.knu.mockin.model.dto.kisrequest.quotations.basic.real
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISItemChartPriceRequestParameterDto (
+data class KISInquireTimeItemChartPriceRequestParameterDto (
         @JsonProperty("AUTH") val AUTH: String = "",              // 사용자권한정보
         @JsonProperty("EXCD") val EXCD: String,              // 거래소코드
         @JsonProperty("SYMB") val SYMB: String,              // 종목코드

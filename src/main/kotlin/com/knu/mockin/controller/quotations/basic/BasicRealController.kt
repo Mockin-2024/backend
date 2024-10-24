@@ -36,22 +36,22 @@ class BasicRealController (
         return ResponseEntity.ok(result)
     }
 
-    @GetMapping("/item-chart-price")
-    suspend fun getItemChartPrice(
-            @ModelAttribute itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto,
-            authentication: Authentication
-    ): ResponseEntity<KISItemChartPriceResponseDto> {
-        val result = basicRealService.getItemChartPrice(itemChartPriceRequestParameterDto, authentication.name)
+    @GetMapping("/inquire-time-itemchartprice")
+    suspend fun getInquireTimeItemChartPrice(
+        @ModelAttribute inquireTimeItemChartPriceRequestParameterDto: InquireTimeItemChartPriceRequestParameterDto,
+        authentication: Authentication
+    ): ResponseEntity<KISInquireTimeItemChartPriceResponseDto> {
+        val result = basicRealService.getInquireTimeItemChartPrice(inquireTimeItemChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
-    @GetMapping("/index-chart-price")
+    @GetMapping("/inquire-time-indexchartprice")
     suspend fun getIndexChartPrice(
-            @ModelAttribute indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto,
-            authentication: Authentication
-    ): ResponseEntity<KISIndexChartPriceResponseDto> {
-        val result = basicRealService.getIndexChartPrice(indexChartPriceRequestParameterDto, authentication.name)
+        @ModelAttribute inquireTimeIndexChartPriceRequestParameterDto: InquireTimeIndexChartPriceRequestParameterDto,
+        authentication: Authentication
+    ): ResponseEntity<KISInquireTimeIndexChartPriceResponseDto> {
+        val result = basicRealService.getInquireTimeIndexChartPrice(inquireTimeIndexChartPriceRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }

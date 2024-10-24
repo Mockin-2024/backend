@@ -35,41 +35,41 @@ class BasicService(
         )
     }
 
-    suspend fun getCurrentPrice(
-        currentPriceRequestParameterDto: CurrentPriceRequestParameterDto,
+    suspend fun getPrice(
+        priceRequestParameterDto: PriceRequestParameterDto,
         email: String
-    ): KISCurrentPriceResponseDto {
-        val header = createHeader(email, TradeId.CURRENT_PRICE)
+    ): KISPriceResponseDto {
+        val header = createHeader(email, TradeId.PRICE)
 
-        val requestParameter = currentPriceRequestParameterDto.asDomain()
+        val requestParameter = priceRequestParameterDto.asDomain()
 
-        return kisBasicClient.getCurrentPrice(header, requestParameter).awaitSingle()
+        return kisBasicClient.getPrice(header, requestParameter).awaitSingle()
     }
 
-    suspend fun getTermPrice(
-        termPriceRequestParameterDto: TermPriceRequestParameterDto,
+    suspend fun getDailyPrice(
+        dailyPriceRequestParameterDto: DailyPriceRequestParameterDto,
         email: String
-    ): KISTermPriceResponseDto {
-        val header = createHeader(email, TradeId.TERM_PRICE)
-        val requestParameter = termPriceRequestParameterDto.asDomain()
-        return kisBasicClient.getTermPrice(header, requestParameter).awaitSingle()
+    ): KISDailyPriceResponseDto {
+        val header = createHeader(email, TradeId.DAILY_PRICE)
+        val requestParameter = dailyPriceRequestParameterDto.asDomain()
+        return kisBasicClient.getDailyPrice(header, requestParameter).awaitSingle()
     }
 
-    suspend fun getDailyChartPrice(
-        dailyChartPriceRequestParameterDto: DailyChartPriceRequestParameterDto,
+    suspend fun getInquireDailyChartPrice(
+        inquireDailyChartPriceRequestParameterDto: InquireDailyChartPriceRequestParameterDto,
         email: String
-    ): KISDailyChartPriceResponseDto {
-        val header = createHeader(email, TradeId.DAILY_CHART_PRICE)
-        val requestParameter = dailyChartPriceRequestParameterDto.asDomain()
-        return kisBasicClient.getDailyChartPrice(header, requestParameter).awaitSingle()
+    ): KISInquireDailyChartPriceResponseDto {
+        val header = createHeader(email, TradeId.INQUIRE_DAILY_CHART_PRICE)
+        val requestParameter = inquireDailyChartPriceRequestParameterDto.asDomain()
+        return kisBasicClient.getInquireDailyChartPrice(header, requestParameter).awaitSingle()
     }
 
-    suspend fun getSearch(
-        searchRequestParameterDto: SearchRequestParameterDto,
+    suspend fun getInquireSearch(
+        inquireSearchRequestParameterDto: InquireSearchRequestParameterDto,
         email: String
-    ): KISSearchResponseDto {
-        val header = createHeader(email, TradeId.SEARCH)
-        val requestParameter = searchRequestParameterDto.asDomain()
-        return kisBasicClient.getSearch(header, requestParameter).awaitSingle()
+    ): KISInquireSearchResponseDto {
+        val header = createHeader(email, TradeId.INQUIRE_SEARCH)
+        val requestParameter = inquireSearchRequestParameterDto.asDomain()
+        return kisBasicClient.getInquireSearch(header, requestParameter).awaitSingle()
     }
 }

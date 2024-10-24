@@ -2,7 +2,7 @@ package com.knu.mockin.model.dto.kisrequest.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISDailyChartPriceRequestParameterDto (
+data class KISInquireDailyChartPriceRequestParameterDto (
         @JsonProperty("FID_COND_MRKT_DIV_CODE") val fidCondMrktDivCode: String, // 조건 시장 분류 코드
         @JsonProperty("FID_INPUT_ISCD") val fidInputIscd: String,               // 입력 종목코드
         @JsonProperty("FID_INPUT_DATE_1") val fidInputDate1: String,           // 시작일자 (YYYYMMDD)

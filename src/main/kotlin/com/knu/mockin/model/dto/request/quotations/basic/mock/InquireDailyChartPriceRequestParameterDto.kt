@@ -1,8 +1,8 @@
 package com.knu.mockin.model.dto.request.quotations.basic.mock
 
-import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISDailyChartPriceRequestParameterDto
+import com.knu.mockin.model.dto.kisrequest.quotations.basic.mock.KISInquireDailyChartPriceRequestParameterDto
 
-data class DailyChartPriceRequestParameterDto (
+data class InquireDailyChartPriceRequestParameterDto (
         val fidCondMrktDivCode: String = "", // 조건 시장 분류 코드
         val fidInputIscd: String = "", // 입력 종목코드
         val fidInputDate1: String = "", // 시작일자 (YYYYMMDD)
@@ -10,8 +10,8 @@ data class DailyChartPriceRequestParameterDto (
         val fidPeriodDivCode: String = "", // 기간 분류 코드
 )
 
-fun DailyChartPriceRequestParameterDto.asDomain(): KISDailyChartPriceRequestParameterDto {
-        return KISDailyChartPriceRequestParameterDto(
+fun InquireDailyChartPriceRequestParameterDto.asDomain(): KISInquireDailyChartPriceRequestParameterDto {
+        return KISInquireDailyChartPriceRequestParameterDto(
                 fidCondMrktDivCode = this.fidCondMrktDivCode,
                 fidInputIscd = this.fidInputIscd,
                 fidInputDate1 = this.fidInputDate1,
