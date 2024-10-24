@@ -23,9 +23,10 @@ class AnalysisRealService (
     private val userRepository: UserRepository
 ) {
     suspend fun getNewsTitle(
-        newsTitleRequestParameterDto: NewsTitleRequestParameterDto
+        newsTitleRequestParameterDto: NewsTitleRequestParameterDto,
+        email: String
     ): KISNewsTitleResponseDto {
-        val userWithKey =  userRepository.findByEmailWithRealKey(newsTitleRequestParameterDto.email)
+        val userWithKey =  userRepository.findByEmailWithRealKey(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
             .awaitFirst()
         val kisOverSeaRequestHeaderDto = KISOverSeaRequestHeaderDto(

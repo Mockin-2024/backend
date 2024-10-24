@@ -4,6 +4,7 @@ import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResp
 import com.knu.mockin.model.dto.request.quotations.analysis.real.NewsTitleRequestParameterDto
 import com.knu.mockin.service.quotations.analysis.AnalysisRealService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,9 +18,10 @@ class AnalysisRealController(
 
     @GetMapping("/news-title")
     suspend fun getNewsTitle(
-        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto
+        @ModelAttribute newsTitleRequestParameterDto: NewsTitleRequestParameterDto,
+        authentication: Authentication
     ): ResponseEntity<KISNewsTitleResponseDto> {
-        val result = analysisRealService.getNewsTitle(newsTitleRequestParameterDto)
+        val result = analysisRealService.getNewsTitle(newsTitleRequestParameterDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
