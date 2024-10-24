@@ -1,7 +1,6 @@
 package com.knu.mockin.controller.quotations.basic.real
 
 import com.knu.mockin.controller.quotations.basic.BasicRealController
-import com.knu.mockin.controller.quotations.basic.mock.BasicControllerTest
 import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.RestDocsUtils.toBody
@@ -87,12 +86,12 @@ class BasicRealControllerTest (
         )
     }
 
-    "GET /quotations/basic/item-chart-price" {
-        val uri = "${baseUri}/item-chart-price"
-        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto ItemChartPriceRequestParameterDto::class.java
-        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISItemChartPriceResponseDto::class.java
+    "GET /quotations/basic/inquire-time-itemchartprice" {
+        val uri = "${baseUri}/inquire-time-itemchartprice"
+        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto InquireTimeItemChartPriceRequestParameterDto::class.java
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISInquireTimeItemChartPriceResponseDto::class.java
 
-        coEvery { basicRealService.getItemChartPrice(any(), any()) } returns expectedDto
+        coEvery { basicRealService.getInquireTimeItemChartPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
@@ -104,12 +103,12 @@ class BasicRealControllerTest (
     }
 
 
-    "GET /quotations/basic/index-chart-price" {
-        val uri = "${baseUri}/index-chart-price"
-        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto IndexChartPriceRequestParameterDto::class.java
-        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISIndexChartPriceResponseDto::class.java
+    "GET /quotations/basic/inquire-time-indexchartprice" {
+        val uri = "${baseUri}/inquire-time-indexchartprice"
+        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto InquireTimeIndexChartPriceRequestParameterDto::class.java
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISInquireTimeIndexChartPriceResponseDto::class.java
 
-        coEvery { basicRealService.getIndexChartPrice(any(), any()) } returns expectedDto
+        coEvery { basicRealService.getInquireTimeIndexChartPrice(any(), any()) } returns expectedDto
 
         val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
 
