@@ -100,10 +100,10 @@ tasks.register<Copy>("copySnippets"){
         into("account")
     }
     from(file("../quotations/basic")) {
-        into("basic")
+        into("quotations/basic")
     }
     from(file("../quotations/analysis")) {
-        into("analysis")
+        into("quotations/analysis")
     }
     from(file("../auth")) {
         into("auth")
