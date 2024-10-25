@@ -39,7 +39,7 @@ class SecurityConfig(
 
         http
             .authorizeExchange { authorize ->
-                authorize.pathMatchers("/**").permitAll()
+                authorize
                     .pathMatchers(HttpMethod.POST, "/auth/**").permitAll()
                     .pathMatchers("/docs/**", "/health").permitAll()
                     .anyExchange().authenticated()
