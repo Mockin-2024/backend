@@ -2,21 +2,21 @@ package com.knu.mockin.model.dto.kisresponse.quotations.basic.mock
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISTermPriceResponseDto (
+data class KISDailyPriceResponseDto (
     @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부
     @JsonProperty("msg_cd") val responseCode: String,           // 응답코드
     @JsonProperty("msg1") val responseMessage: String,          // 응답메세지
-    @JsonProperty("output1") val output1: TermPriceOutput1?,               // 응답상세
-    @JsonProperty("output2") val output2: List<TermPriceOutput2>?,
+    @JsonProperty("output1") val output1: DailyPriceOutput1?,               // 응답상세
+    @JsonProperty("output2") val output2: List<DailyPriceOutput2>?,
 )
 
-data class TermPriceOutput1 (
+data class DailyPriceOutput1 (
         @JsonProperty("rsym") val rsym: String,          // 실시간 조회 종목 코드
         @JsonProperty("zdiv") val zdiv: String,             // 소수점 자리수
         @JsonProperty("nrec") val nrec: String           // 전일 종가
 )
 
-data class TermPriceOutput2 (
+data class DailyPriceOutput2 (
         @JsonProperty("xymd") val xymd: String,                // 일자 (YYYYMMDD)
         @JsonProperty("clos") val clos: String,                // 해당 일자의 종가
         @JsonProperty("sign") val sign: String,                // 대비 기호

@@ -42,29 +42,29 @@ class KISBasicRealClient (
         )
     }
 
-    fun getItemChartPrice(
+    fun getInquireTimeItemChartPrice(
         headerDto: KISOverSeaRequestHeaderDto,
-        parameterDto: KISItemChartPriceRequestParameterDto
-    ): Mono<KISItemChartPriceResponseDto> {
+        parameterDto: KISInquireTimeItemChartPriceRequestParameterDto
+    ): Mono<KISInquireTimeItemChartPriceResponseDto> {
         val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-time-itemchartprice", parameterDto)
 
         return webClientReal.getWithParams(
             uri = targetUri,
             headerDto = headerDto,
-            responseType = KISItemChartPriceResponseDto::class.java
+            responseType = KISInquireTimeItemChartPriceResponseDto::class.java
         )
     }
 
-    fun getIndexChartPrice(
+    fun getInquireTimeIndexChartPrice(
         headerDto: KISOverSeaRequestHeaderDto,
-        parameterDto: KISIndexChartPriceRequestParameterDto
-    ): Mono<KISIndexChartPriceResponseDto> {
+        parameterDto: KISInquireTimeIndexChartPriceRequestParameterDto
+    ): Mono<KISInquireTimeIndexChartPriceResponseDto> {
         val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-time-indexchartprice", parameterDto)
 
         return webClientReal.getWithParams(
             uri = targetUri,
             headerDto = headerDto,
-            responseType = KISIndexChartPriceResponseDto::class.java
+            responseType = KISInquireTimeIndexChartPriceResponseDto::class.java
         )
     }
 

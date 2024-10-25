@@ -53,22 +53,22 @@ class BasicRealService (
         return kisBasicRealClient.getPriceDetail(header, requestParameter).awaitSingle()
     }
 
-    suspend fun getItemChartPrice(
-        itemChartPriceRequestParameterDto: ItemChartPriceRequestParameterDto,
+    suspend fun getInquireTimeItemChartPrice(
+        inquireTimeItemChartPriceRequestParameterDto: InquireTimeItemChartPriceRequestParameterDto,
         email: String
-    ): KISItemChartPriceResponseDto {
-        val header = createHeader(email, TradeId.ITEM_CHART_PRICE)
-        val requestParameter = itemChartPriceRequestParameterDto.asDomain()
-        return kisBasicRealClient.getItemChartPrice(header, requestParameter).awaitSingle()
+    ): KISInquireTimeItemChartPriceResponseDto {
+        val header = createHeader(email, TradeId.INQUIRE_TIME_ITEM_CHART_PRICE)
+        val requestParameter = inquireTimeItemChartPriceRequestParameterDto.asDomain()
+        return kisBasicRealClient.getInquireTimeItemChartPrice(header, requestParameter).awaitSingle()
     }
 
-    suspend fun getIndexChartPrice(
-        indexChartPriceRequestParameterDto: IndexChartPriceRequestParameterDto,
+    suspend fun getInquireTimeIndexChartPrice(
+        inquireTimeIndexChartPriceRequestParameterDto: InquireTimeIndexChartPriceRequestParameterDto,
         email: String
-    ): KISIndexChartPriceResponseDto {
-        val header = createHeader(email, TradeId.INDEX_CHART_PRICE)
-        val requestParameter = indexChartPriceRequestParameterDto.asDomain()
-        return kisBasicRealClient.getIndexChartPrice(header, requestParameter).awaitSingle()
+    ): KISInquireTimeIndexChartPriceResponseDto {
+        val header = createHeader(email, TradeId.INQUIRE_TIME_INDEX_CHART_PRICE)
+        val requestParameter = inquireTimeIndexChartPriceRequestParameterDto.asDomain()
+        return kisBasicRealClient.getInquireTimeIndexChartPrice(header, requestParameter).awaitSingle()
     }
 
     suspend fun getSearchInfo(

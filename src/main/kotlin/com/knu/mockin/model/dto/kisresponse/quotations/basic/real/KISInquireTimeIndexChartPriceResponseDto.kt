@@ -2,15 +2,15 @@ package com.knu.mockin.model.dto.kisresponse.quotations.basic.real
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISIndexChartPriceResponseDto (
+data class KISInquireTimeIndexChartPriceResponseDto (
     @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부
     @JsonProperty("msg_cd") val responseCode: String,           // 응답코드
     @JsonProperty("msg1") val responseMessage: String,          // 응답메세지
-    @JsonProperty("output1") val output1: IndexChartPriceOutput1?,        // 응답상세
-    @JsonProperty("output2") val output2: List<IndexChartPriceOutput2>?,
+    @JsonProperty("output1") val output1: InquireTimeIndexChartPriceOutput1?,        // 응답상세
+    @JsonProperty("output2") val output2: List<InquireTimeIndexChartPriceOutput2>?,
 )
 
-data class IndexChartPriceOutput1 (
+data class InquireTimeIndexChartPriceOutput1 (
         @JsonProperty("ovrs_nmix_prdy_vrss") val ovrsNmixPrdyVrss: String,       // 해외 지수 전일 대비
         @JsonProperty("prdy_vrss_sign") val prdyVrssSign: String,                // 전일 대비 부호
         @JsonProperty("hts_kor_isnm") val htsKorIsnm: String,                    // HTS 한글 종목명
@@ -24,7 +24,7 @@ data class IndexChartPriceOutput1 (
         @JsonProperty("ovrs_prod_lwpr") val ovrsProdLwpr: String                 // 해외 상품 최저가
 )
 
-data class IndexChartPriceOutput2 (
+data class InquireTimeIndexChartPriceOutput2 (
         @JsonProperty("stck_bsop_date") val stckBsopDate: String,    // 주식 영업 일자
         @JsonProperty("stck_cntg_hour") val stckCntgHour: String,    // 주식 체결 시간
         @JsonProperty("optn_prpr") val optnPrpr: String,            // 옵션 현재가

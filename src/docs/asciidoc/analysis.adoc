@@ -1,6 +1,6 @@
 :snippets: ./build/generated-snippets
 
-= quotations/analysis
+= Analysis
 
 == 목차
 
@@ -12,13 +12,13 @@
 == 해외뉴스종합
 
 === Request
-include::{snippets}/quotations/analysis/news-title/http-request.adoc[]
+include::{snippets}/quotations/{docname}/news-title/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/analysis/news-title/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/news-title/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/analysis/news-title/http-response.adoc[]
+include::{snippets}/quotations/{docname}/news-title/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/analysis/news-title/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/news-title/response-fields.adoc[]

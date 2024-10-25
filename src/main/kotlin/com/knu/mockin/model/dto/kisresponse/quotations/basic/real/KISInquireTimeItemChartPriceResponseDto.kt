@@ -2,15 +2,15 @@ package com.knu.mockin.model.dto.kisresponse.quotations.basic.real
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KISItemChartPriceResponseDto (
+data class KISInquireTimeItemChartPriceResponseDto (
     @JsonProperty("rt_cd") val successFailureStatus: String,    // 성공 실패 여부
     @JsonProperty("msg_cd") val responseCode: String,           // 응답코드
     @JsonProperty("msg1") val responseMessage: String,          // 응답메세지
-    @JsonProperty("output1") val output1: ItemChartPriceOutput1?,        // 응답상세
-    @JsonProperty("output2") val output2: List<ItemChartPriceOutput2>?,
+    @JsonProperty("output1") val output1: InquireTimeItemChartPriceOutput1?,        // 응답상세
+    @JsonProperty("output2") val output2: List<InquireTimeItemChartPriceOutput2>?,
 )
 
-data class ItemChartPriceOutput1 (
+data class InquireTimeItemChartPriceOutput1 (
         @JsonProperty("rsym") val rsym: String,              // 실시간종목코드
         @JsonProperty("zdiv") val zdiv: String,              // 소수점자리수
         @JsonProperty("stim") val stim: String,              // 장시작현지시간
@@ -22,7 +22,7 @@ data class ItemChartPriceOutput1 (
         @JsonProperty("nrec") val nrec: String               // 레코드갯수
 )
 
-data class ItemChartPriceOutput2 (
+data class InquireTimeItemChartPriceOutput2 (
         @JsonProperty("tymd") val tymd: String,              // 현지영업일자
         @JsonProperty("xymd") val xymd: String,              // 현지기준일자
         @JsonProperty("xhms") val xhms: String,              // 현지기준시간
