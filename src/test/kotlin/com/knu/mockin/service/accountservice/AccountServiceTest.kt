@@ -4,7 +4,6 @@ import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
 import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
-import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.entity.MockKey
@@ -38,10 +37,14 @@ class AccountServiceTest: BehaviorSpec({
         )
     val redisTemplate = mockk<RedisTemplate<String, String>>()
     RedisUtil.init(redisTemplate)
+    val email = "test@naver.com"
+
+    val mockKey = MockKey("test", "test appKey", "test appSecret")
+    beforeTest {
+        every { mockKeyRepository.findById(email) } returns Mono.just(mockKey)
+    }
 
     Given("get approval key test"){
-        val mockKey = MockKey("test", "test appKey", "test appSecret")
-        val accountRequestDto = AccountRequestDto("test")
         val requestDto = KISApprovalRequestDto(
             grantType = "client_credentials",
             appKey = mockKey.appKey,
@@ -49,9 +52,8 @@ class AccountServiceTest: BehaviorSpec({
         val expectedDto = ApprovalKeyResponseDto("test")
 
         every { kisOauth2Client.postApproval(requestDto) } returns Mono.just(expectedDto)
-        every { mockKeyRepository.findById("test")} returns Mono.just(mockKey)
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getMockApprovalKey(accountRequestDto)
+            val result = accountService.getMockApprovalKey(email)
 
             Then("키가 반환된다"){
                 result shouldBe expectedDto
@@ -60,8 +62,6 @@ class AccountServiceTest: BehaviorSpec({
     }
 
     Given("get access token test"){
-        val mockKey = MockKey("test", "test appKey", "test appSecret")
-        val accountRequestDto = AccountRequestDto("test")
         val requestDto = KISTokenRequestDto(
             grantType = "client_credentials",
             appKey = mockKey.appKey,
@@ -73,11 +73,10 @@ class AccountServiceTest: BehaviorSpec({
             "2024-10-31")
 
         every { kisOauth2Client.postTokenP(requestDto) } returns Mono.just(expectedDto)
-        every { mockKeyRepository.findById("test")} returns Mono.just(mockKey)
-        every { RedisUtil.saveToken(accountRequestDto.email tag MOCK, expectedDto.accessToken) } returns Unit
+        every { RedisUtil.saveToken(mockKey.email tag MOCK, expectedDto.accessToken) } returns Unit
 
         When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getMockAccessToken(accountRequestDto)
+            val result = accountService.getMockAccessToken(email)
 
             Then("토큰이 반환된다"){
                 result shouldBe expectedDto

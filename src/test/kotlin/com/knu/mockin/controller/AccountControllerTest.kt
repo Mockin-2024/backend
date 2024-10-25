@@ -61,7 +61,7 @@ class AccountControllerTest(
         val uriPatch = "${uri}Patch"
         val requestDto = readJsonFile(uriPatch, "requestDto.json")
         val expectedDto = readJsonFile(uriPatch, "responseDto.json") toDto SimpleMessageResponseDto::class.java
-        coEvery { accountService.patchUser(any()) } returns expectedDto
+        coEvery { accountService.patchUser(any(), any()) } returns expectedDto
 
         val response = webTestClient.patchWithBody(uri, requestDto, expectedDto)
 
@@ -76,7 +76,7 @@ class AccountControllerTest(
         val uri = "${baseUri}/mock-key"
         val requestDto = readJsonFile(uri, "requestDto.json")
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
-        coEvery { accountService.postMockKeyPair(any()) } returns expectedDto
+        coEvery { accountService.postMockKeyPair(any(), any()) } returns expectedDto
 
         val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
@@ -91,7 +91,7 @@ class AccountControllerTest(
         val uri = "${baseUri}/real-key"
         val requestDto = readJsonFile(uri, "requestDto.json")
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
-        coEvery { accountService.postRealKeyPair(any()) } returns expectedDto
+        coEvery { accountService.postRealKeyPair(any(), any()) } returns expectedDto
 
         val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
