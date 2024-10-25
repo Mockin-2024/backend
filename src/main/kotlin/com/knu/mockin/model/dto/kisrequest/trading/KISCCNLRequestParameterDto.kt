@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class KISCCNLRequestParameterDto(
     @JsonProperty("CANO") val accountNumber: String,                                // 종합계좌번호
-    @JsonProperty("ACNT_PRDT_CD") val accountProductCode: String,                   // 계좌상품코드
+    @JsonProperty("ACNT_PRDT_CD") val accountProductCode: String = "01",            // 계좌상품코드
     @JsonProperty("PDNO") val productNumber: String = "%",                          // 상품번호
     @JsonProperty("ORD_STRT_DT") val orderStartDate: String,                        // 주문시작일자
     @JsonProperty("ORD_END_DT") val orderEndDate: String,                           // 주문종료일자
