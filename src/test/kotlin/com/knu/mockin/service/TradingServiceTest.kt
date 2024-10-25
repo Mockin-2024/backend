@@ -3,13 +3,11 @@ package com.knu.mockin.service
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISTradingClient
+import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
-import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
-import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
-import com.knu.mockin.model.dto.request.trading.OrderReverseRequestBodyDto
-import com.knu.mockin.model.dto.request.trading.asDomain
+import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
@@ -91,6 +89,26 @@ class TradingServiceTest(
 
                 Then("응답 DTO를 정상적으로 받아야 한다."){
                     val result = tradingService.getNCCS(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
+
+    Context("getBalance 함수의 경우"){
+        val uri = "$baseUri/balance"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
+            val requestDto = bodyDto.asDomain(user.accountNumber)
+            val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE))
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISBalanceResponseDto::class.java
+
+            When("KIS API로 요청을 보내면"){
+                every { kisTradingClient.getBalance(headerDto, requestDto) } returns Mono.just(expectedDto)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = tradingService.getBalance(bodyDto, user.email)
                     result shouldBe expectedDto
                 }
             }
