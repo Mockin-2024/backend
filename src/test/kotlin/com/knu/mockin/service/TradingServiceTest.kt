@@ -4,9 +4,13 @@ import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
+import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
 import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
+import com.knu.mockin.model.dto.request.trading.OrderReverseRequestBodyDto
+import com.knu.mockin.model.dto.request.trading.asDomain
 import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.service.util.ServiceUtil.createHeader
 import com.knu.mockin.util.RedisUtil
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -32,13 +36,15 @@ class TradingServiceTest(
     val baseUri = "/trading"
     Context("postOrder 함수의 경우"){
         val uri = "$baseUri/order"
-        
+
         Given("적절한 dto가 주어질 때"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto OrderRequestBodyDto::class.java
+            val requestDto = bodyDto.asDomain(user.accountNumber)
+            val headerDto = createHeader(user, bodyDto.transactionId)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderResponseDto::class.java
 
             When("KIS API로 요청을 보내면"){
-                every { kisTradingClient.postOrder(any(), any()) } returns Mono.just(expectedDto)
+                every { kisTradingClient.postOrder(headerDto, requestDto) } returns Mono.just(expectedDto)
 
                 Then("응답 DTO를 정상적으로 받아야 한다."){
                     val result = tradingService.postOrder(bodyDto, user.email)
@@ -46,7 +52,25 @@ class TradingServiceTest(
                 }
             }
         }
-
     }
 
+    Context("postOrderReverse 함수의 경우"){
+        val uri = "$baseUri/order-reverse"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto OrderReverseRequestBodyDto::class.java
+            val requestDto = bodyDto.asDomain(user.accountNumber)
+            val headerDto = createHeader(user, bodyDto.transactionId)
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderReverseResponseDto::class.java
+
+            When("KIS API로 요청을 보내면"){
+                every { kisTradingClient.postOrderReverse(headerDto, requestDto) } returns Mono.just(expectedDto)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = tradingService.postOrderReverse(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
 })
