@@ -3,12 +3,15 @@ package com.knu.mockin.service
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISTradingClient
+import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
+import com.knu.mockin.model.dto.request.trading.NCCSRequestParameterDto
 import com.knu.mockin.model.dto.request.trading.OrderRequestBodyDto
 import com.knu.mockin.model.dto.request.trading.OrderReverseRequestBodyDto
 import com.knu.mockin.model.dto.request.trading.asDomain
 import com.knu.mockin.model.entity.UserWithKeyPair
+import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.util.ServiceUtil.createHeader
 import com.knu.mockin.util.RedisUtil
@@ -68,6 +71,26 @@ class TradingServiceTest(
 
                 Then("응답 DTO를 정상적으로 받아야 한다."){
                     val result = tradingService.postOrderReverse(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
+
+    Context("getNCCS 함수의 경우"){
+        val uri = "$baseUri/nccs"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
+            val requestDto = bodyDto.asDomain(user.accountNumber)
+            val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_NCCS))
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISNCCSResponseDto::class.java
+
+            When("KIS API로 요청을 보내면"){
+                every { kisTradingClient.getNCCS(headerDto, requestDto) } returns Mono.just(expectedDto)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = tradingService.getNCCS(bodyDto, user.email)
                     result shouldBe expectedDto
                 }
             }
