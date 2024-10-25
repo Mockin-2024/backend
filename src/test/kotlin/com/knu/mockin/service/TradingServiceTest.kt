@@ -3,10 +3,7 @@ package com.knu.mockin.service
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISTradingClient
-import com.knu.mockin.model.dto.kisresponse.trading.KISBalanceResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISNCCSResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISOrderResponseDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
+import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.model.enum.TradeId
@@ -109,6 +106,26 @@ class TradingServiceTest(
 
                 Then("응답 DTO를 정상적으로 받아야 한다."){
                     val result = tradingService.getBalance(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
+
+    Context("getPsAmount 함수의 경우"){
+        val uri = "$baseUri/psamount"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto PsAmountRequestParameterDto::class.java
+            val requestDto = bodyDto.asDomain(user.accountNumber)
+            val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_PSAMOUNT))
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPsAmountResponseDto::class.java
+
+            When("KIS API로 요청을 보내면"){
+                every { kisTradingClient.getPsAmount(headerDto, requestDto) } returns Mono.just(expectedDto)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = tradingService.getPsAmount(bodyDto, user.email)
                     result shouldBe expectedDto
                 }
             }
