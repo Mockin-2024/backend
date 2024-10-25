@@ -1,4 +1,4 @@
-package com.knu.mockin.service.accountservice
+package com.knu.mockin.service
 
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
