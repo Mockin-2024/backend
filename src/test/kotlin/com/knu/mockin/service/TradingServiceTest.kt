@@ -131,4 +131,24 @@ class TradingServiceTest(
             }
         }
     }
+
+    Context("getPresentBalance 함수의 경우"){
+        val uri = "$baseUri/present-balance"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto PresentBalanceRequestParameterDto::class.java
+            val requestDto = bodyDto.asDomain(user.accountNumber)
+            val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_PRESENT_BALANCE))
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPresentBalanceResponseDto::class.java
+
+            When("KIS API로 요청을 보내면"){
+                every { kisTradingClient.getPresentBalance(headerDto, requestDto) } returns Mono.just(expectedDto)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = tradingService.getPresentBalance(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
 })
