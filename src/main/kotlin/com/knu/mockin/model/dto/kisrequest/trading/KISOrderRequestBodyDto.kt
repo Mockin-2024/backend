@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class KISOrderRequestBodyDto(
     @JsonProperty("CANO") val accountNumber: String,                         // 종합계좌번호
-    @JsonProperty("ACNT_PRDT_CD") val accountProductCode: String,            // 계좌상품코드
+    @JsonProperty("ACNT_PRDT_CD") val accountProductCode: String = "01",            // 계좌상품코드
     @JsonProperty("OVRS_EXCG_CD") val overseasExchangeCode: String,          // 해외거래소코드
     @JsonProperty("PDNO") val productNumber: String,                         // 상품번호
     @JsonProperty("ORD_QTY") val orderQuantity: String,                      // 주문수량
