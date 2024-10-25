@@ -97,7 +97,7 @@ class AccountService(
     }
 
     suspend fun getRealApprovalKey(
-            email: String
+        email: String
     ): ApprovalKeyResponseDto {
         val user = realKeyRepository.findById(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
@@ -129,7 +129,7 @@ class AccountService(
     }
 
     suspend fun getRealAccessToken(
-            email: String
+        email: String
     ): AccessTokenAPIResponseDto {
         val user = realKeyRepository.findById(email)
             .orThrow(ErrorCode.USER_NOT_FOUND)
