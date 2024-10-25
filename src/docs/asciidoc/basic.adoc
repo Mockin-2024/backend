@@ -1,6 +1,6 @@
 :snippets: ./build/generated-snippets
 
-= quotations/basic
+= Basic
 
 == 목차
 
@@ -20,133 +20,133 @@
 == 현재체결가
 
 === Request
-include::{snippets}/quotations/basic/price/http-request.adoc[]
+include::{snippets}/quotations/{docname}/price/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/price/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/price/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/price/http-response.adoc[]
+include::{snippets}/quotations/{docname}/price/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/price/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/price/response-fields.adoc[]
 
 [#daily-price]
 == 기간별시세
 
 === Request
-include::{snippets}/quotations/basic/daily-price/http-request.adoc[]
+include::{snippets}/quotations/{docname}/daily-price/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/daily-price/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/daily-price/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/daily-price/http-response.adoc[]
+include::{snippets}/quotations/{docname}/daily-price/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/daily-price/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/daily-price/response-fields.adoc[]
 
 [#inquire-daily-chartprice]
 == 종목/지수/환율기간별시세
 
 === Request
-include::{snippets}/quotations/basic/inquire-daily-chartprice/http-request.adoc[]
+include::{snippets}/quotations/{docname}/inquire-daily-chartprice/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/inquire-daily-chartprice/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/inquire-daily-chartprice/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/inquire-daily-chartprice/http-response.adoc[]
+include::{snippets}/quotations/{docname}/inquire-daily-chartprice/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/inquire-daily-chartprice/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/inquire-daily-chartprice/response-fields.adoc[]
 
 [#inquire-search]
 == 조건검색
 
 === Request
-include::{snippets}/quotations/basic/inquire-search/http-request.adoc[]
+include::{snippets}/quotations/{docname}/inquire-search/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/inquire-search/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/inquire-search/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/inquire-search/http-response.adoc[]
+include::{snippets}/quotations/{docname}/inquire-search/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/inquire-search/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/inquire-search/response-fields.adoc[]
 
 [#countries-holiday]
 == 결제일자조회
 
 === Request
-include::{snippets}/quotations/basic/countries-holiday/http-request.adoc[]
+include::{snippets}/quotations/{docname}/countries-holiday/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/countries-holiday/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/countries-holiday/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/countries-holiday/http-response.adoc[]
+include::{snippets}/quotations/{docname}/countries-holiday/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/countries-holiday/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/countries-holiday/response-fields.adoc[]
 
 [#price-detail]
 == 현재가상세
 
 === Request
-include::{snippets}/quotations/basic/price-detail/http-request.adoc[]
+include::{snippets}/quotations/{docname}/price-detail/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/price-detail/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/price-detail/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/price-detail/http-response.adoc[]
+include::{snippets}/quotations/{docname}/price-detail/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/price-detail/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/price-detail/response-fields.adoc[]
 
 [#inquire-time-itemchartprice]
 == 주식분봉조회
 
 === Request
-include::{snippets}/quotations/basic/inquire-time-itemchartprice/http-request.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-itemchartprice/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/inquire-time-itemchartprice/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-itemchartprice/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/inquire-time-itemchartprice/http-response.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-itemchartprice/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/inquire-time-itemchartprice/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-itemchartprice/response-fields.adoc[]
 
 [#inquire-time-indexchartprice]
 == 지수분봉조회
 
 === Request
-include::{snippets}/quotations/basic/inquire-time-indexchartprice/http-request.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-indexchartprice/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/inquire-time-indexchartprice/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-indexchartprice/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/inquire-time-indexchartprice/http-response.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-indexchartprice/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/inquire-time-indexchartprice/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/inquire-time-indexchartprice/response-fields.adoc[]
 
 [#search-info]
 == 상품기본정보
 
 === Request
-include::{snippets}/quotations/basic/search-info/http-request.adoc[]
+include::{snippets}/quotations/{docname}/search-info/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/quotations/basic/search-info/query-parameters.adoc[]
+include::{snippets}/quotations/{docname}/search-info/query-parameters.adoc[]
 
 === Response
-include::{snippets}/quotations/basic/search-info/http-response.adoc[]
+include::{snippets}/quotations/{docname}/search-info/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/quotations/basic/search-info/response-fields.adoc[]
+include::{snippets}/quotations/{docname}/search-info/response-fields.adoc[]
