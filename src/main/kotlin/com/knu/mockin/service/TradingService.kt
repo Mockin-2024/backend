@@ -10,6 +10,7 @@ import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.service.util.ServiceUtil.createHeader
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
@@ -123,10 +124,4 @@ class TradingService(
         .orThrow(ErrorCode.USER_NOT_FOUND)
         .awaitFirst()
 
-    private fun createHeader(user: UserWithKeyPair, tradeId: String) = KISOverSeaRequestHeaderDto(
-        authorization = "Bearer ${RedisUtil.getToken(user.email tag MOCK)}",
-        appKey = user.appKey,
-        appSecret = user.appSecret,
-        transactionId = tradeId
-    )
 }
