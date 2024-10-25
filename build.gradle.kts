@@ -92,6 +92,22 @@ tasks.jacocoTestReport {
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
+    finalizedBy(tasks.jacocoTestCoverageVerification)
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = false
+            element = "CLASS"
+
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.8".toBigDecimal()
+            }
+        }
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -102,7 +118,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 tasks.register<Copy>("copySnippets"){
-    dependsOn(tasks.test)
+    dependsOn(tasks.jacocoTestCoverageVerification)
 
     from(file("../trading")) {
         into("trading")
