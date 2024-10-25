@@ -1,7 +1,6 @@
 package com.knu.mockin.controller
 
 
-import com.knu.mockin.model.dto.request.account.AccountRequestDto
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
@@ -9,6 +8,7 @@ import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.service.AccountService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -19,60 +19,63 @@ class AccountController(
 
     @PatchMapping("/user")
     suspend fun patchUser(
-        @RequestBody userAccountNumberRequestDto: UserAccountNumberRequestDto
+        @RequestBody userAccountNumberRequestDto: UserAccountNumberRequestDto,
+        authentication: Authentication
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = accountService.patchUser(userAccountNumberRequestDto)
+        val result = accountService.patchUser(userAccountNumberRequestDto, authentication.name)
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/mock-key")
     suspend fun postMockKeyPair(
-        @RequestBody keyPairRequestDto: KeyPairRequestDto
+        @RequestBody keyPairRequestDto: KeyPairRequestDto,
+        authentication: Authentication
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = accountService.postMockKeyPair(keyPairRequestDto)
+        val result = accountService.postMockKeyPair(keyPairRequestDto, authentication.name)
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/real-key")
     suspend fun postRealKeyPair(
-        @RequestBody keyPairRequestDto: KeyPairRequestDto
+        @RequestBody keyPairRequestDto: KeyPairRequestDto,
+        authentication: Authentication
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = accountService.postRealKeyPair(keyPairRequestDto)
+        val result = accountService.postRealKeyPair(keyPairRequestDto, authentication.name)
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/mock-approval-key")
     suspend fun getMockApprovalKey(
-        @RequestBody accountRequestDto: AccountRequestDto
+        authentication: Authentication
     ): ResponseEntity<ApprovalKeyResponseDto> {
-        val result = accountService.getMockApprovalKey(accountRequestDto)
+        val result = accountService.getMockApprovalKey(authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/real-approval-key")
     suspend fun getRealApprovalKey(
-        @RequestBody accountRequestDto: AccountRequestDto
+        authentication: Authentication
     ): ResponseEntity<ApprovalKeyResponseDto> {
-        val result = accountService.getRealApprovalKey(accountRequestDto)
+        val result = accountService.getRealApprovalKey(authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/mock-token")
     suspend fun getMockAccessToken(
-        @RequestBody accountRequestDto: AccountRequestDto
+        authentication: Authentication
     ): ResponseEntity<AccessTokenAPIResponseDto> {
-        val result = accountService.getMockAccessToken(accountRequestDto)
+        val result = accountService.getMockAccessToken(authentication.name)
 
         return ResponseEntity.ok(result)
     }
 
     @PostMapping("/real-token")
     suspend fun getRealAccessToken(
-        @RequestBody accountRequestDto: AccountRequestDto
+        authentication: Authentication
     ): ResponseEntity<AccessTokenAPIResponseDto> {
-        val result = accountService.getRealAccessToken(accountRequestDto)
+        val result = accountService.getRealAccessToken(authentication.name)
 
         return ResponseEntity.ok(result)
     }
