@@ -1,9 +1,8 @@
-package com.knu.mockin.kisclient
+package com.knu.mockin.kisclient.quotations.basic
 
+import com.knu.mockin.kisclient.getWithParams
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.quotations.analysis.KISNewsTitleRequestParameterDto
 import com.knu.mockin.model.dto.kisrequest.quotations.basic.real.*
-import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResponseDto
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
 import com.knu.mockin.util.HttpUtils
 import org.springframework.stereotype.Component
@@ -81,17 +80,5 @@ class KISBasicRealClient (
             responseType = KISSearchInfoResponseDto::class.java
         )
     }
-    
-    fun getNewsTitle(
-        headerDto: KISOverSeaRequestHeaderDto,
-        parameterDto: KISNewsTitleRequestParameterDto
-    ): Mono<KISNewsTitleResponseDto> {
-        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/news-title", parameterDto)
 
-        return webClientReal.getWithParams(
-            uri = targetUri,
-            headerDto = headerDto,
-            responseType = KISNewsTitleResponseDto::class.java
-        )
-    }
 }
