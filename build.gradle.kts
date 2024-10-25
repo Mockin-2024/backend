@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.asciidoctor.jvm.convert") version "4.0.3"
+    id("jacoco")
 }
 
 group = "com.knu"
@@ -81,6 +82,16 @@ val snippetsDir = file("./build/generated-snippets")
 tasks.withType<Test> {
     useJUnitPlatform()
     outputs.dir(snippetsDir)
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -130,3 +141,10 @@ tasks.register<Copy>("copyDocument") {
 tasks.named("build") {
     dependsOn("copyDocument")
 }
+
+
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory = layout.buildDirectory.dir("jacoco")
+}
+
