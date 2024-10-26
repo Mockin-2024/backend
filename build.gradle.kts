@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.codegen.intrinsics.ArrayOf
+
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
@@ -18,6 +20,11 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory = layout.buildDirectory.dir("jacoco")
 }
 
 dependencies {
@@ -77,6 +84,13 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
+    }
+}
+
 val snippetsDir = file("./build/generated-snippets")
 
 tasks.withType<Test> {
@@ -88,14 +102,14 @@ tasks.withType<Test> {
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
-        xml.required = false
+        xml.required = true
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
-    finalizedBy(tasks.jacocoTestCoverageVerification)
 }
 
 tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.jacocoTestReport)
     violationRules {
         rule {
             enabled = false
@@ -107,13 +121,6 @@ tasks.jacocoTestCoverageVerification {
                 minimum = "0.8".toBigDecimal()
             }
         }
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
     }
 }
 
@@ -141,9 +148,6 @@ tasks.register<Copy>("copySnippets"){
 tasks.asciidoctor {
     inputs.dir(snippetsDir)
     dependsOn("copySnippets")
-}
-
-tasks.asciidoctor {
     finalizedBy("copyDocument")
 }
 
@@ -152,15 +156,5 @@ tasks.register<Copy>("copyDocument") {
 
     from(file("./build/docs/asciidoc/"))
     into(file("./src/main/resources/static/docs"))
-}
-
-tasks.named("build") {
-    dependsOn("copyDocument")
-}
-
-
-jacoco {
-    toolVersion = "0.8.12"
-    reportsDirectory = layout.buildDirectory.dir("jacoco")
 }
 
