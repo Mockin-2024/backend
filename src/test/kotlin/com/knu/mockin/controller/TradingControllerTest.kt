@@ -51,7 +51,7 @@ class TradingControllerTest(
         restDocumentation.afterTest()
     }
 
-    val baseUri = "/trading"
+    val baseUri = "trading"
 
     "POST /trading/order" {
         val uri = "${baseUri}/order"
