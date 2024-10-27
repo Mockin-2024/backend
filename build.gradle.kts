@@ -124,31 +124,11 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
-tasks.register<Copy>("copySnippets"){
-    dependsOn(tasks.jacocoTestCoverageVerification)
-
-    from(file("../trading")) {
-        into("trading")
-    }
-    from(file("../account")) {
-        into("account")
-    }
-    from(file("../quotations/basic")) {
-        into("quotations/basic")
-    }
-    from(file("../quotations/analysis")) {
-        into("quotations/analysis")
-    }
-    from(file("../auth")) {
-        into("auth")
-    }
-    into(file("./build/generated-snippets"))
-}
-
 tasks.asciidoctor {
-    inputs.dir(snippetsDir)
-    dependsOn("copySnippets")
+    dependsOn(tasks.jacocoTestCoverageVerification)
     finalizedBy("copyDocument")
+
+    inputs.dir(snippetsDir)
 }
 
 tasks.register<Copy>("copyDocument") {
