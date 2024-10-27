@@ -64,9 +64,9 @@ jobs:
       # gradle grant execution permission and build project
     - name: Setup Gradle
       run: |
-        chmod +x ./gradlew
+        chmod +x ./gradlew --info test
         ./gradlew clean build
-        
+
     - name: Test Coverage Report
       id: jacoco
       uses: madrapps/jacoco-report@v1.7.1
