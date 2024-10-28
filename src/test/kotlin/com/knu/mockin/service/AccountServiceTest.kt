@@ -7,6 +7,7 @@ import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
 import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
+import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
 import com.knu.mockin.model.dto.request.trading.OrderReverseRequestBodyDto
 import com.knu.mockin.model.dto.request.trading.asDomain
@@ -66,6 +67,25 @@ class AccountServiceTest(
 
                 Then("응답 DTO를 정상적으로 받아야 한다."){
                     val result = accountService.patchUser(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
+
+    Context("postMockKeyPair 함수의 경우"){
+        val uri = "$baseUri/mock-key"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto KeyPairRequestDto::class.java
+            val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+            val mockKey = MockKey(user.email, bodyDto.appKey, bodyDto.appSecret)
+
+            When("모의투자 키 페어를 db에 저장한 후"){
+                every { mockKeyRepository.save(mockKey) } returns Mono.just(mockKey)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = accountService.postMockKeyPair(bodyDto, user.email)
                     result shouldBe expectedDto
                 }
             }
