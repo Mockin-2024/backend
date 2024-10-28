@@ -2,8 +2,8 @@ package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.request.login.*
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
-import com.knu.mockin.service.EmailService
-import com.knu.mockin.service.UserService
+import com.knu.mockin.service.login.EmailService
+import com.knu.mockin.service.login.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
