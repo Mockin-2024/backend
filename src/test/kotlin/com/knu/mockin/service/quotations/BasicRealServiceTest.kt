@@ -132,5 +132,25 @@ class BasicRealServiceTest(
         }
     }
 
+    Context("getInquireAskingPrice 함수의 경우") {
+        val uri = "/quotations/basic/inquire-asking-price"
+
+        Given("적절한 dto가 주어질 때") {
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireAskingPriceRequestParameterDto::class.java
+            val requestDto = bodyDto.asDomain()
+            val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_ASKING_PRICE))
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireAskingPriceResponseDto::class.java
+
+            When("KIS API로 요청을 보내면") {
+                every { kisBasicRealClient.getInquireAskingPrice(headerDto, requestDto) } returns Mono.just(expectedDto)
+
+                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                    val result = basicRealService.getInquireAskingPrice(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
+
 
 })
