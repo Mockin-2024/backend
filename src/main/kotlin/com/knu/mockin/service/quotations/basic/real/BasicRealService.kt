@@ -80,4 +80,14 @@ class BasicRealService (
         return kisBasicRealClient.getSearchInfo(header, requestParameter).awaitSingle()
     }
 
+
+    suspend fun getInquireAskingPrice(
+        inquireAskingPriceRequestParameterDto: InquireAskingPriceRequestParameterDto,
+        email: String
+    ): KISInquireAskingPriceResponseDto {
+        val header = createHeader(email, TradeId.INQUIRE_ASKING_PRICE)
+        val requestParameter = inquireAskingPriceRequestParameterDto.asDomain()
+        return kisBasicRealClient.getInquireAskingPrice(header, requestParameter).awaitSingle()
+    }
+
 }
