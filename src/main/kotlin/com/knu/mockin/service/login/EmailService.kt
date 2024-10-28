@@ -39,7 +39,7 @@ class EmailService(
             helper.setText(content, true) // content, html: true
             javaMailSender.send(message)
         } catch (e: MessagingException) {
-            e.printStackTrace() // 에러 출력
+            throw CustomException(ErrorCode.INTERNAL_SERVER_ERROR)
         }
         // redis에 3분 동안 이메일과 인증 코드 저장
         RedisUtil.saveEmailCode(toMail, authNumber.toString(), 180, TimeUnit.SECONDS)
@@ -48,13 +48,12 @@ class EmailService(
     /* 이메일 작성 */
     suspend fun sendEmail(email: String): SimpleMessageResponseDto {
         makeRandomNum()
-        val customerMail = email
         val title = "회원 가입을 위한 이메일입니다!"
         val content =
             "이메일을 인증하기 위한 절차입니다.<br><br>" +
                     "인증 번호는 ${authNumber}입니다.<br>" +
                     "회원 가입 폼에 해당 번호를 입력해주세요."
-        mailSend(serviceName, customerMail, title, content)
+        mailSend(serviceName, email, title, content)
 
         return SimpleMessageResponseDto("이메일을 보냈습니다~")
     }
