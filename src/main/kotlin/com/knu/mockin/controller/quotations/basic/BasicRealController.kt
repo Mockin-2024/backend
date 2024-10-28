@@ -67,4 +67,15 @@ class BasicRealController (
         return ResponseEntity.ok(result)
     }
 
+
+    @GetMapping("/inquire-asking-price")
+    suspend fun getInquireAskingPrice(
+        @ModelAttribute inquireAskingPriceRequestParameterDto: InquireAskingPriceRequestParameterDto,
+        authentication: Authentication
+    ): ResponseEntity<KISInquireAskingPriceResponseDto> {
+        val result = basicRealService.getInquireAskingPrice(inquireAskingPriceRequestParameterDto, authentication.name)
+
+        return ResponseEntity.ok(result)
+    }
+
 }

@@ -33,6 +33,7 @@ enum class TradeId(val tradeId:String) {
     INQUIRE_TIME_ITEM_CHART_PRICE("HHDFS76950200"),     // 해외주식 분봉조회
     INQUIRE_TIME_INDEX_CHART_PRICE("FHKST03030200"),     // 해외지수분봉조회
     SEARCH_INFO("CTPF1702R"),              // 해외주식 상품기본정보
+    INQUIRE_ASKING_PRICE("HHDFS76200100"),  // 해외주식 현재가 10호가
     NEWS_TITLE("HHPSTH60100C1");          // 해외뉴스종합
 
   
