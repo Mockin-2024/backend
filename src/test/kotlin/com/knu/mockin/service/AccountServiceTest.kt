@@ -4,26 +4,16 @@ import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
-import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
-import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
-import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
-import com.knu.mockin.model.dto.request.trading.OrderReverseRequestBodyDto
-import com.knu.mockin.model.dto.request.trading.asDomain
-import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
-import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.MockKey
+import com.knu.mockin.model.entity.RealKey
 import com.knu.mockin.model.entity.User
-import com.knu.mockin.model.entity.UserWithKeyPair
-import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
-import com.knu.mockin.service.util.ServiceUtil
 import com.knu.mockin.util.RedisUtil
-import com.knu.mockin.util.tag
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -86,6 +76,25 @@ class AccountServiceTest(
 
                 Then("응답 DTO를 정상적으로 받아야 한다."){
                     val result = accountService.postMockKeyPair(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
+
+    Context("postRealKeyPair 함수의 경우"){
+        val uri = "$baseUri/real-key"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto KeyPairRequestDto::class.java
+            val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+            val realKey = RealKey(user.email, bodyDto.appKey, bodyDto.appSecret)
+
+            When("모의투자 키 페어를 db에 저장한 후"){
+                every { realKeyRepository.save(realKey) } returns Mono.just(realKey)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = accountService.postRealKeyPair(bodyDto, user.email)
                     result shouldBe expectedDto
                 }
             }
