@@ -4,8 +4,6 @@ import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.toDto
-import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
-import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
@@ -41,7 +39,7 @@ class AccountControllerTest(
 
     beforeTest {
         webTestClient = buildWebTestClient(context, restDocumentation)
-        restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
+        restDocumentation.beforeTest(AccountControllerTest::class.java, it.name.testName)
 
         val user = readJsonFile("setting", "user.json") toDto User::class.java
         coEvery { userRepository.findByEmail(user.email) } returns Mono.just(user)
@@ -101,69 +99,6 @@ class AccountControllerTest(
             responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
-
-    "POST /account/mock-approval-key" {
-        val uri = "${baseUri}/mock-approval-key"
-        val requestDto = readJsonFile(uri, "requestDto.json")
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto ApprovalKeyResponseDto::class.java
-        coEvery { accountService.getMockApprovalKey(any()) } returns expectedDto
-
-        val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
-
-        response.makeDocument(
-            uri,
-            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
-
-    "POST /account/real-approval-key" {
-        val uri = "${baseUri}/real-approval-key"
-        val requestDto = readJsonFile(uri, "requestDto.json")
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto ApprovalKeyResponseDto::class.java
-        coEvery { accountService.getRealApprovalKey(any()) } returns expectedDto
-
-        val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
-
-        response.makeDocument(
-            uri,
-            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
-
-    "POST /account/mock-token" {
-        val uri = "${baseUri}/mock-token"
-        val requestDto = readJsonFile(uri, "requestDto.json")
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto AccessTokenAPIResponseDto::class.java
-        coEvery { accountService.getMockAccessToken(any()) } returns expectedDto
-
-        val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
-
-        response.makeDocument(
-            uri,
-            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
-
-    "POST /account/real-token" {
-        val uri = "${baseUri}/real-token"
-        val requestDto = readJsonFile(uri, "requestDto.json")
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto AccessTokenAPIResponseDto::class.java
-        coEvery { accountService.getRealAccessToken(any()) } returns expectedDto
-
-        val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
-
-        response.makeDocument(
-            uri,
-            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
-
-
-
 }){
     override fun extensions() = listOf(SpringExtension)
 }
