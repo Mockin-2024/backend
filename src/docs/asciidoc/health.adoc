@@ -1,0 +1,23 @@
+:snippets: ./build/generated-snippets
+
+= Account
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<health, 헬스 체크>>
+
+[#health]
+== 헬스 체크 ( 파라미터 필요없음)
+
+=== Request
+include::{snippets}/health/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/health/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/health/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/health/response-fields.adoc[]
