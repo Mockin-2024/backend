@@ -1,0 +1,73 @@
+:snippets: ./build/generated-snippets
+
+= Account
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<mock-approval-key, 모의 승인키 요청>>
+* <<real-approval-key, 실전 승인키 요청>>
+* <<mock-token, 모의 토큰 요청>>
+* <<real-token, 실전 토큰 요청>>
+
+[#mock-approval-key]
+== 모의 승인키 요청
+
+=== Request
+include::{snippets}/oauth2/mock-approval-key/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/oauth2/mock-approval-key/request-fields.adoc[]
+
+=== Response
+include::{snippets}/oauth2/mock-approval-key/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/oauth2/mock-approval-key/response-fields.adoc[]
+
+[#real-approval-key]
+== 실전 승인키 요청
+
+=== Request
+include::{snippets}/oauth2/real-approval-key/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/oauth2/real-approval-key/request-fields.adoc[]
+
+=== Response
+include::{snippets}/oauth2/real-approval-key/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/oauth2/real-approval-key/response-fields.adoc[]
+
+[#mock-token]
+== 모의 토큰 요청
+
+=== Request
+include::{snippets}/oauth2/mock-token/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/oauth2/mock-token/request-fields.adoc[]
+
+=== Response
+include::{snippets}/oauth2/mock-token/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/oauth2/mock-token/response-fields.adoc[]
+
+[#real-token]
+== 실전 토큰 요청
+
+=== Request
+include::{snippets}/oauth2/real-token/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/oauth2/real-token/request-fields.adoc[]
+
+=== Response
+include::{snippets}/oauth2/real-token/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/oauth2/real-token/response-fields.adoc[]
+
+
