@@ -53,7 +53,7 @@ class AccountControllerTest(
         restDocumentation.afterTest()
     }
 
-    val baseUri = "/account"
+    val baseUri = "account"
 
 
     "PATCH /account/user" {

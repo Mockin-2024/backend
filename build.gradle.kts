@@ -1,9 +1,12 @@
+import org.jetbrains.kotlin.codegen.intrinsics.ArrayOf
+
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.asciidoctor.jvm.convert") version "4.0.3"
+    id("jacoco")
 }
 
 group = "com.knu"
@@ -17,6 +20,11 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory = layout.buildDirectory.dir("jacoco")
 }
 
 dependencies {
@@ -76,13 +84,6 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 }
 
-val snippetsDir = file("./build/generated-snippets")
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    outputs.dir(snippetsDir)
-}
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -90,34 +91,44 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
-tasks.register<Copy>("copySnippets"){
+val snippetsDir = file("./build/generated-snippets")
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    outputs.dir(snippetsDir)
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
     dependsOn(tasks.test)
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+    }
+}
 
-    from(file("../trading")) {
-        into("trading")
+tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.jacocoTestReport)
+    violationRules {
+        rule {
+            enabled = false
+            element = "CLASS"
+
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.8".toBigDecimal()
+            }
+        }
     }
-    from(file("../account")) {
-        into("account")
-    }
-    from(file("../quotations/basic")) {
-        into("quotations/basic")
-    }
-    from(file("../quotations/analysis")) {
-        into("quotations/analysis")
-    }
-    from(file("../auth")) {
-        into("auth")
-    }
-    into(file("./build/generated-snippets"))
 }
 
 tasks.asciidoctor {
-    inputs.dir(snippetsDir)
-    dependsOn("copySnippets")
-}
-
-tasks.asciidoctor {
+    dependsOn(tasks.jacocoTestCoverageVerification)
     finalizedBy("copyDocument")
+
+    inputs.dir(snippetsDir)
 }
 
 tasks.register<Copy>("copyDocument") {
@@ -127,6 +138,3 @@ tasks.register<Copy>("copyDocument") {
     into(file("./src/main/resources/static/docs"))
 }
 
-tasks.named("build") {
-    dependsOn("copyDocument")
-}

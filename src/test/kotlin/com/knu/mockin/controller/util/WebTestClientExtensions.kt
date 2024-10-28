@@ -36,7 +36,7 @@ fun <T: Any> WebTestClient.getWithParams(uri: String, requestParams: T, expected
     val targetUri = buildUriString(uri, requestParams)
 
     return this.get()
-        .uri(targetUri)
+        .uri("/$targetUri")
         .accept(MediaType.APPLICATION_JSON)
         .header("Authorization", authHeader)
         .exchange()
@@ -48,7 +48,7 @@ fun <T: Any> WebTestClient.getWithParams(uri: String, requestParams: T, expected
 
 fun <T: Any> WebTestClient.postWithBody(uri: String, requestBody: T, expectedDto: T): BodyContentSpec{
     return this.post()
-        .uri(uri)
+        .uri("/$uri")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
         .header("Authorization", authHeader)
@@ -61,7 +61,7 @@ fun <T: Any> WebTestClient.postWithBody(uri: String, requestBody: T, expectedDto
 }
 fun <T: Any> WebTestClient.patchWithBody(uri: String, requestBody: T, expectedDto: T): BodyContentSpec{
     return this.patch()
-        .uri(uri)
+        .uri("/$uri")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
         .header("Authorization", authHeader)

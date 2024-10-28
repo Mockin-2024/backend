@@ -52,7 +52,7 @@ class BasicControllerTest(
         restDocumentation.afterTest()
     }
 
-    val baseUri = "/quotations/basic"
+    val baseUri = "quotations/basic"
 
     "GET /quotations/basic/price" {
         val uri = "${baseUri}/price"

@@ -54,7 +54,7 @@
             restDocumentation.afterTest()
         }
 
-        val baseUri = "/auth"
+        val baseUri = "auth"
 
         "POST /auth/signup" {
             val uri = "${baseUri}/signup"
