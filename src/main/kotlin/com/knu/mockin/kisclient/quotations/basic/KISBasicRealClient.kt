@@ -81,4 +81,17 @@ class KISBasicRealClient (
         )
     }
 
+    fun getInquireAskingPrice(
+        headerDto: KISOverSeaRequestHeaderDto,
+        parameterDto: KISInquireAskingPriceRequestParameterDto
+    ): Mono<KISInquireAskingPriceResponseDto> {
+        val targetUri = HttpUtils.buildUri("${priceQuotationUrl}/inquire-asking-price", parameterDto)
+
+        return webClientReal.getWithParams(
+            uri = targetUri,
+            headerDto = headerDto,
+            responseType = KISInquireAskingPriceResponseDto::class.java
+        )
+    }
+
 }

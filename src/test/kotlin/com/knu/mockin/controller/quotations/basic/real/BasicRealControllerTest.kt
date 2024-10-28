@@ -133,4 +133,20 @@ class BasicRealControllerTest (
             responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
+
+    "GET /quotations/basic/inquire-asking-price" {
+        val uri = "${baseUri}/inquire-asking-price"
+        val requestParams = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto InquireAskingPriceRequestParameterDto::class.java
+        val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto KISInquireAskingPriceResponseDto::class.java
+
+        coEvery { basicRealService.getInquireAskingPrice(any(), any()) } returns expectedDto
+        val response = webTestClient.getWithParams(uri, requestParams, expectedDto)
+
+        response.makeDocument(
+            uri,
+            parameters(RestDocsUtils.readJsonFile(uri, "requestDtoDescription.json").toPairs()),
+            responseBody(RestDocsUtils.readJsonFile(uri, "responseDtoDescription.json").toBody())
+        )
+    }
+
 })

@@ -14,6 +14,7 @@
 * <<inquire-time-itemchartprice, 주식분봉조회>>
 * <<inquire-time-indexchartprice, 지수분봉조회>>
 * <<search-info, 상품기본정보>>
+* <<inquire-asking-price, 현재가 10호가>>
 
 
 [#price]
@@ -150,3 +151,18 @@ include::{snippets}/quotations/{docname}/search-info/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/quotations/{docname}/search-info/response-fields.adoc[]
+
+[#inquire-asking-price]
+== 현재가 10호가
+
+=== Request
+include::{snippets}/quotations/{docname}/inquire-asking-price/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/quotations/{docname}/inquire-asking-price/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/quotations/{docname}/inquire-asking-price/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/quotations/{docname}/inquire-asking-price/response-fields.adoc[]
