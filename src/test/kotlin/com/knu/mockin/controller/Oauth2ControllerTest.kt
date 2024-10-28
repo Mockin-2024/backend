@@ -11,7 +11,6 @@ import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.JwtUtil
 import com.knu.mockin.security.SecurityTestConfig
 import com.knu.mockin.service.Oauth2Service
-import com.knu.mockin.service.TradingService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery

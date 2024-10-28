@@ -2,8 +2,6 @@ package com.knu.mockin.service
 
 import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.toDto
-import com.knu.mockin.kisclient.KISOauth2Client
-import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
@@ -23,15 +21,11 @@ import reactor.core.publisher.Mono
 
 
 class AccountServiceTest(
-    private val kisOauth2Client: KISOauth2Client = mockk<KISOauth2Client>(),
-    private val kisOauth2RealClient: KISOauth2RealClient = mockk<KISOauth2RealClient>(),
     private val mockKeyRepository: MockKeyRepository = mockk<MockKeyRepository>(),
     private val userRepository: UserRepository = mockk<UserRepository>(),
     private val realKeyRepository: RealKeyRepository = mockk<RealKeyRepository>()
 ): BehaviorSpec({
     val accountService = AccountService(
-        kisOauth2Client = kisOauth2Client,
-        kisOauth2RealClient = kisOauth2RealClient,
         mockKeyRepository = mockKeyRepository,
         realKeyRepository = realKeyRepository,
         userRepository = userRepository

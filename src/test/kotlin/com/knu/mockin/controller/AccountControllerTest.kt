@@ -4,8 +4,6 @@ import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.toDto
-import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
-import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
