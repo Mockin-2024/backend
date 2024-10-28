@@ -42,7 +42,7 @@
 
         beforeTest {
             webTestClient = buildWebTestClient(context, restDocumentation)
-            restDocumentation.beforeTest(TradingControllerTest::class.java, it.name.testName)
+            restDocumentation.beforeTest(LoginControllerTest::class.java, it.name.testName)
 
             val user = readJsonFile("setting", "user.json") toDto User::class.java
             coEvery { userRepository.findByEmail(user.email) } returns Mono.just(user)
