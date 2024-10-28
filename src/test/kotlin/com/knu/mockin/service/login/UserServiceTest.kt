@@ -1,4 +1,4 @@
-package com.knu.mockin.service
+package com.knu.mockin.service.login
 
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.toDto

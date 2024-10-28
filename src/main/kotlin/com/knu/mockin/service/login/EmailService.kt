@@ -1,4 +1,4 @@
-package com.knu.mockin.service
+package com.knu.mockin.service.login
 
 import com.knu.mockin.exeption.CustomException
 import com.knu.mockin.exeption.ErrorCode
