@@ -1,17 +1,26 @@
 package com.knu.mockin.service
 
+import com.knu.mockin.dsl.RestDocsUtils
+import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
 import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
+import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
+import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
+import com.knu.mockin.model.dto.request.trading.OrderReverseRequestBodyDto
+import com.knu.mockin.model.dto.request.trading.asDomain
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
+import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.MockKey
+import com.knu.mockin.model.entity.User
+import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
-import com.knu.mockin.service.AccountService
+import com.knu.mockin.service.util.ServiceUtil
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
 import io.kotest.core.spec.style.BehaviorSpec
@@ -22,12 +31,13 @@ import org.springframework.data.redis.core.RedisTemplate
 import reactor.core.publisher.Mono
 
 
-class AccountServiceTest: BehaviorSpec({
-    val kisOauth2Client: KISOauth2Client = mockk<KISOauth2Client>()
-    val kisOauth2RealClient: KISOauth2RealClient = mockk<KISOauth2RealClient>()
-    val mockKeyRepository: MockKeyRepository = mockk()
-    val userRepository: UserRepository = mockk()
-    val realKeyRepository: RealKeyRepository = mockk()
+class AccountServiceTest(
+    private val kisOauth2Client: KISOauth2Client = mockk<KISOauth2Client>(),
+    private val kisOauth2RealClient: KISOauth2RealClient = mockk<KISOauth2RealClient>(),
+    private val mockKeyRepository: MockKeyRepository = mockk<MockKeyRepository>(),
+    private val userRepository: UserRepository = mockk<UserRepository>(),
+    private val realKeyRepository: RealKeyRepository = mockk<RealKeyRepository>()
+): BehaviorSpec({
     val accountService = AccountService(
         kisOauth2Client = kisOauth2Client,
         kisOauth2RealClient = kisOauth2RealClient,
@@ -37,49 +47,27 @@ class AccountServiceTest: BehaviorSpec({
         )
     val redisTemplate = mockk<RedisTemplate<String, String>>()
     RedisUtil.init(redisTemplate)
-    val email = "test@naver.com"
+    val user = RestDocsUtils.readJsonFile("setting", "user.json") toDto User::class.java
 
-    val mockKey = MockKey("test", "test appKey", "test appSecret")
     beforeTest {
-        every { mockKeyRepository.findById(email) } returns Mono.just(mockKey)
+        every { userRepository.findByEmail(user.email) } returns Mono.just(user)
     }
 
-    Given("get approval key test"){
-        val requestDto = KISApprovalRequestDto(
-            grantType = "client_credentials",
-            appKey = mockKey.appKey,
-            secretKey = mockKey.appSecret)
-        val expectedDto = ApprovalKeyResponseDto("test")
+    val baseUri = "/account"
+    Context("patchUser 함수의 경우"){
+        val uri = "$baseUri/userPatch"
 
-        every { kisOauth2Client.postApproval(requestDto) } returns Mono.just(expectedDto)
-        When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getMockApprovalKey(email)
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto UserAccountNumberRequestDto::class.java
+            val expectedDto = RestDocsUtils.readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
 
-            Then("키가 반환된다"){
-                result shouldBe expectedDto
-            }
-        }
-    }
+            When("사용자 계좌번호를 정상적으로 등록한 후"){
+                every { userRepository.updateByEmail(user.email, bodyDto.accountNumber) } returns Mono.just(user)
 
-    Given("get access token test"){
-        val requestDto = KISTokenRequestDto(
-            grantType = "client_credentials",
-            appKey = mockKey.appKey,
-            appSecret = mockKey.appSecret)
-        val expectedDto = AccessTokenAPIResponseDto(
-            "test",
-            "Bearer",
-            7776000,
-            "2024-10-31")
-
-        every { kisOauth2Client.postTokenP(requestDto) } returns Mono.just(expectedDto)
-        every { RedisUtil.saveToken(mockKey.email tag MOCK, expectedDto.accessToken) } returns Unit
-
-        When("서비스 계층에 요청을 보내면:"){
-            val result = accountService.getMockAccessToken(email)
-
-            Then("토큰이 반환된다"){
-                result shouldBe expectedDto
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = accountService.patchUser(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
             }
         }
     }
