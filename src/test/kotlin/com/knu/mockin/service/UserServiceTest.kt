@@ -98,5 +98,20 @@ class UserServiceTest(
                 }
             }
         }
+
+        Given("적절한 dto가 주어졌지만"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto LoginRequestDto::class.java
+
+            When("사용자가 존재하지 않으면"){
+                every { userRepository.findByEmail(bodyDto.email) } returns Mono.justOrEmpty(null)
+
+                Then("INVALID_LOGIN 에러를 받아야 한다."){
+                    val result = shouldThrowExactly<CustomException> {
+                        userService.loginUser(bodyDto)
+                    }
+                    result shouldBe CustomException(ErrorCode.INVALID_LOGIN)
+                }
+            }
+        }
     }
 })
