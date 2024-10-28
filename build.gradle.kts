@@ -43,6 +43,9 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:5.9.1")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
 
+    // reactor-test
+    testImplementation("io.projectreactor:reactor-test:3.6.11")
+
     // MockK
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
@@ -106,6 +109,14 @@ tasks.jacocoTestReport {
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
+    classDirectories.setFrom(files(classDirectories.files.map {  classDir ->
+        fileTree(classDir) {
+            exclude("com/knu/mockin/model/**")
+            exclude("com/knu/mockin/config/**")
+            exclude("com/knu/mockin/kisclient/**")
+            exclude("com/knu/mockin/logging/**")
+        }
+    }))
 }
 
 tasks.jacocoTestCoverageVerification {
