@@ -2,18 +2,12 @@ package com.knu.mockin.service
 
 import com.knu.mockin.exeption.ErrorCode
 import com.knu.mockin.kisclient.KISTradingClient
-import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
-import com.knu.mockin.model.dto.kisrequest.trading.*
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
-import com.knu.mockin.model.entity.UserWithKeyPair
-import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.util.ServiceUtil.createHeader
 import com.knu.mockin.util.ExtensionUtil.orThrow
-import com.knu.mockin.util.RedisUtil
-import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
@@ -113,6 +107,7 @@ class TradingService(
         val userWithMockKey = getUser(email)
 
         val headerDto = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL))
+        headerDto.transactionContinuation = parameterDto.transactionContinuation
         val kisccnlRequestParameterDto = parameterDto.asDomain(userWithMockKey.accountNumber)
 
         return kisTradingClient

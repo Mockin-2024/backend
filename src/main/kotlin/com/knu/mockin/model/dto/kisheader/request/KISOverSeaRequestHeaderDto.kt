@@ -9,7 +9,7 @@ data class KISOverSeaRequestHeaderDto(
     @JsonProperty("appsecret") val appSecret: String,                       // 앱시크릿키
     @JsonProperty("personalseckey") val personalSecKey: String? = null,     // 고객식별키
     @JsonProperty("tr_id") val transactionId: String,                       // 거래ID
-    @JsonProperty("tr_cont") val transactionContinuation: String? = null,   // 연속 거래 여부
+    @JsonProperty("tr_cont") var transactionContinuation: String? = null,   // 연속 거래 여부
     @JsonProperty("custtype") val customerType: String? = null,             // 고객타입
     @JsonProperty("seq_no") val sequenceNumber: String? = null,             // 일련번호
     @JsonProperty("mac_address") val macAddress: String? = null,            // 맥주소

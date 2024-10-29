@@ -2,5 +2,6 @@
   "orderStartDate": "주문시작일자",
   "orderEndDate": "주문종료일자",
   "continuousSearchKey200": "연속조회검색조건200",
-  "continuousSearchCondition200": "연속조회키200"
+  "continuousSearchCondition200": "연속조회키200",
+  "transactionContinuation": "연속 조회 여부"
 }
