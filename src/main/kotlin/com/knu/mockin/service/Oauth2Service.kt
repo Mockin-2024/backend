@@ -1,6 +1,6 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto

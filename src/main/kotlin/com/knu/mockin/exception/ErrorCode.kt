@@ -1,4 +1,4 @@
-package com.knu.mockin.exeption
+package com.knu.mockin.exception
 
 import org.springframework.http.HttpStatus
 

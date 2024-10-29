@@ -1,6 +1,6 @@
 package com.knu.mockin.service.quotations.basic.real
 
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.kisclient.quotations.basic.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*

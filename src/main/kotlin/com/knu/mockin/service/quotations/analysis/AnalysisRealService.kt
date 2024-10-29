@@ -1,13 +1,11 @@
 package com.knu.mockin.service.quotations.analysis
 
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.kisclient.quotations.analysis.KISAnalysisRealClient
-import com.knu.mockin.kisclient.quotations.basic.KISBasicRealClient
 import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResponseDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.NewsTitleRequestParameterDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.asDomain
-import com.knu.mockin.model.enum.Constant
 import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository

@@ -1,12 +1,10 @@
 package com.knu.mockin.service.login
 
-import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.toDto
-import com.knu.mockin.exeption.CustomException
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.CustomException
+import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.request.login.EmailCheckRequestDto
-import com.knu.mockin.model.dto.request.trading.OrderReverseRequestBodyDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.util.RedisUtil

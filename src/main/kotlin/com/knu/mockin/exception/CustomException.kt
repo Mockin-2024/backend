@@ -1,4 +1,4 @@
-package com.knu.mockin.exeption
+package com.knu.mockin.exception
 
 class CustomException(
     val errorCode: ErrorCode,

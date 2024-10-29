@@ -1,7 +1,7 @@
 package com.knu.mockin.security.handler
 
-import com.knu.mockin.exeption.ErrorCode
-import com.knu.mockin.exeption.ExceptionDto
+import com.knu.mockin.exception.ErrorCode
+import com.knu.mockin.exception.ExceptionDto
 import com.knu.mockin.logging.utils.LogUtil
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
