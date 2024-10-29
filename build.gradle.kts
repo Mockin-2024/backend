@@ -114,6 +114,7 @@ tasks.jacocoTestReport {
             exclude("com/knu/mockin/model/**")
             exclude("com/knu/mockin/config/**")
             exclude("com/knu/mockin/kisclient/**")
+            exclude("com/knu/mockin/util/**")
         }
     }))
 }
