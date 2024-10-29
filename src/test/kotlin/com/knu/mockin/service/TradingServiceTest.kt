@@ -159,6 +159,7 @@ class TradingServiceTest(
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL))
+            headerDto.transactionContinuation = bodyDto.transactionContinuation
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCCNLResponseDto::class.java
 
             When("KIS API로 요청을 보내면"){
