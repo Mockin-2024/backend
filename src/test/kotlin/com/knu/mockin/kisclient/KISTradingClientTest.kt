@@ -1,5 +1,6 @@
 package com.knu.mockin.kisclient
 
+import com.knu.mockin.config.ConstantConfig
 import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.toDto
 import com.knu.mockin.exeption.CustomException
@@ -16,11 +17,12 @@ import reactor.test.StepVerifier
 @SpringBootTest
 class KISTradingClientTest(
     val kisTradingClient: KISTradingClient,
-    val userRepository: UserRepository
+    val userRepository: UserRepository,
+    private val constantConfig: ConstantConfig
 ): FunSpec({
     xcontext("TradingClient 테스트"){
         val baseUri = "trading"
-        val user = userRepository.findByEmailWithMockKey("rkdgustn123@knu.ac.kr").block()
+        val user = userRepository.findByEmailWithMockKey(constantConfig.user.email).block()
 
         test("postOrder 요청 보내기"){
             val uri = "${baseUri}/order"
