@@ -17,7 +17,6 @@ import jakarta.mail.MessagingException
 import jakarta.mail.internet.MimeMessage
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.test.util.ReflectionTestUtils
 import java.util.concurrent.TimeUnit
 
 class EmailServiceTest(
@@ -31,7 +30,7 @@ class EmailServiceTest(
     val baseUri = "auth"
 
     beforeTest{
-        ReflectionTestUtils.setField(emailService, "serviceName", "mockin")
+        emailService.serviceName = "mockin"
     }
 
     Context("sendEmail 함수의 경우"){
