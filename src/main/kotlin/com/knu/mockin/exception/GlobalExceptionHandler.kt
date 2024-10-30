@@ -1,4 +1,4 @@
-package com.knu.mockin.exeption
+package com.knu.mockin.exception
 
 import com.knu.mockin.logging.utils.LogUtil
 import org.slf4j.LoggerFactory

@@ -1,7 +1,7 @@
 package com.knu.mockin.aspect
 
-import com.knu.mockin.exeption.CustomException
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.CustomException
+import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.kisresponse.trading.KISOrderReverseResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import io.kotest.core.spec.style.BehaviorSpec

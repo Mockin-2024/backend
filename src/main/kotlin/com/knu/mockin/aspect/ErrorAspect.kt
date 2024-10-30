@@ -1,11 +1,10 @@
 package com.knu.mockin.aspect
 
-import com.knu.mockin.exeption.CustomException
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.CustomException
+import com.knu.mockin.exception.ErrorCode
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono

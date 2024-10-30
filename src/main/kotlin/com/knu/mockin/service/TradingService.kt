@@ -1,6 +1,6 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*

@@ -1,7 +1,7 @@
 package com.knu.mockin.service.login
 
-import com.knu.mockin.exeption.CustomException
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.CustomException
+import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.request.login.Jwt
 import com.knu.mockin.model.dto.request.login.LoginRequestDto
 import com.knu.mockin.model.dto.request.login.SignupRequestDto

@@ -1,7 +1,7 @@
 package com.knu.mockin.security
 
-import com.knu.mockin.exeption.CustomException
-import com.knu.mockin.exeption.ErrorCode
+import com.knu.mockin.exception.CustomException
+import com.knu.mockin.exception.ErrorCode
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.reactor.mono
 import org.springframework.http.HttpHeaders

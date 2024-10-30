@@ -1,4 +1,4 @@
-package com.knu.mockin.service.quotations
+package com.knu.mockin.service.quotations.basic
 
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.toDto
