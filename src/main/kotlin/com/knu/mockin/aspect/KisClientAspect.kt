@@ -51,11 +51,10 @@ class KisClientAspect {
                                 )
                             }
                         }
-                        else -> ex
+                        else -> CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message)
                     }
                 }.returnWhenSuccess()
         } catch (ex: Exception) {
-            log.error("{}", toJson(ex))
             Mono.error<CustomException>(CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message))
         }
     }
