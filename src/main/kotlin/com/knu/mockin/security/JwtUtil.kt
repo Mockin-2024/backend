@@ -3,6 +3,7 @@ package com.knu.mockin.security
 import com.knu.mockin.model.enum.Constant.JWT
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.security.authentication.AbstractAuthenticationToken
@@ -26,11 +27,11 @@ class JwtUtil {
     private val key = Keys.hmacShaKeyFor("HzA9XwnQLwwPt2Qjn06LirX3zXCYsKXqOuNXm63Ex9o=".toByteArray())
     private val parser = Jwts.parserBuilder().setSigningKey(key).build()
 
-    fun generate(username: String): BearerToken {
+    fun generate(username: String, expiration: Long = 60): BearerToken {
         val builder = Jwts.builder()
             .setSubject(username)
             .setIssuedAt(Date.from(Instant.now()))
-            .setExpiration(Date.from(Instant.now().plus(60, ChronoUnit.MINUTES)))
+            .setExpiration(Date.from(Instant.now().plus(expiration, ChronoUnit.MINUTES)))
             .signWith(key)
 
         val token = builder.compact()
@@ -45,12 +46,14 @@ class JwtUtil {
     }
 
     fun isValid(token: BearerToken, user: UserDetails?): Boolean {
-        val claims = parser.parseClaimsJws(token.value).body
-        val unexpired = claims.expiration.after(Date.from(Instant.now()))
+        return try {
+            val claims = parser.parseClaimsJws(token.value).body
+            val storedToken = RedisUtil.getToken(claims.subject tag JWT)
 
-        val storedToken = RedisUtil.getToken(claims.subject tag JWT)
-
-        return unexpired && (claims.subject == user?.username) && (token.value == storedToken)
+            (claims.subject == user?.username) && (token.value == storedToken)
+        } catch (e: Exception) {
+            false
+        }
     }
 
 
