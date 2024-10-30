@@ -34,7 +34,7 @@ class ErrorAspect {
                     }
                 }.returnWhenSuccess()
         } catch (ex: Exception) {
-            Mono.error(CustomException(ErrorCode.INTERNAL_SERVER_ERROR))
+            Mono.error(CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message))
         }
     }
     private fun <T> Mono<T>.returnWhenSuccess():Mono<T> {
