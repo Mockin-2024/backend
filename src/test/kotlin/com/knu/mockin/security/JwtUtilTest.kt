@@ -68,11 +68,13 @@ class JwtUtilTest :BehaviorSpec({
                 }
             }
 
-            xWhen("토큰이 만료된 경우"){
-                every { RedisUtil.getToken(username tag JWT) } returns token.value
+            val expiredToken = jwtUtil.generate(username, -10)
+
+            When("토큰이 만료된 경우"){
+                every { RedisUtil.getToken(username tag JWT) } returns expiredToken.value
 
                 Then("false를 반환한다.") {
-                    val result = jwtUtil.isValid(token, userDetails)
+                    val result = jwtUtil.isValid(expiredToken, userDetails)
                     result shouldBe false
                 }
             }
