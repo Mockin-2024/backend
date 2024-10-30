@@ -11,7 +11,7 @@ class GlobalExceptionHandler {
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
     @ExceptionHandler(CustomException::class)
     fun handleCustomException(exception: CustomException): ResponseEntity<*> {
-        log.error("{}", LogUtil.toJson(exception))
+        log.error("{}", LogUtil.toJson(ExceptionDto(exception.errorCode.status, exception.errorCode, exception.message)))
         return ResponseEntity.status(exception.errorCode.status)
             .body(ExceptionDto(exception.result, exception.errorCode, exception.message))
     }

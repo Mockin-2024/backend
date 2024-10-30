@@ -8,14 +8,23 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every
 import io.mockk.mockk
 import org.aspectj.lang.ProceedingJoinPoint
+import org.aspectj.lang.reflect.MethodSignature
 import org.reactivestreams.Publisher
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
-class ErrorAspectTest: BehaviorSpec({
-    val errorAspect = ErrorAspect()
+class KisClientAspectTest: BehaviorSpec({
+    val kisClientAspect = KisClientAspect()
     val joinPoint = mockk<ProceedingJoinPoint>()
+    val methodSignature = mockk<MethodSignature>(relaxed = true)
+
+    beforeTest{
+        every { joinPoint.signature } returns methodSignature
+        every { methodSignature.declaringTypeName } returns "com.knu.mockin.Oauth2Controller"
+        every { methodSignature.name } returns "mock-approval-key"
+        every { joinPoint.args } returns arrayOf(Unit)
+    }
 
     Context("모든 kisclient 패키지 내에서 메소드 실행이 일어날 때"){
         Given("정상 응답, 응답 코드 null"){
@@ -25,7 +34,7 @@ class ErrorAspectTest: BehaviorSpec({
                 every { joinPoint.proceed() } returns Mono.just(response)
 
                 Then("그 결과를 반환한다.") {
-                    val result = errorAspect.handleKISWebClientException(joinPoint)
+                    val result = kisClientAspect.handleKISWebClientException(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                         .expectNext(response)
                         .verifyComplete()
@@ -43,7 +52,7 @@ class ErrorAspectTest: BehaviorSpec({
                 every { joinPoint.proceed() } returns Mono.just(response)
 
                 Then("그 결과를 반환한다.") {
-                    val result = errorAspect.handleKISWebClientException(joinPoint)
+                    val result = kisClientAspect.handleKISWebClientException(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                         .expectNext(response)
                         .verifyComplete()
@@ -62,7 +71,7 @@ class ErrorAspectTest: BehaviorSpec({
                 every { joinPoint.proceed() } returns Mono.error<WebClientResponseException>(responseException )
 
                 Then("그 결과를 반환한다.") {
-                    val result = errorAspect.handleKISWebClientException(joinPoint)
+                    val result = kisClientAspect.handleKISWebClientException(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                         .expectErrorMatches { it is CustomException && it.errorCode == ErrorCode.FORBIDDEN }
                         .verify()
@@ -81,7 +90,7 @@ class ErrorAspectTest: BehaviorSpec({
                 every { joinPoint.proceed() } returns Mono.error<WebClientResponseException>(responseException )
 
                 Then("그 결과를 반환한다.") {
-                    val result = errorAspect.handleKISWebClientException(joinPoint)
+                    val result = kisClientAspect.handleKISWebClientException(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                         .expectErrorMatches { it is CustomException && it.errorCode == ErrorCode.INTERNAL_SERVER_ERROR }
                         .verify()
@@ -99,7 +108,7 @@ class ErrorAspectTest: BehaviorSpec({
                 every { joinPoint.proceed() } returns Mono.just(response)
 
                 Then("에러를 일으키고 메세지를 반환한다.") {
-                    val result = errorAspect.handleKISWebClientException(joinPoint)
+                    val result = kisClientAspect.handleKISWebClientException(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                         .expectErrorMatches { it is CustomException &&
                                 it.errorCode == ErrorCode.KIS_API_FAILED &&
@@ -116,7 +125,7 @@ class ErrorAspectTest: BehaviorSpec({
                 every { joinPoint.proceed() } returns Mono.error<CustomException>(responseException )
 
                 Then("그 결과를 그대로 반환한다.") {
-                    val result = errorAspect.handleKISWebClientException(joinPoint)
+                    val result = kisClientAspect.handleKISWebClientException(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                         .expectErrorMatches { it is CustomException && it.errorCode == ErrorCode.INTERNAL_SERVER_ERROR }
                         .verify()
@@ -130,7 +139,7 @@ class ErrorAspectTest: BehaviorSpec({
                 every { joinPoint.proceed() } throws CustomException(ErrorCode.INTERNAL_SERVER_ERROR)
 
                 Then("그 에러를 반환한다.") {
-                    val result = errorAspect.handleKISWebClientException(joinPoint)
+                    val result = kisClientAspect.handleKISWebClientException(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                         .expectErrorMatches { it is CustomException && it.errorCode == ErrorCode.INTERNAL_SERVER_ERROR }
                         .verify()
