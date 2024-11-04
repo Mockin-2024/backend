@@ -1,10 +1,10 @@
 {
   "rt_cd": "0",
-  "msg_cd": "APBK0013",
-  "msg1": "주문 전송 완료 되었습니다.",
+  "msg_cd": "40470000",
+  "msg1": "모의투자 예약주문 완료",
   "output": {
-    "ODNO": "0030138295",
-    "RSVN_ORD_RCIT_DT": "",
-    "OVRS_RSVN_ODNO": ""
+    "ODNO": "237",
+    "RSVN_ORD_RCIT_DT": null,
+    "OVRS_RSVN_ODNO": null
   }
 }
