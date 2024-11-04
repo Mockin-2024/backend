@@ -11,6 +11,6 @@ data class KISOrderReserveResponseDto(
 
 data class OutputDetails(
     @JsonProperty("ODNO") val koreaExchangeOrderOrgNumber: String, // 한국거래소전송주문조직번호
-    @JsonProperty("RSVN_ORD_RCIT_DT") val reservationOrderReceiptDate: String?, // 예약주문접수일자
-    @JsonProperty("OVRS_RSVN_ODNO") val overseasReservationOrderNumber: String? // 해외예약주문번호
+    @JsonProperty("RSVN_ORD_RCIT_DT") val reservationOrderReceiptDate: String = "", // 예약주문접수일자
+    @JsonProperty("OVRS_RSVN_ODNO") val overseasReservationOrderNumber: String = "" // 해외예약주문번호
 )

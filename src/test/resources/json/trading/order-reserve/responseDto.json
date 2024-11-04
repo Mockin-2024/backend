@@ -4,7 +4,7 @@
   "msg1": "모의투자 예약주문 완료",
   "output": {
     "ODNO": "237",
-    "RSVN_ORD_RCIT_DT": null,
-    "OVRS_RSVN_ODNO": null
+    "RSVN_ORD_RCIT_DT": "",
+    "OVRS_RSVN_ODNO": ""
   }
 }
