@@ -7,6 +7,7 @@
 * xref:/docs/index.html[메인으로 돌아가기]
 * <<order, 주문>>
 * <<order-reverse, 정정취소주문>>
+* <<order-reserve, 예약주문접수>>
 * <<get-nccs, 미체결내역조회>>
 * <<balance, 잔고>>
 * <<ccnl, 주문체결내역>>
@@ -44,6 +45,21 @@ include::{snippets}/trading/order-reverse/http-response.adoc[]
 === Response-Field
 include::{snippets}/trading/order-reverse/response-fields.adoc[]
 
+
+[#order-reserve]
+== 예약주문접수
+
+=== Request
+include::{snippets}/trading/order-reserve/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/trading/order-reserve/request-fields.adoc[]
+
+=== Response
+include::{snippets}/trading/order-reserve/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/trading/order-reserve/response-fields.adoc[]
 
 [#get-nccs]
 == 미체결내역 조회
