@@ -72,6 +72,26 @@ class TradingServiceTest(
         }
     }
 
+    Context("postOrderReserve 함수의 경우"){
+        val uri = "$baseUri/order-reserve"
+
+        Given("적절한 dto가 주어질 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto OrderReserveRequestBodyDto::class.java
+            val requestDto = bodyDto.asDomain(user.accountNumber)
+            val headerDto = createHeader(user, bodyDto.transactionId)
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderReserveResponseDto::class.java
+
+            When("KIS API로 요청을 보내면"){
+                every { kisTradingClient.postOrderReserve(headerDto, requestDto) } returns Mono.just(expectedDto)
+
+                Then("응답 DTO를 정상적으로 받아야 한다."){
+                    val result = tradingService.postOrderReserve(bodyDto, user.email)
+                    result shouldBe expectedDto
+                }
+            }
+        }
+    }
+
     Context("getNCCS 함수의 경우"){
         val uri = "$baseUri/nccs"
 
