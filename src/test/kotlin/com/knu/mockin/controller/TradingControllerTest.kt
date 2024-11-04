@@ -84,6 +84,22 @@ class TradingControllerTest(
         )
     }
 
+    "POST /trading/order-reserve"{
+        val uri = "${baseUri}/order-reserve"
+        val requestDto = readJsonFile(uri,"requestDto.json")
+        val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderReserveResponseDto::class.java
+
+        coEvery { tradingService.postOrderReserve(any(), any()) } returns expectedDto
+
+        val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
+
+        response.makeDocument(
+            uri,
+            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
+        )
+    }
+
     "GET /trading/nccs" {
         val uri = "${baseUri}/nccs"
         val requestParams = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java

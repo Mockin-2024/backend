@@ -1,0 +1,13 @@
+{
+  "transactionId": "거래ID\nVTTT3016U : 미국 매도 예약 주문\nVTTT3014U : 미국 매수 예약 주문\nVTTS3013U : 중국/홍콩/일본/베트남 예약 매수/매도/취소 주문",
+  "sellBuyDivisionCode": "매도매수구분코드 01 : 매도\n02 : 매수",
+  "reviseCancelDivisionCode": "정정취소구분코드 \ntr_id가 TTTS3013U(중국/홍콩/일본/베트남 예약 주문)인 경우만 사용\n00 : \"매도/매수 주문\"시 필수 항목\n02 : 취소",
+  "productNumber": "상품번호",
+  "productTypeCode": "상품유형코드\n \ttr_id가 TTTS3013U(중국/홍콩/일본/베트남 예약 주문)인 경우만 사용\n515 : 일본\n501 : 홍콩 / 543 : 홍콩CNY / 558 : 홍콩USD\n507 : 베트남 하노이거래소 / 508 : 베트남 호치민거래소\n551 : 중국 상해A / 552 : 중국 심천A",
+  "overseasExchangeCode": "해외거래소코드",
+  "ftOrderQuantity": "FT주문수량",
+  "ftOrderUnitPrice3": "FT주문단가3",
+  "reservationOrderReceiptDate": "예약주문접수일자\ntr_id가 TTTS3013U(중국/홍콩/일본/베트남 예약 주문)인 경우만 사용",
+  "orderDivision":"주문구분\n \ttr_id가 TTTT3016U(미국 예약 매도 주문)인 경우만 사용\n00 : 지정가\n31 : MOO(장개시시장가)",
+  "overseasReservationOrderNumber": "해외예약주문번호\n\ttr_id가 TTTS3013U(중국/홍콩/일본/베트남 예약 주문)인 경우만 사용"
+}

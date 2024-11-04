@@ -37,6 +37,16 @@ class TradingController(
         return ResponseEntity.ok(result)
     }
 
+    @PostMapping("/order-reserve")
+    suspend fun postOrderReserve(
+        @RequestBody orderReserveRequestBodyDto: OrderReserveRequestBodyDto,
+        authentication: Authentication
+    ): ResponseEntity<KISOrderReserveResponseDto> {
+        val result = tradingService.postOrderReserve(orderReserveRequestBodyDto, authentication.name)
+
+        return ResponseEntity.ok(result)
+    }
+
     @GetMapping("/nccs")
     suspend fun getNCCS(
         @ModelAttribute nccsRequestParameterDto: NCCSRequestParameterDto,

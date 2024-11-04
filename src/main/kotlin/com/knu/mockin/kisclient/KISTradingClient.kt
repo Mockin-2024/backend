@@ -42,6 +42,20 @@ class KISTradingClient(
         )
     }
 
+    fun postOrderReserve(
+        headerDto: KISOverSeaRequestHeaderDto,
+        bodyDto: KISOrderReserveRequestBodyDto
+    ): Mono<KISOrderReserveResponseDto> {
+        val uri = "${tradingUrl}/order-resv"
+
+        return webClientMock.postWithBody(
+            uri = uri,
+            headerDto = headerDto,
+            bodyDto = bodyDto,
+            responseType = KISOrderReserveResponseDto::class.java
+        )
+    }
+
     fun getNCCS(
         headerDto: KISOverSeaRequestHeaderDto,
         parameterDto: KISNCCSRequestParameterDto
