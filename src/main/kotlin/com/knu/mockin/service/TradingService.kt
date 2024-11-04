@@ -45,6 +45,20 @@ class TradingService(
             .awaitSingle()
     }
 
+    suspend fun postOrderReserve(
+        bodyDto: OrderReserveRequestBodyDto,
+        email: String
+    ): KISOrderReserveResponseDto {
+        val userWithMockKey = getUser(email)
+
+        val headerDto = createHeader(userWithMockKey, bodyDto.transactionId)
+        val kisOrderReverseRequestBodyDto = bodyDto.asDomain(userWithMockKey.accountNumber)
+
+        return kisTradingClient
+            .postOrderReserve(headerDto, kisOrderReverseRequestBodyDto)
+            .awaitSingle()
+    }
+
     suspend fun getNCCS(
         parameterDto: NCCSRequestParameterDto,
         email: String
