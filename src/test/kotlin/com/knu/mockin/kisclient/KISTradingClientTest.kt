@@ -50,6 +50,17 @@ class KISTradingClientTest(
                 .verify()
         }
 
+        test("postOrderReserve 요청 보내기"){
+            val uri = "${baseUri}/order-reserve"
+            val requestDto = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto OrderReserveRequestBodyDto::class.java
+            val bodyDto = requestDto.asDomain(user!!.accountNumber)
+            val headerDto = ServiceUtil.createHeader(user, requestDto.transactionId)
+
+            val response = kisTradingClient.postOrderReserve(headerDto, bodyDto).block()
+
+            println(response)
+        }
+
         test("getNCCS 요청 보내기"){
             val uri = "${baseUri}/nccs"
             val requestDto = RestDocsUtils.readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
