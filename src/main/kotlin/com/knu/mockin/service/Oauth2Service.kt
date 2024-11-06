@@ -8,6 +8,7 @@ import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
 import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.enum.Constant
+import com.knu.mockin.model.enum.Constant.CLIENT_CREDENTIAL
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.RedisUtil
@@ -30,7 +31,7 @@ class Oauth2Service(
             .awaitFirst()
 
         val requestDto = KISApprovalRequestDto(
-            grantType = "client_credentials",
+            grantType = CLIENT_CREDENTIAL,
             appKey = user.appKey,
             secretKey = user.appSecret)
         return kisOauth2Client.postApproval(requestDto).awaitSingle()
@@ -44,7 +45,7 @@ class Oauth2Service(
             .awaitFirst()
 
         val requestDto = KISApprovalRequestDto(
-            grantType = "client_credentials",
+            grantType = CLIENT_CREDENTIAL,
             appKey = user.appKey,
             secretKey = user.appSecret)
         return kisOauth2RealClient.postApproval(requestDto).awaitSingle()
@@ -58,7 +59,7 @@ class Oauth2Service(
             .awaitFirst()
 
         val requestDto = KISTokenRequestDto(
-            grantType = "client_credentials",
+            grantType = CLIENT_CREDENTIAL,
             appKey = user.appKey,
             appSecret = user.appSecret)
         val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle()
@@ -76,7 +77,7 @@ class Oauth2Service(
             .awaitFirst()
 
         val requestDto = KISTokenRequestDto(
-            grantType = "client_credentials",
+            grantType = CLIENT_CREDENTIAL,
             appKey = user.appKey,
             appSecret = user.appSecret)
         val dto = kisOauth2RealClient.postTokenP(requestDto).awaitSingle()
