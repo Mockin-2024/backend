@@ -1,6 +1,8 @@
 package com.knu.mockin.kisclient
 
 import com.knu.mockin.config.ConstantConfig
+import com.knu.mockin.exception.CustomException
+import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
 import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
 import com.knu.mockin.model.enum.Constant
 import com.knu.mockin.repository.UserRepository
@@ -27,6 +29,16 @@ class KISOauth2ClientTest(
             val dto = kisOauth2Client.postTokenP(requestDto).awaitSingle()
 
             RedisUtil.saveToken(user.email tag Constant.MOCK, dto.accessToken)
+        }
+
+        test("postApproval 테스트"){
+            val requestDto = KISApprovalRequestDto(
+                grantType = "client_credentials",
+                appKey = user!!.appKey,
+                secretKey = user.appSecret)
+            val dto = kisOauth2Client.postApproval(requestDto).awaitSingle()
+            println(dto)
+
         }
     }
 })
