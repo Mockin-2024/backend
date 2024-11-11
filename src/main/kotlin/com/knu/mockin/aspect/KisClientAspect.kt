@@ -32,8 +32,7 @@ class KisClientAspect {
             .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         val args = joinPoint.args
 
-        return try {
-            ReactiveSecurityContextHolder.getContext()
+        return ReactiveSecurityContextHolder.getContext()
                 .flatMap { securityContext ->
                     val userId = securityContext.authentication.name
 
@@ -50,9 +49,7 @@ class KisClientAspect {
                             handleWebClientResponseException(ex)
                         }.returnWhenSuccess()
                 }
-        } catch (ex: Exception) {
-            Mono.error(CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message))
-        }
+
     }
 
     private fun handleWebClientResponseException(ex: Throwable): CustomException {
