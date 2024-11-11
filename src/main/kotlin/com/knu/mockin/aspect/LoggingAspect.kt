@@ -2,8 +2,6 @@ package com.knu.mockin.aspect
 
 import com.knu.mockin.logging.model.LogControllerEntry
 import com.knu.mockin.logging.utils.LogUtil
-import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -27,7 +25,7 @@ class LoggingAspect {
         val methodName = joinPoint.signature.name
         val startTime = System.currentTimeMillis()
         val timestamp = Instant.now().atZone(ZoneId.of("Asia/Seoul"))
-            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) // 현재 시간
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
 
         return ReactiveSecurityContextHolder.getContext()
             .flatMap { securityContext ->
@@ -44,10 +42,8 @@ class LoggingAspect {
                 )
                 log.info("{}", LogUtil.toJson(beforeLog))
 
-                // 실제 메소드 호출
-                val result = joinPoint.proceed() // 이 부분은 비동기 처리에 맞게 수정해야 할 수 있음
+                val result = joinPoint.proceed()
 
-                // 결과를 Mono로 래핑하여 반환
                 Mono.just(result)
                     .doOnNext {
                         val endTime = System.currentTimeMillis()
