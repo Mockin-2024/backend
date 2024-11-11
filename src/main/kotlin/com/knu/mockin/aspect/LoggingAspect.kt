@@ -42,9 +42,8 @@ class LoggingAspect {
                 )
                 log.info("{}", LogUtil.toJson(beforeLog))
 
-                val result = joinPoint.proceed()
-
-                Mono.just(result)
+                val result = joinPoint.proceed() as Mono<*>
+                result
                     .doOnNext {
                         val endTime = System.currentTimeMillis()
                         val executionTime = endTime - startTime
