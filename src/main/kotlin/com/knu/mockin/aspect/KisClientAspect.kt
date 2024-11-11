@@ -9,6 +9,7 @@ import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
@@ -24,13 +25,20 @@ class KisClientAspect {
     @Around("execution(* com.knu.mockin.kisclient..*(..))")
     fun handleKISWebClientException(joinPoint: ProceedingJoinPoint): Any {
         val traceId = LogUtil.generateTraceId()
-        val userId = 1L
+
+        val userId: String? = ReactiveSecurityContextHolder.getContext()
+            .map { securityContext ->
+                val authentication = securityContext.authentication
+                authentication.name
+            }
+            .block()
+
         val className = joinPoint.signature.declaringTypeName
         val methodName = joinPoint.signature.name
         val timestamp = Instant.now().atZone(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) // 현재 시간
         val args = joinPoint.args
 
-        val beforeLog = LogKisClientEntry(timestamp,traceId,userId, className, methodName, args,"요청 처리 시작")
+        val beforeLog = LogKisClientEntry(timestamp, traceId, userId, className, methodName, args,"요청 처리 시작")
 
         return try {
             log.info("{}", toJson(beforeLog))

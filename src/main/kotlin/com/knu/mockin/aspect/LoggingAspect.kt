@@ -6,7 +6,9 @@ import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Mono
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -18,8 +20,26 @@ class LoggingAspect {
 
     @Around("execution(* com.knu.mockin.controller..*(..))")
     fun logExecutionInController(joinPoint: ProceedingJoinPoint): Any? {
+
+        val userId: String? = ReactiveSecurityContextHolder.getContext()
+            .map { securityContext ->
+                val authentication = securityContext.authentication
+                authentication.name
+            }
+            .block()
+
+
+
+//        val any: Mono<Any> = ReactiveSecurityContextHolder.getContext()
+//            .flatMap { securityContext ->
+//                val authentication = securityContext.authentication
+//                Mono.just(authentication)
+//            }
+
+
+
         val traceId = LogUtil.generateTraceId()
-        val userId = 1L
+//        val userId =   //1L
         val className = joinPoint.signature.declaringTypeName
         val methodName = joinPoint.signature.name
         val startTime = System.currentTimeMillis()
