@@ -22,51 +22,55 @@ import kotlin.reflect.full.memberProperties
 @Component
 class KisClientAspect {
     private val log = LoggerFactory.getLogger(KisClientAspect::class.java)
+
     @Around("execution(* com.knu.mockin.kisclient..*(..))")
-    fun handleKISWebClientException(joinPoint: ProceedingJoinPoint): Any {
+    fun handleKISWebClientException(joinPoint: ProceedingJoinPoint): Mono<Any?> {
         val traceId = LogUtil.generateTraceId()
-
-        val userId: String? = ReactiveSecurityContextHolder.getContext()
-            .map { securityContext ->
-                val authentication = securityContext.authentication
-                authentication.name
-            }
-            .block()
-
         val className = joinPoint.signature.declaringTypeName
         val methodName = joinPoint.signature.name
-        val timestamp = Instant.now().atZone(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) // 현재 시간
+        val timestamp = Instant.now().atZone(ZoneId.of("Asia/Seoul"))
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         val args = joinPoint.args
 
-        val beforeLog = LogKisClientEntry(timestamp, traceId, userId, className, methodName, args,"요청 처리 시작")
-
         return try {
-            log.info("{}", toJson(beforeLog))
-            val result = joinPoint.proceed() as Mono<*>
-            result.subscribe { value ->
-                val logEntry = LogKisClientEntry(timestamp, traceId, userId, className, methodName, value, "요청 처리 종료")
-                log.info("{}", toJson(logEntry))
-            }
-            result
-                .onErrorMap { ex ->
-                    when (ex) {
-                        is WebClientResponseException -> {
-                            when (ex.statusCode.value()) {
-                                403 -> CustomException(ErrorCode.FORBIDDEN)
-                                else -> CustomException(
-                                    ErrorCode.INTERNAL_SERVER_ERROR,
-                                    "KIS 서버에 문제가 생겼습니다. 그러나 잘못된 요청이 원인일 수 있습니다."
-                                )
-                            }
+            ReactiveSecurityContextHolder.getContext()
+                .flatMap { securityContext ->
+                    val userId = securityContext.authentication.name
+
+                    val beforeLog = LogKisClientEntry(timestamp, traceId, userId, className, methodName, args, "요청 처리 시작")
+                    log.info("{}", toJson(beforeLog))
+
+                    val result = joinPoint.proceed() as Mono<*>
+                    result
+                        .doOnNext { value ->
+                            val afterLog = LogKisClientEntry(timestamp, traceId, userId, className, methodName, value, "요청 처리 종료")
+                            log.info("{}", toJson(afterLog))
                         }
-                        else -> CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message)
-                    }
-                }.returnWhenSuccess()
+                        .onErrorMap { ex ->
+                            handleWebClientResponseException(ex)
+                        }.returnWhenSuccess()
+                }
         } catch (ex: Exception) {
-            Mono.error<CustomException>(CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message))
+            Mono.error(CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message))
         }
     }
-    private fun <T> Mono<T>.returnWhenSuccess():Mono<T> {
+
+    private fun handleWebClientResponseException(ex: Throwable): CustomException {
+        return when (ex) {
+            is WebClientResponseException -> {
+                when (ex.statusCode.value()) {
+                    403 -> CustomException(ErrorCode.FORBIDDEN)
+                    else -> CustomException(
+                        ErrorCode.INTERNAL_SERVER_ERROR,
+                        "KIS 서버에 문제가 생겼습니다. 그러나 잘못된 요청이 원인일 수 있습니다."
+                    )
+                }
+            }
+            else -> CustomException(ErrorCode.INTERNAL_SERVER_ERROR, ex.message)
+        }
+    }
+
+    private fun <T> Mono<T>.returnWhenSuccess(): Mono<T> {
         return this.flatMap { instance ->
             val properties = instance!!::class.memberProperties
             val successFailureCode = properties.find { it.name == "successFailureStatus" }?.call(instance)
