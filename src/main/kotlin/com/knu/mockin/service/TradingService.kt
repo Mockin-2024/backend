@@ -4,10 +4,15 @@ import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
+import com.knu.mockin.model.enum.TimeConstant.ONE_DAY
+import com.knu.mockin.model.enum.TimeConstant.THIRTY_MINUTES
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.util.ServiceUtil.createHeader
 import com.knu.mockin.util.ExtensionUtil.orThrow
+import com.knu.mockin.util.ExtensionUtil.toDto
+import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
@@ -26,6 +31,10 @@ class TradingService(
         val headerDto = createHeader(userWithMockKey, bodyDto.transactionId)
         val kisOrderRequestBodyDto = bodyDto.asDomain(userWithMockKey.accountNumber)
 
+        RedisUtil.deleteData(email tag "getNCCS")
+        RedisUtil.deleteData(email tag "getCCNL")
+        RedisUtil.deleteData(email tag "getPresentBalance")
+
         return kisTradingClient
             .postOrder(headerDto, kisOrderRequestBodyDto)
             .awaitSingle()
@@ -39,6 +48,10 @@ class TradingService(
 
         val headerDto = createHeader(userWithMockKey, bodyDto.transactionId)
         val kisOrderReverseRequestBodyDto = bodyDto.asDomain(userWithMockKey.accountNumber)
+
+        RedisUtil.deleteData(email tag "getNCCS")
+        RedisUtil.deleteData(email tag "getCCNL")
+        RedisUtil.deleteData(email tag "getPresentBalance")
 
         return kisTradingClient
             .postOrderReverse(headerDto, kisOrderReverseRequestBodyDto)
@@ -65,12 +78,22 @@ class TradingService(
     ): KISNCCSResponseDto{
         val userWithMockKey = getUser(email)
 
+        val redisCacheKey = email tag "getNCCS"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+        if (cachedValue != null){
+            return cachedValue toDto KISNCCSResponseDto::class.java
+        }
+
         val headerDto = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_NCCS))
         val kisnccsRequestParameterDto = parameterDto.asDomain(userWithMockKey.accountNumber)
 
-        return kisTradingClient
+        val response = kisTradingClient
             .getNCCS(headerDto, kisnccsRequestParameterDto)
             .awaitSingle()
+        RedisUtil.setData(redisCacheKey, response, THIRTY_MINUTES)
+
+        return response
     }
 
     suspend fun getBalance(
@@ -78,13 +101,22 @@ class TradingService(
         email: String
     ): KISBalanceResponseDto{
         val userWithMockKey = getUser(email)
+        val redisCacheKey = email tag "getBalance"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+        if (cachedValue != null){
+            return cachedValue toDto KISBalanceResponseDto::class.java
+        }
 
         val headerDto = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE))
         val kisBalanceRequestParameterDto = parameterDto.asDomain(userWithMockKey.accountNumber)
 
-        return kisTradingClient
+        val response = kisTradingClient
             .getBalance(headerDto, kisBalanceRequestParameterDto)
             .awaitSingle()
+        RedisUtil.setData(redisCacheKey, response, ONE_DAY)
+
+        return response
     }
 
     suspend fun getPsAmount(
@@ -95,6 +127,7 @@ class TradingService(
 
         val headerDto = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_PSAMOUNT))
         val kisPsAmountRequestParameterDto = parameterDto.asDomain(userWithMockKey.accountNumber)
+
         return kisTradingClient
             .getPsAmount(headerDto, kisPsAmountRequestParameterDto)
             .awaitSingle()
@@ -106,12 +139,23 @@ class TradingService(
     ): KISPresentBalanceResponseDto{
         val userWithMockKey = getUser(email)
 
+        val redisCacheKey = email tag "getPresentBalance"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+        if (cachedValue != null){
+            return cachedValue toDto KISPresentBalanceResponseDto::class.java
+        }
+
         val headerDto = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_PRESENT_BALANCE))
         val kisPresentBalanceRequestParameterDto = parameterDto.asDomain(userWithMockKey.accountNumber)
 
-        return kisTradingClient
+        val response =  kisTradingClient
             .getPresentBalance(headerDto, kisPresentBalanceRequestParameterDto)
             .awaitSingle()
+
+        RedisUtil.setData(redisCacheKey, response, THIRTY_MINUTES)
+
+        return response
     }
 
     suspend fun getCCNL(
@@ -120,13 +164,24 @@ class TradingService(
     ): KISCCNLResponseDto{
         val userWithMockKey = getUser(email)
 
+        val redisCacheKey = email tag "getCCNL"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+        if (cachedValue != null){
+            return cachedValue toDto KISCCNLResponseDto::class.java
+        }
+
         val headerDto = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL))
         headerDto.transactionContinuation = parameterDto.transactionContinuation
         val kisccnlRequestParameterDto = parameterDto.asDomain(userWithMockKey.accountNumber)
 
-        return kisTradingClient
+        val response =  kisTradingClient
             .getCCNL(headerDto, kisccnlRequestParameterDto)
             .awaitSingle()
+
+        RedisUtil.setData(redisCacheKey, response, ONE_DAY)
+
+        return response
     }
 
     private suspend fun getUser(email: String) = userRepository.findByEmailWithMockKey(email)
