@@ -43,7 +43,7 @@ object RedisUtil{
         return redisTemplate.opsForValue().get(key)
     }
 
-    fun deleteData(key: String) {
-        redisTemplate.delete(key)
+    fun deleteData(key: String): Boolean {
+        return redisTemplate.delete(key)
     }
 }
