@@ -1,8 +1,10 @@
 package com.knu.mockin.util
 
+import com.knu.mockin.logging.utils.LogUtil.toJson
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 @Component
 object RedisUtil{
@@ -23,12 +25,21 @@ object RedisUtil{
     fun saveEmailCode(email: String,
                       token: String,
                       timeout: Long,
-                      unit: java.util.concurrent.TimeUnit) {
+                      unit: TimeUnit) {
         return redisTemplate.opsForValue().set(email, token, timeout, unit)
     }
 
 
     fun removeToken(email: String) {
         redisTemplate.delete(email)
+    }
+
+
+    fun <T> setData(key: String, value: T, expiration: Long) {
+        redisTemplate.opsForValue().set(key, toJson(value), expiration, TimeUnit.MINUTES)
+    }
+
+    fun getData(key: String): String? {
+        return redisTemplate.opsForValue().get(key)
     }
 }
