@@ -91,7 +91,7 @@ class TradingService(
         val response = kisTradingClient
             .getNCCS(headerDto, kisnccsRequestParameterDto)
             .awaitSingle()
-        RedisUtil.setData(redisCacheKey, response, THIRTY_MINUTES)
+        RedisUtil.setData(redisCacheKey, response, ONE_DAY)
 
         return response
     }
