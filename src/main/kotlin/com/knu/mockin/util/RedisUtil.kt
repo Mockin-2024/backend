@@ -42,4 +42,8 @@ object RedisUtil{
     fun getData(key: String): String? {
         return redisTemplate.opsForValue().get(key)
     }
+
+    fun deleteData(key: String) {
+        redisTemplate.delete(key)
+    }
 }
