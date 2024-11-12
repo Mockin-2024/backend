@@ -1,14 +1,11 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.request.account.KeyPairRequestDto
 import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
 import com.knu.mockin.model.dto.response.AccessTokenAPIResponseDto
-import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.MockKey
 import com.knu.mockin.model.entity.RealKey
@@ -16,6 +13,7 @@ import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

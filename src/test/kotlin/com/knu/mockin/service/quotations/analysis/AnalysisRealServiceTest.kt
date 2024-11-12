@@ -1,19 +1,16 @@
 package com.knu.mockin.service.quotations.analysis
 
 import com.knu.mockin.dsl.RestDocsUtils
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.quotations.analysis.KISAnalysisRealClient
 import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.KISCountriesHolidayResponseDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.NewsTitleRequestParameterDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.asDomain
-import com.knu.mockin.model.dto.request.quotations.basic.real.CountriesHolidayRequestParameterDto
 import com.knu.mockin.model.dto.request.quotations.basic.real.asDomain
 import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
-import com.knu.mockin.service.quotations.basic.real.BasicRealService
 import com.knu.mockin.service.util.ServiceUtil
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

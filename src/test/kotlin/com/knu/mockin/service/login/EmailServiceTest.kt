@@ -1,12 +1,12 @@
 package com.knu.mockin.service.login
 
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.exception.CustomException
 import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.request.login.EmailCheckRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.User
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.core.spec.style.BehaviorSpec

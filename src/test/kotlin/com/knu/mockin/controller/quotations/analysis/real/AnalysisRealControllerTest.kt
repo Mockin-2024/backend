@@ -1,23 +1,18 @@
 package com.knu.mockin.controller.quotations.analysis.real
 
 import com.knu.mockin.controller.quotations.analysis.AnalysisRealController
-import com.knu.mockin.controller.quotations.basic.BasicRealController
-import com.knu.mockin.controller.quotations.basic.real.BasicRealControllerTest
 import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.model.dto.kisresponse.quotations.analysis.KISNewsTitleResponseDto
-import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.KISCountriesHolidayResponseDto
 import com.knu.mockin.model.dto.request.quotations.analysis.real.NewsTitleRequestParameterDto
-import com.knu.mockin.model.dto.request.quotations.basic.real.CountriesHolidayRequestParameterDto
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.JwtUtil
 import com.knu.mockin.security.SecurityTestConfig
 import com.knu.mockin.service.quotations.analysis.AnalysisRealService
-import com.knu.mockin.service.quotations.basic.real.BasicRealService
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery

@@ -1,7 +1,6 @@
 package com.knu.mockin.service
 
 import com.knu.mockin.dsl.RestDocsUtils
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISApprovalRequestDto
@@ -12,6 +11,7 @@ import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.model.enum.Constant.MOCK
 import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
 import io.kotest.core.spec.style.BehaviorSpec

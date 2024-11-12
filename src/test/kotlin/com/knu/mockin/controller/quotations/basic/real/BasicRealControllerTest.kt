@@ -8,11 +8,11 @@ import com.knu.mockin.dsl.RestDocsUtils.toPairs
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
 import com.knu.mockin.model.dto.request.quotations.basic.real.*
 import com.knu.mockin.service.quotations.basic.real.BasicRealService
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.JwtUtil
 import com.knu.mockin.security.SecurityTestConfig
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery

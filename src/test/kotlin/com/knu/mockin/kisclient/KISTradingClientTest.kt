@@ -2,13 +2,13 @@ package com.knu.mockin.kisclient
 
 import com.knu.mockin.config.ConstantConfig
 import com.knu.mockin.dsl.RestDocsUtils
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.exception.CustomException
 import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.util.ServiceUtil
+import com.knu.mockin.util.ExtensionUtil.toDto
 import io.kotest.core.spec.style.FunSpec
 import org.reactivestreams.Publisher
 import org.springframework.boot.test.context.SpringBootTest
