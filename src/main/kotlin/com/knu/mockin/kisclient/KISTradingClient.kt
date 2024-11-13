@@ -99,7 +99,7 @@ class KISTradingClient(
         headerDto: KISOverSeaRequestHeaderDto,
         parameterDto: KISPresentBalanceRequestParameterDto
     ): Mono<KISPresentBalanceResponseDto>{
-        val targetUri = buildUri("${tradingUrl}/inquire-psamount", parameterDto)
+        val targetUri = buildUri("${tradingUrl}/inquire-present-balance", parameterDto)
 
         return webClientMock.getWithParams(
             uri = targetUri,

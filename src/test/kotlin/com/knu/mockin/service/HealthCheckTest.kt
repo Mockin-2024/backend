@@ -1,8 +1,8 @@
 package com.knu.mockin.service
 
 import com.knu.mockin.dsl.RestDocsUtils
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
+import com.knu.mockin.util.ExtensionUtil.toDto
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 

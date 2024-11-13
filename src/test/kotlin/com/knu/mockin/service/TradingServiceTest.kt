@@ -1,15 +1,19 @@
 package com.knu.mockin.service
 
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.KISTradingClient
 import com.knu.mockin.model.dto.kisresponse.trading.*
 import com.knu.mockin.model.dto.request.trading.*
 import com.knu.mockin.model.entity.UserWithKeyPair
+import com.knu.mockin.model.enum.Constant.JWT
+import com.knu.mockin.model.enum.Constant.MOCK
+import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.util.ServiceUtil.createHeader
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -28,23 +32,26 @@ class TradingServiceTest(
 
     beforeTest{
         every { userRepository.findByEmailWithMockKey(any()) } returns Mono.just(user)
-        every { RedisUtil.getToken(any()) } returns "token"
+        every { RedisUtil.getToken(user.email tag JWT) } returns "token"
+        every { RedisUtil.getToken(user.email tag MOCK) } returns "token"
+        every { RedisUtil.getToken(user.email tag REAL) } returns "token"
+        every { RedisUtil.deleteData(any())} returns true
     }
 
     val baseUri = "/trading"
     Context("postOrder 함수의 경우"){
         val uri = "$baseUri/order"
 
-        Given("적절한 dto가 주어질 때"){
+        Given("요청이 들어오면"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto OrderRequestBodyDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, bodyDto.transactionId)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderResponseDto::class.java
 
-            When("KIS API로 요청을 보내면"){
+            When("KIS API로 요청을 보낸 후"){
                 every { kisTradingClient.postOrder(headerDto, requestDto) } returns Mono.just(expectedDto)
 
-                Then("응답 DTO를 정상적으로 받아야 한다."){
+                Then("redis 캐시를 비우고, 응답 DTO를 정상적으로 받아야 한다."){
                     val result = tradingService.postOrder(bodyDto, user.email)
                     result shouldBe expectedDto
                 }
@@ -55,16 +62,16 @@ class TradingServiceTest(
     Context("postOrderReverse 함수의 경우"){
         val uri = "$baseUri/order-reverse"
 
-        Given("적절한 dto가 주어질 때"){
+        Given("요청이 들어오면"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto OrderReverseRequestBodyDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, bodyDto.transactionId)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISOrderReverseResponseDto::class.java
 
-            When("KIS API로 요청을 보내면"){
+            When("KIS API로 요청을 보낸 후"){
                 every { kisTradingClient.postOrderReverse(headerDto, requestDto) } returns Mono.just(expectedDto)
 
-                Then("응답 DTO를 정상적으로 받아야 한다."){
+                Then("redis 캐시를 비우고, 응답 DTO를 정상적으로 받아야 한다."){
                     val result = tradingService.postOrderReverse(bodyDto, user.email)
                     result shouldBe expectedDto
                 }
@@ -94,19 +101,36 @@ class TradingServiceTest(
 
     Context("getNCCS 함수의 경우"){
         val uri = "$baseUri/nccs"
+        val redisCacheKey = user.email tag "getNCCS"
 
-        Given("적절한 dto가 주어질 때"){
+        Given("Redis 캐시에 값이 없을 때"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_NCCS))
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISNCCSResponseDto::class.java
 
-            When("KIS API로 요청을 보내면"){
+            When("KIS API로 요청을 보낸 후"){
+                every { RedisUtil.getData(redisCacheKey)} returns null
                 every { kisTradingClient.getNCCS(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다."){
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다."){
                     val result = tradingService.getNCCS(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와"){
+                every { RedisUtil.getData(redisCacheKey)} returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다."){
+                    val result = tradingService.getNCCS(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISNCCSResponseDto::class.java)
                 }
             }
         }
@@ -114,19 +138,36 @@ class TradingServiceTest(
 
     Context("getBalance 함수의 경우"){
         val uri = "$baseUri/balance"
+        val redisCacheKey = user.email tag "getBalance"
 
-        Given("적절한 dto가 주어질 때"){
+        Given("Redis 캐시에 값이 없을 때"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE))
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISBalanceResponseDto::class.java
 
-            When("KIS API로 요청을 보내면"){
+            When("KIS API로 요청을 보낸 후"){
+                every { RedisUtil.getData(redisCacheKey)} returns null
                 every { kisTradingClient.getBalance(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다."){
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다."){
                     val result = tradingService.getBalance(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와"){
+                every { RedisUtil.getData(redisCacheKey)} returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다."){
+                    val result = tradingService.getBalance(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISBalanceResponseDto::class.java)
                 }
             }
         }
@@ -154,19 +195,36 @@ class TradingServiceTest(
 
     Context("getPresentBalance 함수의 경우"){
         val uri = "$baseUri/present-balance"
+        val redisCacheKey = user.email tag "getPresentBalance"
 
-        Given("적절한 dto가 주어질 때"){
+        Given("Redis 캐시에 값이 없을 때"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto PresentBalanceRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_PRESENT_BALANCE))
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPresentBalanceResponseDto::class.java
 
-            When("KIS API로 요청을 보내면"){
+            When("KIS API로 요청을 보낸 후"){
+                every { RedisUtil.getData(redisCacheKey)} returns null
                 every { kisTradingClient.getPresentBalance(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다."){
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다."){
                     val result = tradingService.getPresentBalance(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto PresentBalanceRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와"){
+                every { RedisUtil.getData(redisCacheKey)} returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다."){
+                    val result = tradingService.getPresentBalance(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISPresentBalanceResponseDto::class.java)
                 }
             }
         }
@@ -174,20 +232,37 @@ class TradingServiceTest(
 
     Context("getCCNL 함수의 경우"){
         val uri = "$baseUri/ccnl"
+        val redisCacheKey = user.email tag "getCCNL"
 
-        Given("적절한 dto가 주어질 때"){
+        Given("Redis 캐시에 값이 없을 때"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL))
             headerDto.transactionContinuation = bodyDto.transactionContinuation
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCCNLResponseDto::class.java
 
-            When("KIS API로 요청을 보내면"){
+            When("KIS API로 요청을 보낸 후"){
+                every { RedisUtil.getData(redisCacheKey)} returns null
                 every { kisTradingClient.getCCNL(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다."){
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다."){
                     val result = tradingService.getCCNL(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와"){
+                every { RedisUtil.getData(redisCacheKey)} returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다."){
+                    val result = tradingService.getCCNL(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISCCNLResponseDto::class.java)
                 }
             }
         }

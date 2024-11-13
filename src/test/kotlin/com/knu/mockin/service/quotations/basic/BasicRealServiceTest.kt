@@ -1,7 +1,6 @@
 package com.knu.mockin.service.quotations.basic
 
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.kisclient.quotations.basic.KISBasicRealClient
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
 import com.knu.mockin.model.dto.request.quotations.basic.real.*
@@ -10,6 +9,7 @@ import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.quotations.basic.real.BasicRealService
 import com.knu.mockin.service.util.ServiceUtil.createHeader
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
