@@ -78,7 +78,10 @@ class TradingService(
     ): KISNCCSResponseDto{
         val userWithMockKey = getUser(email)
 
-        val redisCacheKey = email tag "getNCCS"
+        val redisCacheKey = email tag
+                "getNCCS" tag
+                parameterDto.continuousSearchKey200 tag
+                parameterDto.continuousSearchCondition200
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
         if (cachedValue != null){
@@ -101,7 +104,10 @@ class TradingService(
         email: String
     ): KISBalanceResponseDto{
         val userWithMockKey = getUser(email)
-        val redisCacheKey = email tag "getBalance"
+        val redisCacheKey = email tag
+                "getBalance" tag
+                parameterDto.continuousSearchKey200 tag
+                parameterDto.continuousSearchCondition200
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
         if (cachedValue != null){
@@ -164,7 +170,10 @@ class TradingService(
     ): KISCCNLResponseDto{
         val userWithMockKey = getUser(email)
 
-        val redisCacheKey = email tag "getCCNL"
+        val redisCacheKey = email tag
+                "getCCNL" tag
+                parameterDto.continuousSearchKey200 tag
+                parameterDto.continuousSearchCondition200
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
         if (cachedValue != null){
