@@ -1,7 +1,6 @@
 package com.knu.mockin.service.login
 
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
-import com.knu.mockin.dsl.toDto
 import com.knu.mockin.exception.CustomException
 import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.request.login.Jwt
@@ -12,6 +11,7 @@ import com.knu.mockin.model.entity.User
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.BearerToken
 import com.knu.mockin.security.JwtUtil
+import com.knu.mockin.util.ExtensionUtil.toDto
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
