@@ -18,8 +18,8 @@ import java.time.format.DateTimeFormatter
 class LoggingAspect {
     private val log = LoggerFactory.getLogger(LoggingAspect::class.java)
 
-    @Around("execution(* com.knu.mockin.controller..*(..))")
-    fun logExecutionInController(joinPoint: ProceedingJoinPoint): Mono<Any?> {
+    @Around("execution(* com.knu.mockin.controller..*(..)) && !execution(* com.knu.mockin.controller.LoginController..*(..))" )
+    fun logControllerWithSecurity(joinPoint: ProceedingJoinPoint): Mono<Any?> {
         val traceId = LogUtil.generateTraceId()
         val className = joinPoint.signature.declaringTypeName
         val methodName = joinPoint.signature.name
@@ -55,5 +55,32 @@ class LoggingAspect {
                         log.info("{}", LogUtil.toJson(afterLog))
                     }
             }
+    }
+    @Around("execution(* com.knu.mockin.controller.LoginController..*(..))")
+    fun logLoginController(joinPoint: ProceedingJoinPoint): Any {
+        val traceId = LogUtil.generateTraceId()
+        val className = joinPoint.signature.declaringTypeName
+        val methodName = joinPoint.signature.name
+        val startTime = System.currentTimeMillis()
+        val timestamp = Instant.now().atZone(ZoneId.of("Asia/Seoul"))
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
+        val beforeLog = LogControllerEntry(
+            timestamp = timestamp,
+            traceId = traceId,
+            userId = "login",
+            className = className,
+            methodName = methodName,
+            executionTime = 0,
+            message = "요청 처리 시작"
+        )
+        log.info("{}", LogUtil.toJson(beforeLog))
+        val result = joinPoint.proceed()
+        val endTime = System.currentTimeMillis()
+        val executionTime = endTime - startTime
+        val afterLog = beforeLog.copy(executionTime = executionTime, message = "요청 처리 종료")
+        log.info("{}", LogUtil.toJson(afterLog))
+
+        return result
     }
 }
