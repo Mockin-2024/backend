@@ -101,10 +101,13 @@ class TradingServiceTest(
 
     Context("getNCCS 함수의 경우"){
         val uri = "$baseUri/nccs"
-        val redisCacheKey = user.email tag "getNCCS"
+        val bodyDto = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
+        val redisCacheKey = user.email tag
+                "getNCCS" tag
+                bodyDto.continuousSearchKey200 tag
+                bodyDto.continuousSearchCondition200
 
         Given("Redis 캐시에 값이 없을 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_NCCS))
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISNCCSResponseDto::class.java
@@ -122,7 +125,6 @@ class TradingServiceTest(
         }
 
         Given("Redis 캐시에 값이 있을 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto NCCSRequestParameterDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와"){
@@ -138,10 +140,13 @@ class TradingServiceTest(
 
     Context("getBalance 함수의 경우"){
         val uri = "$baseUri/balance"
-        val redisCacheKey = user.email tag "getBalance"
+        val bodyDto = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
+        val redisCacheKey = user.email tag
+                "getBalance" tag
+                bodyDto.continuousSearchKey200 tag
+                bodyDto.continuousSearchCondition200
 
         Given("Redis 캐시에 값이 없을 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_BALANCE))
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISBalanceResponseDto::class.java
@@ -159,7 +164,6 @@ class TradingServiceTest(
         }
 
         Given("Redis 캐시에 값이 있을 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto BalanceRequestParameterDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와"){
@@ -232,10 +236,13 @@ class TradingServiceTest(
 
     Context("getCCNL 함수의 경우"){
         val uri = "$baseUri/ccnl"
-        val redisCacheKey = user.email tag "getCCNL"
+        val bodyDto = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
+        val redisCacheKey = user.email tag
+                "getCCNL" tag
+                bodyDto.continuousSearchKey200 tag
+                bodyDto.continuousSearchCondition200
 
         Given("Redis 캐시에 값이 없을 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain(user.accountNumber)
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_CCNL))
             headerDto.transactionContinuation = bodyDto.transactionContinuation
@@ -254,7 +261,6 @@ class TradingServiceTest(
         }
 
         Given("Redis 캐시에 값이 있을 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto CCNLRequestParameterDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와"){
