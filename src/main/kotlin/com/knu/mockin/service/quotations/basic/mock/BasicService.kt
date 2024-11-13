@@ -6,9 +6,13 @@ import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.mock.*
 import com.knu.mockin.model.dto.request.quotations.basic.mock.*
 import com.knu.mockin.model.enum.Constant.MOCK
+import com.knu.mockin.model.enum.TimeConstant.FIFTEEN_MINUTES
+import com.knu.mockin.model.enum.TimeConstant.ONE_MINUTE
+import com.knu.mockin.model.enum.TimeConstant.THIRTY_MINUTES
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.util.ExtensionUtil.orThrow
+import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
@@ -28,10 +32,23 @@ class BasicService(
     ): KISPriceResponseDto {
         val userWithMockKey = getUser(email)
 
+        val redisCacheKey = email tag "getPrice"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+
+        if (cachedValue != null) {
+            return cachedValue toDto KISPriceResponseDto::class.java
+        }
+
         val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.PRICE))
         val requestParameter = priceRequestParameterDto.asDomain()
 
-        return kisBasicClient.getPrice(header, requestParameter).awaitSingle()
+        val response = kisBasicClient
+            .getPrice(header, requestParameter)
+            .awaitSingle()
+        RedisUtil.setData(redisCacheKey, response, ONE_MINUTE)
+
+        return response
     }
 
     suspend fun getDailyPrice(
@@ -40,10 +57,22 @@ class BasicService(
     ): KISDailyPriceResponseDto {
         val userWithMockKey = getUser(email)
 
+        val redisCacheKey = email tag "getDailyPrice"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+
+        if (cachedValue != null) {
+            return cachedValue toDto KISDailyPriceResponseDto::class.java
+        }
+
         val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.DAILY_PRICE))
         val requestParameter = dailyPriceRequestParameterDto.asDomain()
 
-        return kisBasicClient.getDailyPrice(header, requestParameter).awaitSingle()
+        val response = kisBasicClient.getDailyPrice(header, requestParameter).awaitSingle()
+
+        RedisUtil.setData(redisCacheKey, response, FIFTEEN_MINUTES)
+
+        return response
     }
 
     suspend fun getInquireDailyChartPrice(
@@ -52,10 +81,22 @@ class BasicService(
     ): KISInquireDailyChartPriceResponseDto {
         val userWithMockKey = getUser(email)
 
+        val redisCacheKey = email tag "getInquireDailyChartPrice"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+
+        if (cachedValue != null) {
+            return cachedValue toDto KISInquireDailyChartPriceResponseDto::class.java
+        }
+
         val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_DAILY_CHART_PRICE))
         val requestParameter = inquireDailyChartPriceRequestParameterDto.asDomain()
 
-        return kisBasicClient.getInquireDailyChartPrice(header, requestParameter).awaitSingle()
+        val response = kisBasicClient.getInquireDailyChartPrice(header, requestParameter).awaitSingle()
+
+        RedisUtil.setData(redisCacheKey, response, FIFTEEN_MINUTES)
+
+        return response
     }
 
     suspend fun getInquireSearch(
@@ -64,10 +105,22 @@ class BasicService(
     ): KISInquireSearchResponseDto {
         val userWithMockKey = getUser(email)
 
+        val redisCacheKey = email tag "getInquireSearch"
+
+        val cachedValue = RedisUtil.getData(redisCacheKey)
+
+        if (cachedValue != null) {
+            return cachedValue toDto KISInquireSearchResponseDto::class.java
+        }
+
         val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_SEARCH))
         val requestParameter = inquireSearchRequestParameterDto.asDomain()
 
-        return kisBasicClient.getInquireSearch(header, requestParameter).awaitSingle()
+        val response = kisBasicClient.getInquireSearch(header, requestParameter).awaitSingle()
+
+        RedisUtil.setData(redisCacheKey, response, THIRTY_MINUTES)
+
+        return response
     }
 
     private suspend fun getUser(email: String) = userRepository.findByEmailWithMockKey(email)

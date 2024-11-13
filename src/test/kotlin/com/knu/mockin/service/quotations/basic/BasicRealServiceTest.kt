@@ -5,12 +5,17 @@ import com.knu.mockin.kisclient.quotations.basic.KISBasicRealClient
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
 import com.knu.mockin.model.dto.request.quotations.basic.real.*
 import com.knu.mockin.model.entity.UserWithKeyPair
+import com.knu.mockin.model.enum.Constant
+import com.knu.mockin.model.enum.Constant.JWT
+import com.knu.mockin.model.enum.Constant.MOCK
+import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.model.enum.TradeId
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.service.quotations.basic.real.BasicRealService
 import com.knu.mockin.service.util.ServiceUtil.createHeader
 import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -29,24 +34,43 @@ class BasicRealServiceTest(
 
     beforeTest{
         every { userRepository.findByEmailWithRealKey(any()) } returns Mono.just(user)
-        every { RedisUtil.getToken(any()) } returns "token"
+        every { RedisUtil.getToken(user.email tag JWT) } returns "token"
+        every { RedisUtil.getToken(user.email tag MOCK) } returns "token"
+        every { RedisUtil.getToken(user.email tag REAL) } returns "token"
     }
 
     Context("getCountriesHoliday 함수의 경우") {
         val uri = "/quotations/basic/countries-holiday"
+        val redisCacheKey = user.email tag "getCountriesHoliday"
 
-        Given("적절한 dto가 주어질 때") {
+        Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto CountriesHolidayRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.COUNTRIES_HOLIDAY), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCountriesHolidayResponseDto::class.java
 
             When("KIS API로 요청을 보내면") {
+                every { RedisUtil.getData(redisCacheKey) } returns null
                 every { kisBasicRealClient.getCountriesHoliday(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다.") {
                     val result = basicRealService.getCountriesHoliday(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때") {
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto CountriesHolidayRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와") {
+                every { RedisUtil.getData(redisCacheKey) } returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다.") {
+                    val result = basicRealService.getCountriesHoliday(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISCountriesHolidayResponseDto::class.java)
                 }
             }
         }
@@ -54,19 +78,36 @@ class BasicRealServiceTest(
 
     Context("getPriceDetail 함수의 경우") {
         val uri = "/quotations/basic/price-detail"
+        val redisCacheKey = user.email tag "getPriceDetail"
 
-        Given("적절한 dto가 주어질 때") {
+        Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto PriceDetailRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.PRICE_DETAIL), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPriceDetailResponseDto::class.java
 
             When("KIS API로 요청을 보내면") {
+                every { RedisUtil.getData(redisCacheKey) } returns null
                 every { kisBasicRealClient.getPriceDetail(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다.") {
                     val result = basicRealService.getPriceDetail(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때") {
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto PriceDetailRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와") {
+                every { RedisUtil.getData(redisCacheKey) } returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다.") {
+                    val result = basicRealService.getPriceDetail(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISPriceDetailResponseDto::class.java)
                 }
             }
         }
@@ -74,19 +115,36 @@ class BasicRealServiceTest(
 
     Context("getInquireTimeItemChartPrice 함수의 경우") {
         val uri = "/quotations/basic/inquire-time-itemchartprice"
+        val redisCacheKey = user.email tag "getInquireTimeItemChartPrice"
 
-        Given("적절한 dto가 주어질 때") {
+        Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeItemChartPriceRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_ITEM_CHART_PRICE), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireTimeItemChartPriceResponseDto::class.java
 
             When("KIS API로 요청을 보내면") {
+                every { RedisUtil.getData(redisCacheKey) } returns null
                 every { kisBasicRealClient.getInquireTimeItemChartPrice(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다.") {
                     val result = basicRealService.getInquireTimeItemChartPrice(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때") {
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeItemChartPriceRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와") {
+                every { RedisUtil.getData(redisCacheKey) } returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다.") {
+                    val result = basicRealService.getInquireTimeItemChartPrice(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISInquireTimeItemChartPriceResponseDto::class.java)
                 }
             }
         }
@@ -94,19 +152,36 @@ class BasicRealServiceTest(
 
     Context("getInquireTimeIndexChartPrice 함수의 경우") {
         val uri = "/quotations/basic/inquire-time-indexchartprice"
+        val redisCacheKey = user.email tag "getInquireTimeIndexChartPrice"
 
-        Given("적절한 dto가 주어질 때") {
+        Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeIndexChartPriceRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_INDEX_CHART_PRICE), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireTimeIndexChartPriceResponseDto::class.java
 
             When("KIS API로 요청을 보내면") {
+                every { RedisUtil.getData(redisCacheKey) } returns null
                 every { kisBasicRealClient.getInquireTimeIndexChartPrice(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다.") {
                     val result = basicRealService.getInquireTimeIndexChartPrice(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때") {
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeIndexChartPriceRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와") {
+                every { RedisUtil.getData(redisCacheKey) } returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다.") {
+                    val result = basicRealService.getInquireTimeIndexChartPrice(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISInquireTimeIndexChartPriceResponseDto::class.java)
                 }
             }
         }
@@ -114,19 +189,36 @@ class BasicRealServiceTest(
 
     Context("getSearchInfo 함수의 경우") {
         val uri = "/quotations/basic/search-info"
+        val redisCacheKey = user.email tag "getSearchInfo"
 
-        Given("적절한 dto가 주어질 때") {
+        Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto SearchInfoRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISSearchInfoResponseDto::class.java
 
             When("KIS API로 요청을 보내면") {
+                every { RedisUtil.getData(redisCacheKey) } returns null
                 every { kisBasicRealClient.getSearchInfo(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다.") {
                     val result = basicRealService.getSearchInfo(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때") {
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto SearchInfoRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와") {
+                every { RedisUtil.getData(redisCacheKey) } returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다.") {
+                    val result = basicRealService.getSearchInfo(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISSearchInfoResponseDto::class.java)
                 }
             }
         }
@@ -134,19 +226,36 @@ class BasicRealServiceTest(
 
     Context("getInquireAskingPrice 함수의 경우") {
         val uri = "/quotations/basic/inquire-asking-price"
+        val redisCacheKey = user.email tag "getInquireAskingPrice"
 
-        Given("적절한 dto가 주어질 때") {
+        Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireAskingPriceRequestParameterDto::class.java
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_ASKING_PRICE))
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireAskingPriceResponseDto::class.java
 
             When("KIS API로 요청을 보내면") {
+                every { RedisUtil.getData(redisCacheKey) } returns null
                 every { kisBasicRealClient.getInquireAskingPrice(headerDto, requestDto) } returns Mono.just(expectedDto)
+                every { RedisUtil.setData(redisCacheKey, expectedDto, any()) } returns Unit
 
-                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                Then("응답 DTO를 redis에 저장하고, 반환해야 한다.") {
                     val result = basicRealService.getInquireAskingPrice(bodyDto, user.email)
                     result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("Redis 캐시에 값이 있을 때") {
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireAskingPriceRequestParameterDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json")
+
+            When("redis에서 값을 가져와") {
+                every { RedisUtil.getData(redisCacheKey) } returns expectedDto
+
+                Then("응답 DTO를 반환해야 한다.") {
+                    val result = basicRealService.getInquireAskingPrice(bodyDto, user.email)
+                    result shouldBe (expectedDto toDto KISInquireAskingPriceResponseDto::class.java)
                 }
             }
         }
