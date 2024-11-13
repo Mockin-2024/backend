@@ -60,12 +60,17 @@ class LoggingAspectTest :BehaviorSpec({
                 every { methodSignature.name } returns "login"
 
                 Then("결과를 반환한다."){
-                    val result = loggingAspect.logLoginController(joinPoint)
+                    val result = loggingAspect.logControllerWithoutSecurity(joinPoint)
                     StepVerifier.create(result as Publisher<out Any>)
                     .expectNext(response)
                     .verifyComplete()
                 }
             }
         }
+    }
+
+    Context("pointcut test"){
+        loggingAspect.allControllerMethods()
+        loggingAspect.excludedControllerMethods()
     }
 })

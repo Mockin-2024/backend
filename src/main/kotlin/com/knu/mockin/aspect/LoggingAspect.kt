@@ -5,6 +5,7 @@ import com.knu.mockin.logging.utils.LogUtil
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
+import org.aspectj.lang.annotation.Pointcut
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
@@ -18,7 +19,13 @@ import java.time.format.DateTimeFormatter
 class LoggingAspect {
     private val log = LoggerFactory.getLogger(LoggingAspect::class.java)
 
-    @Around("execution(* com.knu.mockin.controller..*(..)) && !execution(* com.knu.mockin.controller.LoginController..*(..))" )
+    @Pointcut("execution(* com.knu.mockin.controller..*(..))")
+    fun allControllerMethods() {}
+
+    @Pointcut("execution(* com.knu.mockin.controller.LoginController..*(..)) || execution(* com.knu.mockin.controller.HealthCheckController..*(..))")
+    fun excludedControllerMethods() {}
+
+    @Around("allControllerMethods() && !excludedControllerMethods()" )
     fun logControllerWithSecurity(joinPoint: ProceedingJoinPoint): Mono<Any?> {
         val traceId = LogUtil.generateTraceId()
         val className = joinPoint.signature.declaringTypeName
@@ -56,8 +63,8 @@ class LoggingAspect {
                     }
             }
     }
-    @Around("execution(* com.knu.mockin.controller.LoginController..*(..))")
-    fun logLoginController(joinPoint: ProceedingJoinPoint): Any {
+    @Around("excludedControllerMethods()")
+    fun logControllerWithoutSecurity(joinPoint: ProceedingJoinPoint): Any {
         val traceId = LogUtil.generateTraceId()
         val className = joinPoint.signature.declaringTypeName
         val methodName = joinPoint.signature.name
@@ -68,7 +75,7 @@ class LoggingAspect {
         val beforeLog = LogControllerEntry(
             timestamp = timestamp,
             traceId = traceId,
-            userId = "login",
+            userId = "none",
             className = className,
             methodName = methodName,
             executionTime = 0,
