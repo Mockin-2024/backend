@@ -68,4 +68,9 @@ class LoggingAspectTest :BehaviorSpec({
             }
         }
     }
+
+    Context("pointcut test"){
+        loggingAspect.allControllerMethods()
+        loggingAspect.excludedControllerMethods()
+    }
 })
