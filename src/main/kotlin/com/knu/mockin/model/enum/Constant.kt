@@ -8,6 +8,7 @@ object Constant {
 }
 
 object TimeConstant{
+    const val ONE_MINUTE = 1L
     const val FIFTEEN_MINUTES = 15L
     const val THIRTY_MINUTES: Long = 30L
     const val ONE_HOUR: Long = 60L
