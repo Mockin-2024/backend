@@ -7,9 +7,14 @@ import com.knu.mockin.model.dto.response.ApprovalKeyResponseDto
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.reflect.MethodSignature
 import org.reactivestreams.Publisher
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
+import org.springframework.security.core.context.SecurityContext
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -18,13 +23,23 @@ class KisClientAspectTest: BehaviorSpec({
     val kisClientAspect = KisClientAspect()
     val joinPoint = mockk<ProceedingJoinPoint>()
     val methodSignature = mockk<MethodSignature>(relaxed = true)
+    val securityContext = mockk<SecurityContext>(relaxed = true)
+    val authentication = mockk<Authentication>(relaxed = true)
 
     beforeTest{
+        mockkStatic(ReactiveSecurityContextHolder::class)
         every { joinPoint.signature } returns methodSignature
         every { methodSignature.declaringTypeName } returns "com.knu.mockin.Oauth2Controller"
         every { methodSignature.name } returns "mock-approval-key"
         every { joinPoint.args } returns arrayOf(Unit)
+
+        every { ReactiveSecurityContextHolder.getContext() } returns Mono.just(securityContext)
+
+        every { securityContext.authentication } returns authentication
+        every { authentication.name } returns "test@knu.ac.kr"
     }
+
+    afterTest { unmockkStatic(ReactiveSecurityContextHolder::class) }
 
     Context("모든 kisclient 패키지 내에서 메소드 실행이 일어날 때"){
         Given("정상 응답, 응답 코드 null"){
