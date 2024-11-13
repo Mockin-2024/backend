@@ -40,7 +40,7 @@ class BasicRealService (
             return cachedValue toDto KISCountriesHolidayResponseDto::class.java
         }
 
-        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.COUNTRIES_HOLIDAY))
+        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.COUNTRIES_HOLIDAY), true)
         val requestParameter = countriesHolidayRequestParameterDto.asDomain()
 
         val response = kisBasicRealClient.getCountriesHoliday(header, requestParameter).awaitSingle()
@@ -64,7 +64,7 @@ class BasicRealService (
             return cachedValue toDto KISPriceDetailResponseDto::class.java
         }
 
-        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.PRICE_DETAIL))
+        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.PRICE_DETAIL), true)
         val requestParameter = priceDetailRequestParameterDto.asDomain()
 
         val response = kisBasicRealClient.getPriceDetail(header, requestParameter).awaitSingle()
@@ -88,7 +88,7 @@ class BasicRealService (
             return cachedValue toDto KISInquireTimeItemChartPriceResponseDto::class.java
         }
 
-        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_ITEM_CHART_PRICE))
+        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_ITEM_CHART_PRICE), true)
         val requestParameter = inquireTimeItemChartPriceRequestParameterDto.asDomain()
 
         val response = kisBasicRealClient.getInquireTimeItemChartPrice(header, requestParameter).awaitSingle()
@@ -112,7 +112,7 @@ class BasicRealService (
             return cachedValue toDto KISInquireTimeIndexChartPriceResponseDto::class.java
         }
 
-        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_INDEX_CHART_PRICE))
+        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_INDEX_CHART_PRICE), true)
         val requestParameter = inquireTimeIndexChartPriceRequestParameterDto.asDomain()
 
         val response = kisBasicRealClient.getInquireTimeIndexChartPrice(header, requestParameter).awaitSingle()
@@ -136,7 +136,7 @@ class BasicRealService (
             return cachedValue toDto KISSearchInfoResponseDto::class.java
         }
 
-        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO))
+        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO), true)
         val requestParameter = searchInfoRequestParameterDto.asDomain()
 
         val response = kisBasicRealClient.getSearchInfo(header, requestParameter).awaitSingle()
@@ -161,7 +161,7 @@ class BasicRealService (
             return cachedValue toDto KISInquireAskingPriceResponseDto::class.java
         }
 
-        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_ASKING_PRICE))
+        val header = createHeader(userWithRealKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_ASKING_PRICE), true)
         val requestParameter = inquireAskingPriceRequestParameterDto.asDomain()
 
         val response = kisBasicRealClient.getInquireAskingPrice(header, requestParameter).awaitSingle()
