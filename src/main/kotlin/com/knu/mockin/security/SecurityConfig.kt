@@ -44,6 +44,7 @@ class SecurityConfig(
                     .pathMatchers("/docs/**", "/health").permitAll()
                     .anyExchange().authenticated()
             }
+            .cors { cors -> cors.disable() }
             .addFilterAt(filter, SecurityWebFiltersOrder.AUTHENTICATION)
             .httpBasic { it.disable() }
             .formLogin { it.disable() }
