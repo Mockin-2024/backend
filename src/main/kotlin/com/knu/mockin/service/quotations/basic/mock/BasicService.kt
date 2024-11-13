@@ -14,6 +14,7 @@ import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.stereotype.Service
+import com.knu.mockin.service.util.ServiceUtil.createHeader
 
 @Service
 class BasicService(
@@ -21,26 +22,13 @@ class BasicService(
     private val userRepository: UserRepository,
 ) {
 
-    private suspend fun getUserWithKey(email: String) = userRepository.findByEmailWithMockKey(email)
-        .orThrow(ErrorCode.USER_NOT_FOUND)
-        .awaitFirst()
-
-    private suspend fun createHeader(email: String, tradeId: TradeId): KISOverSeaRequestHeaderDto {
-        val userWithKey = getUserWithKey(email)
-        return KISOverSeaRequestHeaderDto(
-            authorization = "Bearer ${RedisUtil.getToken(userWithKey.email tag MOCK)}",
-            appKey = userWithKey.appKey,
-            appSecret = userWithKey.appSecret,
-            transactionId = TradeId.getTradeIdByEnum(tradeId)
-        )
-    }
-
     suspend fun getPrice(
         priceRequestParameterDto: PriceRequestParameterDto,
         email: String
     ): KISPriceResponseDto {
-        val header = createHeader(email, TradeId.PRICE)
+        val userWithMockKey = getUser(email)
 
+        val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.PRICE))
         val requestParameter = priceRequestParameterDto.asDomain()
 
         return kisBasicClient.getPrice(header, requestParameter).awaitSingle()
@@ -50,8 +38,11 @@ class BasicService(
         dailyPriceRequestParameterDto: DailyPriceRequestParameterDto,
         email: String
     ): KISDailyPriceResponseDto {
-        val header = createHeader(email, TradeId.DAILY_PRICE)
+        val userWithMockKey = getUser(email)
+
+        val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.DAILY_PRICE))
         val requestParameter = dailyPriceRequestParameterDto.asDomain()
+
         return kisBasicClient.getDailyPrice(header, requestParameter).awaitSingle()
     }
 
@@ -59,8 +50,11 @@ class BasicService(
         inquireDailyChartPriceRequestParameterDto: InquireDailyChartPriceRequestParameterDto,
         email: String
     ): KISInquireDailyChartPriceResponseDto {
-        val header = createHeader(email, TradeId.INQUIRE_DAILY_CHART_PRICE)
+        val userWithMockKey = getUser(email)
+
+        val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_DAILY_CHART_PRICE))
         val requestParameter = inquireDailyChartPriceRequestParameterDto.asDomain()
+
         return kisBasicClient.getInquireDailyChartPrice(header, requestParameter).awaitSingle()
     }
 
@@ -68,8 +62,15 @@ class BasicService(
         inquireSearchRequestParameterDto: InquireSearchRequestParameterDto,
         email: String
     ): KISInquireSearchResponseDto {
-        val header = createHeader(email, TradeId.INQUIRE_SEARCH)
+        val userWithMockKey = getUser(email)
+
+        val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_SEARCH))
         val requestParameter = inquireSearchRequestParameterDto.asDomain()
+
         return kisBasicClient.getInquireSearch(header, requestParameter).awaitSingle()
     }
+
+    private suspend fun getUser(email: String) = userRepository.findByEmailWithMockKey(email)
+        .orThrow(ErrorCode.USER_NOT_FOUND)
+        .awaitFirst()
 }
