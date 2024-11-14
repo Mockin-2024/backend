@@ -32,7 +32,7 @@ class BasicRealService (
     ): KISCountriesHolidayResponseDto {
         val userWithRealKey = getUser(email)
 
-        val redisCacheKey = email tag "getCountriesHoliday"
+        val redisCacheKey = "getCountriesHoliday" tag countriesHolidayRequestParameterDto.tradDt
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -56,7 +56,7 @@ class BasicRealService (
     ): KISPriceDetailResponseDto {
         val userWithRealKey = getUser(email)
 
-        val redisCacheKey = email tag "getPriceDetail"
+        val redisCacheKey = "getPriceDetail" tag priceDetailRequestParameterDto.SYMB
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -80,7 +80,10 @@ class BasicRealService (
     ): KISInquireTimeItemChartPriceResponseDto {
         val userWithRealKey = getUser(email)
 
-        val redisCacheKey = email tag "getInquireTimeItemChartPrice"
+        val redisCacheKey = "getInquireTimeItemChartPrice" tag
+                inquireTimeItemChartPriceRequestParameterDto.SYMB tag
+                inquireTimeItemChartPriceRequestParameterDto.NEXT tag
+                inquireTimeItemChartPriceRequestParameterDto.KEYB
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -104,7 +107,12 @@ class BasicRealService (
     ): KISInquireTimeIndexChartPriceResponseDto {
         val userWithRealKey = getUser(email)
 
-        val redisCacheKey = email tag "getInquireTimeIndexChartPrice"
+        val redisCacheKey = "getInquireTimeIndexChartPrice" tag
+                inquireTimeIndexChartPriceRequestParameterDto.fidInputIscd tag
+                inquireTimeIndexChartPriceRequestParameterDto.fidCondMrktDivCode tag
+                inquireTimeIndexChartPriceRequestParameterDto.fidPwDataIncuYn tag
+                inquireTimeIndexChartPriceRequestParameterDto.fidHourClsCode
+
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -128,7 +136,7 @@ class BasicRealService (
     ): KISSearchInfoResponseDto {
         val userWithRealKey = getUser(email)
 
-        val redisCacheKey = email tag "getSearchInfo"
+        val redisCacheKey = "getSearchInfo" tag searchInfoRequestParameterDto.pdno
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -153,7 +161,7 @@ class BasicRealService (
     ): KISInquireAskingPriceResponseDto {
         val userWithRealKey = getUser(email)
 
-        val redisCacheKey = email tag "getInquireAskingPrice"
+        val redisCacheKey = "getInquireAskingPrice" tag inquireAskingPriceRequestParameterDto.SYMB
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
