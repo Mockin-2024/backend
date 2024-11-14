@@ -41,10 +41,10 @@ class BasicRealServiceTest(
 
     Context("getCountriesHoliday 함수의 경우") {
         val uri = "/quotations/basic/countries-holiday"
-        val redisCacheKey = user.email tag "getCountriesHoliday"
 
         Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto CountriesHolidayRequestParameterDto::class.java
+            val redisCacheKey = "getCountriesHoliday" tag bodyDto.tradDt
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.COUNTRIES_HOLIDAY), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISCountriesHolidayResponseDto::class.java
@@ -63,6 +63,7 @@ class BasicRealServiceTest(
 
         Given("Redis 캐시에 값이 있을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto CountriesHolidayRequestParameterDto::class.java
+            val redisCacheKey = "getCountriesHoliday" tag bodyDto.tradDt
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와") {
@@ -78,10 +79,10 @@ class BasicRealServiceTest(
 
     Context("getPriceDetail 함수의 경우") {
         val uri = "/quotations/basic/price-detail"
-        val redisCacheKey = user.email tag "getPriceDetail"
 
         Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto PriceDetailRequestParameterDto::class.java
+            val redisCacheKey = "getPriceDetail" tag bodyDto.SYMB
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.PRICE_DETAIL), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISPriceDetailResponseDto::class.java
@@ -100,6 +101,7 @@ class BasicRealServiceTest(
 
         Given("Redis 캐시에 값이 있을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto PriceDetailRequestParameterDto::class.java
+            val redisCacheKey = "getPriceDetail" tag bodyDto.SYMB
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와") {
@@ -115,10 +117,13 @@ class BasicRealServiceTest(
 
     Context("getInquireTimeItemChartPrice 함수의 경우") {
         val uri = "/quotations/basic/inquire-time-itemchartprice"
-        val redisCacheKey = user.email tag "getInquireTimeItemChartPrice"
 
         Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeItemChartPriceRequestParameterDto::class.java
+            val redisCacheKey = "getInquireTimeItemChartPrice" tag
+                    bodyDto.SYMB tag
+                    bodyDto.NEXT tag
+                    bodyDto.KEYB
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_ITEM_CHART_PRICE), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireTimeItemChartPriceResponseDto::class.java
@@ -137,6 +142,10 @@ class BasicRealServiceTest(
 
         Given("Redis 캐시에 값이 있을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeItemChartPriceRequestParameterDto::class.java
+            val redisCacheKey = "getInquireTimeItemChartPrice" tag
+                    bodyDto.SYMB tag
+                    bodyDto.NEXT tag
+                    bodyDto.KEYB
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와") {
@@ -152,10 +161,14 @@ class BasicRealServiceTest(
 
     Context("getInquireTimeIndexChartPrice 함수의 경우") {
         val uri = "/quotations/basic/inquire-time-indexchartprice"
-        val redisCacheKey = user.email tag "getInquireTimeIndexChartPrice"
 
         Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeIndexChartPriceRequestParameterDto::class.java
+            val redisCacheKey = "getInquireTimeIndexChartPrice" tag
+                    bodyDto.fidInputIscd tag
+                    bodyDto.fidCondMrktDivCode tag
+                    bodyDto.fidPwDataIncuYn tag
+                    bodyDto.fidHourClsCode
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_TIME_INDEX_CHART_PRICE), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireTimeIndexChartPriceResponseDto::class.java
@@ -174,6 +187,11 @@ class BasicRealServiceTest(
 
         Given("Redis 캐시에 값이 있을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireTimeIndexChartPriceRequestParameterDto::class.java
+            val redisCacheKey = "getInquireTimeIndexChartPrice" tag
+                    bodyDto.fidInputIscd tag
+                    bodyDto.fidCondMrktDivCode tag
+                    bodyDto.fidPwDataIncuYn tag
+                    bodyDto.fidHourClsCode
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와") {
@@ -189,10 +207,10 @@ class BasicRealServiceTest(
 
     Context("getSearchInfo 함수의 경우") {
         val uri = "/quotations/basic/search-info"
-        val redisCacheKey = user.email tag "getSearchInfo"
 
         Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto SearchInfoRequestParameterDto::class.java
+            val redisCacheKey = "getSearchInfo" tag bodyDto.pdno
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.SEARCH_INFO), true)
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISSearchInfoResponseDto::class.java
@@ -211,6 +229,7 @@ class BasicRealServiceTest(
 
         Given("Redis 캐시에 값이 있을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto SearchInfoRequestParameterDto::class.java
+            val redisCacheKey = "getSearchInfo" tag bodyDto.pdno
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와") {
@@ -226,10 +245,10 @@ class BasicRealServiceTest(
 
     Context("getInquireAskingPrice 함수의 경우") {
         val uri = "/quotations/basic/inquire-asking-price"
-        val redisCacheKey = user.email tag "getInquireAskingPrice"
 
         Given("Redis 캐시에 값이 없을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireAskingPriceRequestParameterDto::class.java
+            val redisCacheKey = "getInquireAskingPrice" tag bodyDto.SYMB
             val requestDto = bodyDto.asDomain()
             val headerDto = createHeader(user, TradeId.getTradeIdByEnum(TradeId.INQUIRE_ASKING_PRICE))
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto KISInquireAskingPriceResponseDto::class.java
@@ -248,6 +267,7 @@ class BasicRealServiceTest(
 
         Given("Redis 캐시에 값이 있을 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto InquireAskingPriceRequestParameterDto::class.java
+            val redisCacheKey = "getInquireAskingPrice" tag bodyDto.SYMB
             val expectedDto = readJsonFile(uri, "responseDto.json")
 
             When("redis에서 값을 가져와") {
