@@ -32,7 +32,7 @@ class BasicService(
     ): KISPriceResponseDto {
         val userWithMockKey = getUser(email)
 
-        val redisCacheKey = email tag "getPrice"
+        val redisCacheKey = "getPrice" tag priceRequestParameterDto.SYMB
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -57,7 +57,12 @@ class BasicService(
     ): KISDailyPriceResponseDto {
         val userWithMockKey = getUser(email)
 
-        val redisCacheKey = email tag "getDailyPrice"
+        val redisCacheKey = "getDailyPrice" tag
+                dailyPriceRequestParameterDto.SYMB tag
+                dailyPriceRequestParameterDto.GUBN tag
+                dailyPriceRequestParameterDto.MODP tag
+                dailyPriceRequestParameterDto.BYMD
+
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -81,7 +86,12 @@ class BasicService(
     ): KISInquireDailyChartPriceResponseDto {
         val userWithMockKey = getUser(email)
 
-        val redisCacheKey = email tag "getInquireDailyChartPrice"
+        val redisCacheKey = "getInquireDailyChartPrice" tag
+                inquireDailyChartPriceRequestParameterDto.fidInputIscd tag
+                inquireDailyChartPriceRequestParameterDto.fidCondMrktDivCode tag
+                inquireDailyChartPriceRequestParameterDto.fidPeriodDivCode tag
+                inquireDailyChartPriceRequestParameterDto.fidInputDate1 tag
+                inquireDailyChartPriceRequestParameterDto.fidInputDate2
 
         val cachedValue = RedisUtil.getData(redisCacheKey)
 
@@ -105,20 +115,22 @@ class BasicService(
     ): KISInquireSearchResponseDto {
         val userWithMockKey = getUser(email)
 
-        val redisCacheKey = email tag "getInquireSearch"
-
-        val cachedValue = RedisUtil.getData(redisCacheKey)
-
-        if (cachedValue != null) {
-            return cachedValue toDto KISInquireSearchResponseDto::class.java
-        }
+//        val redisCacheKey = "getInquireSearch" tag
+//                inquireSearchRequestParameterDto.EXCD tag
+//                inquireSearchRequestParameterDto
+//
+//        val cachedValue = RedisUtil.getData(redisCacheKey)
+//
+//        if (cachedValue != null) {
+//            return cachedValue toDto KISInquireSearchResponseDto::class.java
+//        }
 
         val header = createHeader(userWithMockKey, TradeId.getTradeIdByEnum(TradeId.INQUIRE_SEARCH))
         val requestParameter = inquireSearchRequestParameterDto.asDomain()
 
         val response = kisBasicClient.getInquireSearch(header, requestParameter).awaitSingle()
 
-        RedisUtil.setData(redisCacheKey, response, THIRTY_MINUTES)
+//        RedisUtil.setData(redisCacheKey, response, THIRTY_MINUTES)
 
         return response
     }
