@@ -17,7 +17,7 @@
 include::{snippets}/favorite/add/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/favorite/add/request-fields.adoc
+include::{snippets}/favorite/add/request-fields.adoc[]
 
 === Response
 include::{snippets}/favorite/add/http-response.adoc[]
@@ -47,7 +47,7 @@ include::{snippets}/favorite/read/response-fields.adoc[]
 include::{snippets}/favorite/delete/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/favorite/delete/request-fields.adoc
+include::{snippets}/favorite/delete/request-fields.adoc[]
 
 === Response
 include::{snippets}/favorite/delete/http-response.adoc[]
