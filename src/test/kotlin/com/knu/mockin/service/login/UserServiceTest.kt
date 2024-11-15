@@ -6,17 +6,22 @@ import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.request.login.Jwt
 import com.knu.mockin.model.dto.request.login.LoginRequestDto
 import com.knu.mockin.model.dto.request.login.SignupRequestDto
+import com.knu.mockin.model.dto.request.login.TokenValidationRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.User
+import com.knu.mockin.model.enum.Constant.JWT
 import com.knu.mockin.repository.UserRepository
 import com.knu.mockin.security.BearerToken
 import com.knu.mockin.security.JwtUtil
 import com.knu.mockin.util.ExtensionUtil.toDto
+import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import reactor.core.publisher.Mono
 
@@ -27,6 +32,9 @@ class UserServiceTest(
 ) :BehaviorSpec({
     val userService = UserService(encoder, jwtUtil, userRepository)
     val user = readJsonFile("setting", "user.json") toDto User::class.java
+
+    val redisTemplate = mockk<RedisTemplate<String, String>>()
+    RedisUtil.init(redisTemplate)
 
     val baseUri = "auth"
     Context("createUser 함수의 경우"){
@@ -110,6 +118,40 @@ class UserServiceTest(
                         userService.loginUser(bodyDto)
                     }
                     result shouldBe CustomException(ErrorCode.INVALID_LOGIN)
+                }
+            }
+        }
+    }
+
+    Context("validateToken 함수의 경우"){
+        val uri = "$baseUri/validate-token"
+
+        Given("검증할 토큰이 올바른 경우"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto TokenValidationRequestDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+
+            When("redis에 있는 토큰과 같은 지 검증하고"){
+                every { RedisUtil.getToken(bodyDto.email tag JWT) } returns expectedDto.message
+
+                Then("같으면 검증 성공한 토큰을 반환해야 한다."){
+                    val result = userService.validateToken(bodyDto)
+
+                    result shouldBe expectedDto
+                }
+            }
+        }
+
+        Given("검증할 토큰이 잘못된 경우"){
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto TokenValidationRequestDto::class.java
+
+            When("redis에 있는 토큰과 같은 지 검증하고"){
+                every { RedisUtil.getToken(bodyDto.email tag JWT) } returns "1243"
+
+                Then("다르면 401 에러를 받아야 한다."){
+                    val result = shouldThrowExactly<CustomException> {
+                        userService.validateToken(bodyDto)
+                    }
+                    result shouldBe CustomException(ErrorCode.TOKEN_EXPIRED)
                 }
             }
         }
