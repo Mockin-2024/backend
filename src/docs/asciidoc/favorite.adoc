@@ -1,0 +1,57 @@
+:snippets: ./build/generated-snippets
+
+= Favorite
+
+== 목차
+
+* xref:/docs/index.html[메인으로 돌아가기]
+* <<add, 즐겨찾기 추가>>
+* <<read, 즐겨찾기 리스트>>
+* <<delete, 즐겨찾기 삭제>>
+
+
+[#add]
+== 즐겨찾기 추가
+
+=== Request
+include::{snippets}/favorite/add/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/favorite/add/request-fields.adoc
+
+=== Response
+include::{snippets}/favorite/add/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/favorite/add//response-fields.adoc[]
+
+[#read]
+== 즐겨찾기 리스트
+
+=== Request
+include::{snippets}/favorite/read/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/favorite/read/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/favorite/read/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/favorite/read/response-fields.adoc[]
+
+[#delete]
+== 즐겨찾기 삭제
+
+=== Request
+include::{snippets}/favorite/delete/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/favorite/delete/request-fields.adoc
+
+=== Response
+include::{snippets}/favorite/delete/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/favorite/delete/response-fields.adoc[]
+
