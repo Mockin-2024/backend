@@ -4,6 +4,7 @@
     import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
     import com.knu.mockin.dsl.RestDocsUtils.toBody
     import com.knu.mockin.model.dto.request.login.Jwt
+    import com.knu.mockin.model.dto.request.login.TokenValidationRequestDto
     import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
     import com.knu.mockin.model.entity.User
     import com.knu.mockin.repository.UserRepository
@@ -107,6 +108,21 @@
             val requestDto = readJsonFile(uri, "requestDto.json")
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
             coEvery { emailService.checkAuthNum(any()) } returns expectedDto
+
+            val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
+
+            response.makeDocument(
+                uri,
+                requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
+                responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
+            )
+        }
+
+        "POST /auth/validate-token" {
+            val uri = "${baseUri}/validate-token"
+            val requestDto = readJsonFile(uri, "requestDto.json")
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+            coEvery { userService.validateToken(requestDto toDto TokenValidationRequestDto::class.java) } returns expectedDto
 
             val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
