@@ -1,7 +1,5 @@
 package com.knu.mockin.security
 
-import com.knu.mockin.exception.CustomException
-import com.knu.mockin.exception.ErrorCode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every
 import io.mockk.mockk
