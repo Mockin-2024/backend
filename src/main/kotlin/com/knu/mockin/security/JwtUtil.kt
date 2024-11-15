@@ -35,7 +35,7 @@ class JwtUtil {
             .signWith(key)
 
         val token = builder.compact()
-        RedisUtil.saveToken(username tag JWT, token, Duration.ofMinutes(60))
+        RedisUtil.saveToken(username tag JWT, token, Duration.ofDays(1))
 
         return BearerToken(token)
 
