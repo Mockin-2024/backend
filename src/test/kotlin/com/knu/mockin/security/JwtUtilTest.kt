@@ -3,8 +3,6 @@ package com.knu.mockin.security
 import com.knu.mockin.model.enum.Constant.JWT
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jws
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -12,8 +10,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.springframework.data.redis.core.RedisTemplate
 import java.time.Duration
-import java.time.Instant
-import java.util.*
 
 class JwtUtilTest :BehaviorSpec({
     val redisTemplate = mockk<RedisTemplate<String, String>>()
@@ -22,7 +18,7 @@ class JwtUtilTest :BehaviorSpec({
     val password = "1111"
 
     beforeTest {
-        every { RedisUtil.saveToken(username tag JWT, any(), Duration.ofMinutes(60) ) } returns Unit
+        every { RedisUtil.saveToken(username tag JWT, any(), Duration.ofDays(1) ) } returns Unit
     }
 
     Context("JwtUtil 테스트"){
@@ -36,7 +32,7 @@ class JwtUtilTest :BehaviorSpec({
                 Then("토큰을 생성한 후 redis에 저장한다.") {
                     jwtUtil.generate(username)
                     verify {
-                        RedisUtil.saveToken(username tag JWT, any(), Duration.ofMinutes(60) )
+                        RedisUtil.saveToken(username tag JWT, any(), Duration.ofDays(1) )
                     }
                 }
             }

@@ -53,5 +53,12 @@ class LoginController (
         return ResponseEntity.ok(result)
     }
 
+    @PostMapping("validate-token")
+    suspend fun validateToken(
+        @RequestBody requestDto: TokenValidationRequestDto
+    ): ResponseEntity<SimpleMessageResponseDto> {
+        val result = userService.validateToken(requestDto)
 
+        return ResponseEntity.ok(result)
+    }
 }

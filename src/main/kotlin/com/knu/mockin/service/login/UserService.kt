@@ -5,10 +5,15 @@ import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.model.dto.request.login.Jwt
 import com.knu.mockin.model.dto.request.login.LoginRequestDto
 import com.knu.mockin.model.dto.request.login.SignupRequestDto
+import com.knu.mockin.model.dto.request.login.TokenValidationRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.User
+import com.knu.mockin.model.enum.Constant.JWT
 import com.knu.mockin.repository.UserRepository
+import com.knu.mockin.security.BearerToken
 import com.knu.mockin.security.JwtUtil
+import com.knu.mockin.util.RedisUtil
+import com.knu.mockin.util.tag
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -44,14 +49,30 @@ class UserService(
     suspend fun loginUser(loginRequestDto: LoginRequestDto): Jwt {
         val user = userRepository.findByEmail(loginRequestDto.email).awaitSingleOrNull()
 
-        // 사용자 검증 및 비밀번호 비교
         user?.let {
             if (encoder.matches(loginRequestDto.password, it.password)) {
-                return Jwt(jwtUtil.generate(it.email).value) // JWT 발급
+                val storedToken = RedisUtil.getToken(user.email tag JWT)
+
+                if (storedToken != null) {
+                    return Jwt(BearerToken(storedToken).value)
+                }
+
+                return Jwt(jwtUtil.generate(it.email).value)
             }
         }
 
         throw CustomException(ErrorCode.INVALID_LOGIN)
     }
 
+    suspend fun validateToken(
+        requestDto: TokenValidationRequestDto
+    ): SimpleMessageResponseDto {
+        val storedToken = RedisUtil.getToken(requestDto.email tag JWT)
+
+        if (requestDto.token == storedToken) {
+            return SimpleMessageResponseDto(storedToken)
+        }
+
+        throw CustomException(ErrorCode.TOKEN_EXPIRED)
+    }
 }
