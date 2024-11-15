@@ -79,13 +79,26 @@ class UserServiceTest(
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto LoginRequestDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto Jwt::class.java
 
-            When("요청 dto의 패스워드가 db에 등록된 것과 같으면"){
+            When("이메일, 패스워드가 적절하고, 토큰이 redis에 없으면"){
                 every { userRepository.findByEmail(bodyDto.email) } returns Mono.just(user)
                 every { encoder.matches(any(), any()) } returns true
+                every { RedisUtil.getToken(bodyDto.email tag JWT) } returns null
                 every { jwtUtil.generate(user.email) } returns BearerToken(expectedDto.token)
 
                 Then("JWT 토큰이 담긴 Dto를 정상적으로 받아야 한다."){
                     val result = userService.loginUser(bodyDto)
+                    result shouldBe expectedDto
+                }
+            }
+
+            When("이메일, 패스워드가 적절하고, 토큰이 redis에 있으면"){
+                every { userRepository.findByEmail(bodyDto.email) } returns Mono.just(user)
+                every { encoder.matches(any(), any()) } returns true
+                every { RedisUtil.getToken(bodyDto.email tag JWT) } returns expectedDto.token
+
+                Then("JWT 토큰이 담긴 Dto를 정상적으로 받아야 한다."){
+                    val result = userService.loginUser(bodyDto)
+
                     result shouldBe expectedDto
                 }
             }
