@@ -9,6 +9,7 @@
 * <<send, 이메일 전송>>
 * <<login, 로그인>>
 * <<check, 이메일 인증>>
+* <<validate-token, 토큰 검증>>
 
 
 [#signup]
@@ -71,3 +72,18 @@ include::{snippets}/auth/check/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/auth/check/response-fields.adoc[]
+
+[#validate-token]
+== 토큰 검증
+
+=== Request
+include::{snippets}/auth/validate-token/http-request.adoc[]
+
+=== Request-Field
+include::{snippets}/auth/validate-token/request-fields.adoc[]
+
+=== Response
+include::{snippets}/auth/validate-token/http-response.adoc[]
+
+=== Response-Field
+include::{snippets}/auth/validate-token/response-fields.adoc[]
