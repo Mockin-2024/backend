@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
@@ -25,6 +28,18 @@ class SecurityConfig(
     val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
     val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
 ) {
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowCredentials = true
+        configuration.addAllowedOriginPattern("*")
+        configuration.addAllowedHeader("*")
+        configuration.addAllowedMethod("*")
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -44,7 +59,7 @@ class SecurityConfig(
                     .pathMatchers("/docs/**", "/health").permitAll()
                     .anyExchange().authenticated()
             }
-            .cors { cors -> cors.disable() }
+            .cors { cors -> cors.configurationSource(corsConfigurationSource())}
             .addFilterAt(filter, SecurityWebFiltersOrder.AUTHENTICATION)
             .httpBasic { it.disable() }
             .formLogin { it.disable() }
