@@ -66,11 +66,11 @@ class UserService(
 
     suspend fun validateToken(
         requestDto: TokenValidationRequestDto
-    ): SimpleMessageResponseDto {
+    ): Jwt {
         val storedToken = RedisUtil.getToken(requestDto.email tag JWT)
 
         if (requestDto.token == storedToken) {
-            return SimpleMessageResponseDto(storedToken)
+            return Jwt(jwtUtil.generate(requestDto.email).value)
         }
 
         throw CustomException(ErrorCode.TOKEN_EXPIRED)
