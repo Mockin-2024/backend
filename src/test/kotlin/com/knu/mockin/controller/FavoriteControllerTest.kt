@@ -55,11 +55,11 @@ class FavoriteControllerTest(
 
     val baseUri = "favorite"
 
-    "POST /favorite/add" {
-        val uri = "${baseUri}/add"
+    "POST /favorite/select" {
+        val uri = "${baseUri}/select"
         val requestDto = readJsonFile(uri, "requestDto.json")
         val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
-        coEvery { favoriteService.addFavorite(any(), any()) } returns expectedDto
+        coEvery { favoriteService.selectFavorite(any(), any()) } returns expectedDto
 
         val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
 
@@ -84,20 +84,4 @@ class FavoriteControllerTest(
             responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
         )
     }
-
-    "DELETE /favorite/delete" {
-        val uri = "${baseUri}/delete"
-        val requestDto = readJsonFile(uri, "requestDto.json")
-        val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
-        coEvery { favoriteService.deleteFavorite(any(), any()) } returns expectedDto
-
-        val response = webTestClient.deleteWithBody(uri, requestDto, expectedDto)
-
-        response.makeDocument(
-            uri,
-            requestBody(readJsonFile(uri, "requestDtoDescription.json").toBody()),
-            responseBody(readJsonFile(uri, "responseDtoDescription.json").toBody())
-        )
-    }
-
 })

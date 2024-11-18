@@ -27,19 +27,29 @@ class FavoriteServiceTest(
 
     val baseUri = "/favorite"
 
-    Context("add 함수의 경우"){
-        val uri = "$baseUri/add"
+    Context("select 함수의 경우") {
+        val uri = "$baseUri/select"
 
-        Given("적절한 dto가 주어질 때"){
+        Given("적절한 dto가 주어질 때") {
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto FavoriteDto::class.java
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
 
-            When("즐겨찾기를 정상적으로 등록한 후"){
-                every { favoriteRepository.save(favorite) } returns Mono.just(favorite)
+            When("즐겨찾기가 존재하지 않아 등록할 경우") {
+                every { favoriteRepository.readByEmailAndSymb(any()) } returns Mono.empty()
+                every { favoriteRepository.save(any()) } returns Mono.just(favorite)
 
-                Then("응답 DTO를 정상적으로 받아야 한다."){
-                    val result = favoriteService.addFavorite(bodyDto, user.email)
-                    result shouldBe expectedDto
+                Then("Add Complete 메시지를 반환해야 한다.") {
+                    val result = favoriteService.selectFavorite(bodyDto, user.email)
+                    result shouldBe SimpleMessageResponseDto("Add Complete")
+                }
+            }
+
+            When("즐겨찾기가 이미 존재하여 삭제할 경우") {
+                every { favoriteRepository.readByEmailAndSymb(any()) } returns Mono.just(favorite)
+                every { favoriteRepository.deleteByEmailAndExcdAndSymb(any()) } returns Mono.empty()
+
+                Then("Delete Complete 메시지를 반환해야 한다.") {
+                    val result = favoriteService.selectFavorite(bodyDto, user.email)
+                    result shouldBe SimpleMessageResponseDto("Delete Complete")
                 }
             }
         }
@@ -67,24 +77,6 @@ class FavoriteServiceTest(
                 Then("빈 리스트를 반환해야 한다.") {
                     val result = favoriteService.readAllFavorite(user.email)
                     result shouldBe FavoriteListDto(emptyList())
-                }
-            }
-        }
-    }
-
-    Context("delete 함수의 경우"){
-        val uri = "$baseUri/delete"
-
-        Given("적절한 dto가 주어질 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto FavoriteDto::class.java
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
-
-            When("즐겨찾기를 정상적으로 삭제한 후"){
-                every { favoriteRepository.deleteByEmailAndExcdAndSymb(favorite) } returns Mono.empty()
-
-                Then("응답 DTO를 정상적으로 받아야 한다."){
-                    val result = favoriteService.deleteFavorite(bodyDto, user.email)
-                    result shouldBe expectedDto
                 }
             }
         }
