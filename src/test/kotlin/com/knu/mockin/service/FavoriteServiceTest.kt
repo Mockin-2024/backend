@@ -52,10 +52,10 @@ class FavoriteServiceTest(
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto EmailRequestDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto FavoriteListDto::class.java
 
-            When("즐겨찾기를 정상적으로 읽어온 후") {
+            When("즐겨찾기가 있을 경우") {
                 every { favoriteRepository.readByEmail(user.email) } returns Flux.just(favorite)
 
-                Then("응답 DTO를 정상적으로 받아야 한다.") {
+                Then("즐겨찾기가 담긴 리스트를 반환해야 한다.") {
                     val result = favoriteService.readAllFavorite(user.email)
                     result shouldBe expectedDto
                 }
@@ -79,7 +79,7 @@ class FavoriteServiceTest(
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto FavoriteDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
 
-            When("즐겨찾기를 정상적으로 등록한 후"){
+            When("즐겨찾기를 정상적으로 삭제한 후"){
                 every { favoriteRepository.deleteByEmailAndExcdAndSymb(favorite) } returns Mono.empty()
 
                 Then("응답 DTO를 정상적으로 받아야 한다."){
