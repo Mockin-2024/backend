@@ -29,13 +29,14 @@ class TradingServiceTest(
     val user = readJsonFile("setting", "userWithKeyPair.json") toDto UserWithKeyPair::class.java
     val redisTemplate = mockk<RedisTemplate<String, String>>()
     RedisUtil.init(redisTemplate)
-
+    val mockKeys = setOf("email-tag1-tag2", "email-tag1-tag3")
     beforeTest{
         every { userRepository.findByEmailWithMockKey(any()) } returns Mono.just(user)
         every { RedisUtil.getToken(user.email tag JWT) } returns "token"
         every { RedisUtil.getToken(user.email tag MOCK) } returns "token"
         every { RedisUtil.getToken(user.email tag REAL) } returns "token"
-        every { RedisUtil.deleteData(any())} returns true
+        every { redisTemplate.keys(any()) } returns mockKeys
+        every { RedisUtil.deleteData(any()) } returns true
     }
 
     val baseUri = "/trading"

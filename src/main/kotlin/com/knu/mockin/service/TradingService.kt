@@ -31,9 +31,9 @@ class TradingService(
         val headerDto = createHeader(userWithMockKey, bodyDto.transactionId)
         val kisOrderRequestBodyDto = bodyDto.asDomain(userWithMockKey.accountNumber)
 
-        RedisUtil.deleteData(email tag "getNCCS")
-        RedisUtil.deleteData(email tag "getCCNL")
-        RedisUtil.deleteData(email tag "getPresentBalance")
+        RedisUtil.deleteByPattern(email tag "getNCCS" tag "*")
+        RedisUtil.deleteByPattern(email tag "getCCNL" tag "*")
+        RedisUtil.deleteByPattern(email tag "getPresentBalance" tag "*")
 
         return kisTradingClient
             .postOrder(headerDto, kisOrderRequestBodyDto)
@@ -49,9 +49,9 @@ class TradingService(
         val headerDto = createHeader(userWithMockKey, bodyDto.transactionId)
         val kisOrderReverseRequestBodyDto = bodyDto.asDomain(userWithMockKey.accountNumber)
 
-        RedisUtil.deleteData(email tag "getNCCS")
-        RedisUtil.deleteData(email tag "getCCNL")
-        RedisUtil.deleteData(email tag "getPresentBalance")
+        RedisUtil.deleteByPattern(email tag "getNCCS" tag "*")
+        RedisUtil.deleteByPattern(email tag "getCCNL" tag "*")
+        RedisUtil.deleteByPattern(email tag "getPresentBalance" tag "*")
 
         return kisTradingClient
             .postOrderReverse(headerDto, kisOrderReverseRequestBodyDto)

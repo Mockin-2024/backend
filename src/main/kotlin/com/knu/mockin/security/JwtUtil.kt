@@ -27,7 +27,7 @@ class JwtUtil {
     private val key = Keys.hmacShaKeyFor("HzA9XwnQLwwPt2Qjn06LirX3zXCYsKXqOuNXm63Ex9o=".toByteArray())
     private val parser = Jwts.parserBuilder().setSigningKey(key).build()
 
-    fun generate(username: String, expiration: Long = 60): BearerToken {
+    fun generate(username: String, expiration: Long = 1440): BearerToken {
         val builder = Jwts.builder()
             .setSubject(username)
             .setIssuedAt(Date.from(Instant.now()))
