@@ -21,5 +21,7 @@ interface FavoriteRepository : ReactiveCrudRepository<Favorite, String> {
 
     fun readByEmail(email: String): Flux<Favorite>
 
+    @Query("SELECT * FROM favorite WHERE email = :#{#favorite.email} AND symb = :#{#favorite.symb}")
+    fun readByEmailAndSymb(favorite: Favorite): Mono<Favorite>
 
 }

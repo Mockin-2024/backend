@@ -15,15 +15,22 @@ class FavoriteService (
     private val favoriteRepository: FavoriteRepository,
 ) {
 
-    suspend fun addFavorite(
+    suspend fun selectFavorite(
         favoriteDto: FavoriteDto,
         email: String
     ): SimpleMessageResponseDto {
+
         val favorite = favoriteDto.asDomain(email)
+        val result = favoriteRepository.readByEmailAndSymb(favorite).awaitSingleOrNull()
+        if (result == null) {
+            favoriteRepository.save(favorite).awaitSingleOrNull()
 
-        favoriteRepository.save(favorite).awaitSingleOrNull()
+            return SimpleMessageResponseDto("Add Complete")
+        } else {
+            favoriteRepository.deleteByEmailAndExcdAndSymb(favorite).awaitSingleOrNull()
 
-        return SimpleMessageResponseDto("Add Complete")
+            return SimpleMessageResponseDto("Delete Complete")
+        }
     }
 
     suspend fun readAllFavorite(
@@ -45,12 +52,4 @@ class FavoriteService (
         }
     }
 
-    suspend fun deleteFavorite(
-        favoriteDto: FavoriteDto,
-        email: String
-    ): SimpleMessageResponseDto {val favorite = favoriteDto.asDomain(email)
-        favoriteRepository.deleteByEmailAndExcdAndSymb(favorite).awaitSingleOrNull()
-
-        return SimpleMessageResponseDto("Delete Complete")
-    }
 }
