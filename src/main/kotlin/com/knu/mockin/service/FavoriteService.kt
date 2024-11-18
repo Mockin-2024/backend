@@ -1,6 +1,6 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.model.dto.request.favorite.FavoriteRequestDto
+import com.knu.mockin.model.dto.request.favorite.FavoriteDto
 import com.knu.mockin.model.dto.response.FavoriteListDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.asDomain
@@ -16,10 +16,10 @@ class FavoriteService (
 ) {
 
     suspend fun addFavorite(
-        favoriteRequestDto: FavoriteRequestDto,
+        favoriteDto: FavoriteDto,
         email: String
     ): SimpleMessageResponseDto {
-        val favorite = favoriteRequestDto.asDomain(email)
+        val favorite = favoriteDto.asDomain(email)
 
         favoriteRepository.save(favorite).awaitSingleOrNull()
 
@@ -36,7 +36,7 @@ class FavoriteService (
         } else {
             val result = resultList.map {
                 favorite ->
-                FavoriteRequestDto(
+                FavoriteDto(
                     excd = favorite.excd,
                     symb = favorite.symb,
                 )
@@ -46,9 +46,9 @@ class FavoriteService (
     }
 
     suspend fun deleteFavorite(
-        favoriteRequestDto: FavoriteRequestDto,
+        favoriteDto: FavoriteDto,
         email: String
-    ): SimpleMessageResponseDto {val favorite = favoriteRequestDto.asDomain(email)
+    ): SimpleMessageResponseDto {val favorite = favoriteDto.asDomain(email)
         favoriteRepository.deleteByEmailAndExcdAndSymb(favorite).awaitSingleOrNull()
 
         return SimpleMessageResponseDto("Delete Complete")
