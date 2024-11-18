@@ -46,4 +46,11 @@ object RedisUtil{
     fun deleteData(key: String): Boolean {
         return redisTemplate.delete(key)
     }
+
+    fun deleteByPattern(pattern: String) {
+        val keys = redisTemplate.keys(pattern)
+        keys.forEach { key ->
+            redisTemplate.delete(key)
+        }
+    }
 }
