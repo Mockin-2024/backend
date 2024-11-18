@@ -121,7 +121,7 @@
         "POST /auth/validate-token" {
             val uri = "${baseUri}/validate-token"
             val requestDto = readJsonFile(uri, "requestDto.json")
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto Jwt::class.java
             coEvery { userService.validateToken(requestDto toDto TokenValidationRequestDto::class.java) } returns expectedDto
 
             val response = webTestClient.postWithBody(uri, requestDto, expectedDto)

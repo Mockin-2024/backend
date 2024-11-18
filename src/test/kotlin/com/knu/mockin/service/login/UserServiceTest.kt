@@ -141,12 +141,13 @@ class UserServiceTest(
 
         Given("검증할 토큰이 올바른 경우"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto TokenValidationRequestDto::class.java
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto Jwt::class.java
 
             When("redis에 있는 토큰과 같은 지 검증하고"){
-                every { RedisUtil.getToken(bodyDto.email tag JWT) } returns expectedDto.message
+                every { RedisUtil.getToken(bodyDto.email tag JWT) } returns bodyDto.token
+                every { jwtUtil.generate(user.email) } returns BearerToken(expectedDto.token)
 
-                Then("같으면 검증 성공한 토큰을 반환해야 한다."){
+                Then("같으면, 새로운 토큰을 반환해야 한다."){
                     val result = userService.validateToken(bodyDto)
 
                     result shouldBe expectedDto
