@@ -2,6 +2,7 @@ package com.knu.mockin.controller.util
 
 import com.knu.mockin.logging.utils.LogUtil.toJson
 import org.springframework.context.ApplicationContext
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.restdocs.ManualRestDocumentation
 import org.springframework.restdocs.operation.preprocess.Preprocessors
@@ -59,6 +60,20 @@ fun <T: Any> WebTestClient.postWithBody(uri: String, requestBody: T, expectedDto
         .expectBody()
         .json(toJson(expectedDto))
 }
+fun <T: Any> WebTestClient.deleteWithBody(uri: String, requestBody: T, expectedDto: T): BodyContentSpec {
+    return this.method(HttpMethod.DELETE)
+        .uri("/$uri")
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON)
+        .header("Authorization", authHeader)
+        .bodyValue(requestBody)
+        .exchange()
+        .expectStatus()
+        .isOk
+        .expectBody()
+        .json(toJson(expectedDto))
+}
+
 fun <T: Any> WebTestClient.patchWithBody(uri: String, requestBody: T, expectedDto: T): BodyContentSpec{
     return this.patch()
         .uri("/$uri")
