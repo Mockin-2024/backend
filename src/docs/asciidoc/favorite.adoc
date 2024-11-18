@@ -5,25 +5,24 @@
 == 목차
 
 * xref:/docs/index.html[메인으로 돌아가기]
-* <<add, 즐겨찾기 추가>>
+* <<select, 즐겨찾기 추가/삭제>>
 * <<read, 즐겨찾기 리스트>>
-* <<delete, 즐겨찾기 삭제>>
 
 
-[#add]
-== 즐겨찾기 추가
+[#select]
+== 즐겨찾기 추가/삭제
 
 === Request
-include::{snippets}/favorite/add/http-request.adoc[]
+include::{snippets}/favorite/select/http-request.adoc[]
 
 === Request-Field
-include::{snippets}/favorite/add/request-fields.adoc[]
+include::{snippets}/favorite/select/request-fields.adoc[]
 
 === Response
-include::{snippets}/favorite/add/http-response.adoc[]
+include::{snippets}/favorite/select/http-response.adoc[]
 
 === Response-Field
-include::{snippets}/favorite/add//response-fields.adoc[]
+include::{snippets}/favorite/select/response-fields.adoc[]
 
 [#read]
 == 즐겨찾기 리스트
@@ -39,19 +38,3 @@ include::{snippets}/favorite/read/http-response.adoc[]
 
 === Response-Field
 include::{snippets}/favorite/read/response-fields.adoc[]
-
-[#delete]
-== 즐겨찾기 삭제
-
-=== Request
-include::{snippets}/favorite/delete/http-request.adoc[]
-
-=== Request-Field
-include::{snippets}/favorite/delete/request-fields.adoc[]
-
-=== Response
-include::{snippets}/favorite/delete/http-response.adoc[]
-
-=== Response-Field
-include::{snippets}/favorite/delete/response-fields.adoc[]
-
