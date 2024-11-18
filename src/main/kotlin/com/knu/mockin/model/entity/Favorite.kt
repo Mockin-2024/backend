@@ -1,6 +1,6 @@
 package com.knu.mockin.model.entity
 
-import com.knu.mockin.model.dto.request.favorite.FavoriteRequestDto
+import com.knu.mockin.model.dto.request.favorite.FavoriteDto
 import org.springframework.data.relational.core.mapping.Table
 
 @Table("favorite")
@@ -10,7 +10,7 @@ data class Favorite (
     val symb: String
 )
 
-fun FavoriteRequestDto.asDomain(email: String): Favorite {
+fun FavoriteDto.asDomain(email: String): Favorite {
     return Favorite(
         email = email,
         excd = this.excd,

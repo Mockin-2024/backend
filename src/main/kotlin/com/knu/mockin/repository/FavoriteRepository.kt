@@ -1,14 +1,11 @@
 package com.knu.mockin.repository
 
-import com.knu.mockin.model.dto.request.favorite.FavoriteRequestDto
 import com.knu.mockin.model.entity.Favorite
-import com.knu.mockin.model.entity.User
 import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.util.Optional
 
 @Repository
 interface FavoriteRepository : ReactiveCrudRepository<Favorite, String> {

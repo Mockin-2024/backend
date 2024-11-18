@@ -1,14 +1,12 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.dsl.RestDocsUtils
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
-import com.knu.mockin.model.dto.request.favorite.FavoriteRequestDto
+import com.knu.mockin.model.dto.request.favorite.FavoriteDto
 import com.knu.mockin.model.dto.request.login.EmailRequestDto
 import com.knu.mockin.model.dto.response.FavoriteListDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.model.entity.Favorite
 import com.knu.mockin.model.entity.User
-import com.knu.mockin.model.entity.UserWithKeyPair
 import com.knu.mockin.repository.FavoriteRepository
 import com.knu.mockin.util.ExtensionUtil.toDto
 import io.kotest.core.spec.style.BehaviorSpec
@@ -33,7 +31,7 @@ class FavoriteServiceTest(
         val uri = "$baseUri/add"
 
         Given("적절한 dto가 주어질 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto FavoriteRequestDto::class.java
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto FavoriteDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
 
             When("즐겨찾기를 정상적으로 등록한 후"){
@@ -78,7 +76,7 @@ class FavoriteServiceTest(
         val uri = "$baseUri/delete"
 
         Given("적절한 dto가 주어질 때"){
-            val bodyDto = readJsonFile(uri, "requestDto.json") toDto FavoriteRequestDto::class.java
+            val bodyDto = readJsonFile(uri, "requestDto.json") toDto FavoriteDto::class.java
             val expectedDto = readJsonFile(uri, "responseDto.json") toDto SimpleMessageResponseDto::class.java
 
             When("즐겨찾기를 정상적으로 등록한 후"){

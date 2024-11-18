@@ -1,6 +1,6 @@
 package com.knu.mockin.controller
 
-import com.knu.mockin.model.dto.request.favorite.FavoriteRequestDto
+import com.knu.mockin.model.dto.request.favorite.FavoriteDto
 import com.knu.mockin.model.dto.response.FavoriteListDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.service.FavoriteService
@@ -16,10 +16,10 @@ class FavoriteController(
 
     @PostMapping("add")
     suspend fun addFavorite(
-        @RequestBody favoriteRequestDto: FavoriteRequestDto,
+        @RequestBody favoriteDto: FavoriteDto,
         authentication: Authentication
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = favoriteService.addFavorite(favoriteRequestDto, authentication.name)
+        val result = favoriteService.addFavorite(favoriteDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }
@@ -35,10 +35,10 @@ class FavoriteController(
 
     @DeleteMapping("delete")
     suspend fun deleteFavorite(
-        @RequestBody favoriteRequestDto: FavoriteRequestDto,
+        @RequestBody favoriteDto: FavoriteDto,
         authentication: Authentication
     ): ResponseEntity<SimpleMessageResponseDto> {
-        val result = favoriteService.deleteFavorite(favoriteRequestDto, authentication.name)
+        val result = favoriteService.deleteFavorite(favoriteDto, authentication.name)
 
         return ResponseEntity.ok(result)
     }

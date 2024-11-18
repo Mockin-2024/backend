@@ -4,8 +4,6 @@ import com.knu.mockin.controller.util.*
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.dsl.RestDocsUtils.toBody
 import com.knu.mockin.dsl.RestDocsUtils.toPairs
-import com.knu.mockin.model.dto.request.account.UserAccountNumberRequestDto
-import com.knu.mockin.model.dto.request.favorite.FavoriteRequestDto
 import com.knu.mockin.model.dto.request.login.EmailRequestDto
 import com.knu.mockin.model.dto.response.FavoriteListDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
