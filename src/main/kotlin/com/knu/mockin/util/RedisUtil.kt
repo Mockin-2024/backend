@@ -1,6 +1,8 @@
 package com.knu.mockin.util
 
 import com.knu.mockin.logging.utils.LogUtil.toJson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
@@ -47,10 +49,13 @@ object RedisUtil{
         return redisTemplate.delete(key)
     }
 
-    fun deleteByPattern(pattern: String){
-        val keys = redisTemplate.keys(pattern)
-        keys.forEach { key ->
-            deleteData(key)
+    suspend fun deleteByPattern(pattern: String) {
+        withContext(Dispatchers.IO) {
+            val keys = redisTemplate.keys(pattern)
+            keys.forEach { key ->
+                deleteData(key)
+            }
         }
     }
+
 }

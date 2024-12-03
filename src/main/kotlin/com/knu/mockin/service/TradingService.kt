@@ -13,8 +13,11 @@ import com.knu.mockin.util.ExtensionUtil.orThrow
 import com.knu.mockin.util.ExtensionUtil.toDto
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
 
 @Service
@@ -31,9 +34,11 @@ class TradingService(
         val headerDto = createHeader(userWithMockKey, bodyDto.transactionId)
         val kisOrderRequestBodyDto = bodyDto.asDomain(userWithMockKey.accountNumber)
 
-        RedisUtil.deleteByPattern(email tag "getNCCS" tag "*")
-        RedisUtil.deleteByPattern(email tag "getCCNL" tag "*")
-        RedisUtil.deleteByPattern(email tag "getPresentBalance" tag "*")
+        CoroutineScope(Dispatchers.IO).launch {
+            RedisUtil.deleteByPattern(email tag "getNCCS" tag "*")
+            RedisUtil.deleteByPattern(email tag "getCCNL" tag "*")
+            RedisUtil.deleteByPattern(email tag "getPresentBalance" tag "*")
+        }
 
         return kisTradingClient
             .postOrder(headerDto, kisOrderRequestBodyDto)
@@ -49,9 +54,11 @@ class TradingService(
         val headerDto = createHeader(userWithMockKey, bodyDto.transactionId)
         val kisOrderReverseRequestBodyDto = bodyDto.asDomain(userWithMockKey.accountNumber)
 
-        RedisUtil.deleteByPattern(email tag "getNCCS" tag "*")
-        RedisUtil.deleteByPattern(email tag "getCCNL" tag "*")
-        RedisUtil.deleteByPattern(email tag "getPresentBalance" tag "*")
+        CoroutineScope(Dispatchers.IO).launch {
+            RedisUtil.deleteByPattern(email tag "getNCCS" tag "*")
+            RedisUtil.deleteByPattern(email tag "getCCNL" tag "*")
+            RedisUtil.deleteByPattern(email tag "getPresentBalance" tag "*")
+        }
 
         return kisTradingClient
             .postOrderReverse(headerDto, kisOrderReverseRequestBodyDto)
