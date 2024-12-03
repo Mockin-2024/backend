@@ -25,7 +25,7 @@
 [![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1733215272807?alt=media&token=ed8106ec-f929-4936-8d7a-1e7bc5ca2533)](https://github.com/msdio/stackticon)
 
 ### 클라우드 서비스
-[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1733215209695?alt=media&token=3c8ee846-dc0a-4d4b-9b6c-ddc5a17d00a9)](https://github.com/msdio/stackticon)
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1733216077984?alt=media&token=530182f0-cc86-468c-aece-35dbb7c3978c)](https://github.com/msdio/stackticon)
 
 ### 기타 도구
 [![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1733215257410?alt=media&token=3e24c42c-46e2-4a15-865e-d8d9690de4b6)](https://github.com/msdio/stackticon)
