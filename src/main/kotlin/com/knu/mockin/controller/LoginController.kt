@@ -1,6 +1,7 @@
 package com.knu.mockin.controller
 
 import com.knu.mockin.model.dto.request.login.*
+import com.knu.mockin.model.dto.response.LoginResponseDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
 import com.knu.mockin.service.login.EmailService
 import com.knu.mockin.service.login.UserService
@@ -29,7 +30,7 @@ class LoginController (
     @PostMapping("/login")
     suspend fun login(
         @RequestBody loginRequestDto: LoginRequestDto
-    ): ResponseEntity<Jwt> {
+    ): ResponseEntity<LoginResponseDto> {
         val result = userService.loginUser(loginRequestDto)
 
         return ResponseEntity.ok(result)
@@ -56,7 +57,7 @@ class LoginController (
     @PostMapping("validate-token")
     suspend fun validateToken(
         @RequestBody requestDto: TokenValidationRequestDto
-    ): ResponseEntity<Jwt> {
+    ): ResponseEntity<LoginResponseDto> {
         val result = userService.validateToken(requestDto)
 
         return ResponseEntity.ok(result)

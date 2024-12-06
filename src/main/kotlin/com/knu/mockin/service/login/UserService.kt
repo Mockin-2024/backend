@@ -2,7 +2,7 @@ package com.knu.mockin.service.login
 
 import com.knu.mockin.exception.CustomException
 import com.knu.mockin.exception.ErrorCode
-import com.knu.mockin.model.dto.request.login.Jwt
+import com.knu.mockin.model.dto.response.LoginResponseDto
 import com.knu.mockin.model.dto.request.login.LoginRequestDto
 import com.knu.mockin.model.dto.request.login.SignupRequestDto
 import com.knu.mockin.model.dto.request.login.TokenValidationRequestDto
@@ -46,7 +46,7 @@ class UserService(
         return SimpleMessageResponseDto("회원가입이 완료되었습니다!")
     }
 
-    suspend fun loginUser(loginRequestDto: LoginRequestDto): Jwt {
+    suspend fun loginUser(loginRequestDto: LoginRequestDto): LoginResponseDto {
         val user = userRepository.findByEmail(loginRequestDto.email).awaitSingleOrNull()
 
         user?.let {
@@ -54,10 +54,10 @@ class UserService(
                 val storedToken = RedisUtil.getToken(user.email tag JWT)
 
                 if (storedToken != null) {
-                    return Jwt(BearerToken(storedToken).value)
+                    return LoginResponseDto(BearerToken(storedToken).value)
                 }
 
-                return Jwt(jwtUtil.generate(it.email).value)
+                return LoginResponseDto(jwtUtil.generate(it.email).value)
             }
         }
 
@@ -66,11 +66,11 @@ class UserService(
 
     suspend fun validateToken(
         requestDto: TokenValidationRequestDto
-    ): Jwt {
+    ): LoginResponseDto {
         val storedToken = RedisUtil.getToken(requestDto.email tag JWT)
 
         if (requestDto.token == storedToken) {
-            return Jwt(jwtUtil.generate(requestDto.email).value)
+            return LoginResponseDto(jwtUtil.generate(requestDto.email).value)
         }
 
         throw CustomException(ErrorCode.TOKEN_EXPIRED)

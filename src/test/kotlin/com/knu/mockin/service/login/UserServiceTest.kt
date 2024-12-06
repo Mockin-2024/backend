@@ -3,7 +3,7 @@ package com.knu.mockin.service.login
 import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
 import com.knu.mockin.exception.CustomException
 import com.knu.mockin.exception.ErrorCode
-import com.knu.mockin.model.dto.request.login.Jwt
+import com.knu.mockin.model.dto.response.LoginResponseDto
 import com.knu.mockin.model.dto.request.login.LoginRequestDto
 import com.knu.mockin.model.dto.request.login.SignupRequestDto
 import com.knu.mockin.model.dto.request.login.TokenValidationRequestDto
@@ -77,7 +77,7 @@ class UserServiceTest(
 
         Given("적절한 dto가 주어질 때"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto LoginRequestDto::class.java
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto Jwt::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto LoginResponseDto::class.java
 
             When("이메일, 패스워드가 적절하고, 토큰이 redis에 없으면"){
                 every { userRepository.findByEmail(bodyDto.email) } returns Mono.just(user)
@@ -141,7 +141,7 @@ class UserServiceTest(
 
         Given("검증할 토큰이 올바른 경우"){
             val bodyDto = readJsonFile(uri, "requestDto.json") toDto TokenValidationRequestDto::class.java
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto Jwt::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto LoginResponseDto::class.java
 
             When("redis에 있는 토큰과 같은 지 검증하고"){
                 every { RedisUtil.getToken(bodyDto.email tag JWT) } returns bodyDto.token
