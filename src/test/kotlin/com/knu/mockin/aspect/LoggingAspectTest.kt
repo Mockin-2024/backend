@@ -51,7 +51,7 @@ class LoggingAspectTest :BehaviorSpec({
     }
     Context("Login Controller의 메소드에 대해"){
         Given("실행 전후로"){
-            val response = LoginResponseDto("access token")
+            val response = LoginResponseDto("access token", isMockRegistered = true, isRealRegistered =  true)
 
             When("적절한 로그를 남기고"){
                 every { joinPoint.proceed() } returns Mono.just(response)
