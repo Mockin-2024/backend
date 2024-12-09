@@ -1,6 +1,5 @@
 package com.knu.mockin.service
 
-import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.kisclient.KISOauth2Client
 import com.knu.mockin.kisclient.KISOauth2RealClient
 import com.knu.mockin.model.dto.kisrequest.oauth.KISTokenRequestDto
@@ -13,8 +12,6 @@ import com.knu.mockin.model.enum.Constant.CLIENT_CREDENTIAL
 import com.knu.mockin.repository.MockKeyRepository
 import com.knu.mockin.repository.RealKeyRepository
 import com.knu.mockin.repository.UserRepository
-import com.knu.mockin.util.ExtensionUtil.orThrow
-import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.stereotype.Service

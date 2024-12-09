@@ -1,6 +1,7 @@
 package com.knu.mockin.repository
 
 import com.knu.mockin.model.entity.User
+import com.knu.mockin.model.entity.UserInfo
 import com.knu.mockin.model.entity.UserWithKeyPair
 import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
@@ -30,6 +31,22 @@ interface UserRepository : ReactiveCrudRepository<User, String> {
             "inner join real_key as r on u.email = r.email " +
             "where u.email = :email")
     fun findByEmailWithRealKey(email: String): Mono<UserWithKeyPair>
-    @Query("update user set verified = true where email = :email")
-    fun verifyEmailByEmail(email: String): Mono<User>
+
+    @Query(
+        """
+        SELECT 
+            u.email, 
+            u.password,
+            u.account_number,
+            m.app_key,
+            r.app_secret
+        FROM 
+            (SELECT email, password, account_number FROM user WHERE email = :email) AS u
+        LEFT OUTER JOIN 
+            mock_key AS m ON m.email = u.email
+        LEFT OUTER JOIN 
+            real_key AS r ON r.email = u.email
+        """
+    )
+    fun findUserInfoByEmail(email: String): Mono<UserInfo>
 }

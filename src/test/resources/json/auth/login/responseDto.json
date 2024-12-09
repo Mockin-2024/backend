@@ -1,3 +1,6 @@
 {
-  "token": "jwt-access-token"
+  "token": "jwt-access-token",
+  "accountNumber": "12345678",
+  "isMockRegistered": true,
+  "isRealRegistered": true
 }

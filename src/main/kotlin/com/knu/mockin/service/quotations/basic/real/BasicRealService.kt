@@ -2,10 +2,8 @@ package com.knu.mockin.service.quotations.basic.real
 
 import com.knu.mockin.exception.ErrorCode
 import com.knu.mockin.kisclient.quotations.basic.KISBasicRealClient
-import com.knu.mockin.model.dto.kisheader.request.KISOverSeaRequestHeaderDto
 import com.knu.mockin.model.dto.kisresponse.quotations.basic.real.*
 import com.knu.mockin.model.dto.request.quotations.basic.real.*
-import com.knu.mockin.model.enum.Constant.REAL
 import com.knu.mockin.model.enum.TimeConstant.ONE_HOUR
 import com.knu.mockin.model.enum.TimeConstant.ONE_MINUTE
 import com.knu.mockin.model.enum.TimeConstant.TWELVE_HOURS

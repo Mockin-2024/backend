@@ -3,7 +3,7 @@
     import com.knu.mockin.controller.util.*
     import com.knu.mockin.dsl.RestDocsUtils.readJsonFile
     import com.knu.mockin.dsl.RestDocsUtils.toBody
-    import com.knu.mockin.model.dto.request.login.Jwt
+    import com.knu.mockin.model.dto.response.LoginResponseDto
     import com.knu.mockin.model.dto.request.login.TokenValidationRequestDto
     import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
     import com.knu.mockin.model.entity.User
@@ -90,7 +90,7 @@
         "POST /auth/login" {
             val uri = "${baseUri}/login"
             val requestDto = readJsonFile(uri, "requestDto.json")
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto Jwt::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto LoginResponseDto::class.java
             coEvery { userService.loginUser(any()) } returns expectedDto
 
 
@@ -121,7 +121,7 @@
         "POST /auth/validate-token" {
             val uri = "${baseUri}/validate-token"
             val requestDto = readJsonFile(uri, "requestDto.json")
-            val expectedDto = readJsonFile(uri, "responseDto.json") toDto Jwt::class.java
+            val expectedDto = readJsonFile(uri, "responseDto.json") toDto LoginResponseDto::class.java
             coEvery { userService.validateToken(requestDto toDto TokenValidationRequestDto::class.java) } returns expectedDto
 
             val response = webTestClient.postWithBody(uri, requestDto, expectedDto)
