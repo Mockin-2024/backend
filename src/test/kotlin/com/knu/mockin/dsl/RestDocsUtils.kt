@@ -44,6 +44,9 @@ object RestDocsUtils {
                 if(fieldName in listOf("expire_in")){
                     fieldDescriptions.add(fieldName type NUMBER means jsonNode[fieldName].asText())
                 }
+                else if(fieldName.contains("Registered")){
+                    fieldDescriptions.add(fieldName type BOOLEAN means jsonNode[fieldName].asText())
+                }
                 else fieldDescriptions.add(fieldName type STRING means jsonNode[fieldName].asText())
             }
         }
