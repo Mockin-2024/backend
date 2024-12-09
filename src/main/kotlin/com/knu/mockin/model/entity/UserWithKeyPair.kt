@@ -6,3 +6,11 @@ data class UserWithKeyPair(
     val appKey: String = "",
     val appSecret: String = ""
 )
+
+data class UserInfo(
+    val email: String = "",
+    val password: String = "",
+    val accountNumber: String = "",
+    val appKey: String = "",
+    val appSecret: String = ""
+)
