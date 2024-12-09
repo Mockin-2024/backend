@@ -7,13 +7,14 @@ import com.knu.mockin.model.dto.request.login.LoginRequestDto
 import com.knu.mockin.model.dto.request.login.SignupRequestDto
 import com.knu.mockin.model.dto.request.login.TokenValidationRequestDto
 import com.knu.mockin.model.dto.response.SimpleMessageResponseDto
+import com.knu.mockin.model.dto.response.buildLoginResponseDto
 import com.knu.mockin.model.entity.User
 import com.knu.mockin.model.enum.Constant.JWT
 import com.knu.mockin.repository.UserRepository
-import com.knu.mockin.security.BearerToken
 import com.knu.mockin.security.JwtUtil
 import com.knu.mockin.util.RedisUtil
 import com.knu.mockin.util.tag
+import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -47,17 +48,17 @@ class UserService(
     }
 
     suspend fun loginUser(loginRequestDto: LoginRequestDto): LoginResponseDto {
-        val user = userRepository.findByEmail(loginRequestDto.email).awaitSingleOrNull()
-
-        user?.let {
+        val userInfo = userRepository.findUserInfoByEmail(loginRequestDto.email).awaitSingleOrNull()
+        println(userInfo)
+        userInfo?.let {
             if (encoder.matches(loginRequestDto.password, it.password)) {
-                val storedToken = RedisUtil.getToken(user.email tag JWT)
+                val storedToken = RedisUtil.getToken(userInfo.email tag JWT)
 
                 if (storedToken != null) {
-                    return LoginResponseDto(BearerToken(storedToken).value)
+                    return buildLoginResponseDto(storedToken, userInfo)
                 }
 
-                return LoginResponseDto(jwtUtil.generate(it.email).value)
+                return buildLoginResponseDto(jwtUtil.generate(it.email).value, userInfo)
             }
         }
 
@@ -67,10 +68,11 @@ class UserService(
     suspend fun validateToken(
         requestDto: TokenValidationRequestDto
     ): LoginResponseDto {
+        val userInfo = userRepository.findUserInfoByEmail(requestDto.email).awaitSingle()
         val storedToken = RedisUtil.getToken(requestDto.email tag JWT)
 
         if (requestDto.token == storedToken) {
-            return LoginResponseDto(jwtUtil.generate(requestDto.email).value)
+            return buildLoginResponseDto(jwtUtil.generate(requestDto.email).value, userInfo)
         }
 
         throw CustomException(ErrorCode.TOKEN_EXPIRED)
