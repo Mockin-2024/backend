@@ -1,3 +1,6 @@
 {
-  "token": "897851"
+  "token": "897851",
+  "accountNumber": "12345678",
+  "isMockRegistered": true,
+  "isRealRegistered": true
 }

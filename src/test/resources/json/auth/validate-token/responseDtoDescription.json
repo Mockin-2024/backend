@@ -1,3 +1,6 @@
 {
-  "token": "새로운 토큰"
+  "token": "새로운 토큰",
+  "accountNumber": "계좌번호",
+  "isMockRegistered": "모의투자 키 정보 등록 여부",
+  "isRealRegistered": "실전투자 키 정보 등록 여부"
 }
